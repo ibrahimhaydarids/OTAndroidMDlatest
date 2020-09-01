@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="2dp"
+    android:paddingTop="@dimen/margin_top_bottom"
+    android:paddingBottom="@dimen/margin_top_bottom"
+    android:paddingLeft="@dimen/padding"
+    android:paddingRight="@dimen/padding"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:background="?attr/colorMedium"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearHeader"
+        android:gravity="center"
+
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small"
+            android:id="@+id/tvIdTitle"
+            android:textStyle="bold"
+            android:text="ID"
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:id="@+id/tvName"
+            android:layout_gravity="center"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small"
+            android:textStyle="bold"
+            android:text="Name"
+            />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tvPortfolioName"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small"
+            android:textStyle="bold"
+            android:text="Portfolio Name"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearValues"
+        android:gravity="center"
+        android:layout_below="@id/linearHeader"
+
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="?attr/colorValues"
+            android:layout_gravity="center"
+            android:textSize="@dimen/small"
+            android:id="@+id/tvIdValue"
+            android:textStyle="bold"
+
+            />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tvNameValue"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small"
+            android:textStyle="bold"
+
+            />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:id="@+id/tvPortfolioNameValue"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small"
+            android:textStyle="bold"
+
+            />
+
+    </LinearLayout>
+
+</RelativeLayout>

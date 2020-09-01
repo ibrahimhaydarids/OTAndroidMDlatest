@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rllayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:clipToPadding="false"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:minHeight="@dimen/item_height"
+    android:orientation="vertical"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
+
+
+<!--
+        <TextView
+            android:id="@+id/tvColum1Value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:layout_marginLeft="@dimen/margin_start_end"
+            android:layout_marginStart="@dimen/margin_start_end"
+
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+
+
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small" />-->
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/stock_item_height"
+    android:orientation="horizontal"
+   android:padding="@dimen/small_margin"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    >
+    <Button
+        android:id="@+id/btTrades"
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+
+        android:background="?attr/gray"
+        android:clipToPadding="false"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+        android:elevation="@dimen/button_elevation"
+
+        android:text="T"
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/normal" />
+
+
+    <LinearLayout
+    android:layout_width="0dp"
+    android:layout_weight="1.5"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:orientation="vertical"
+        android:textDirection="locale"
+    android:gravity="center_vertical">
+
+
+
+
+    <TextView
+        android:id="@+id/tvColum1Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_gravity="start"
+        android:gravity="center_vertical"
+        android:textDirection="locale"
+        android:paddingStart="2dp"
+        android:paddingRight="2dp"
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+
+</LinearLayout>
+    <TextView
+        android:id="@+id/tvColum4Value"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_transparent"
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+        android:textColor="@color/offer_color"
+        android:textSize="@dimen/small" />
+    <TextView
+        android:id="@+id/tvColum3Value"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_transparent"
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+    <TextView
+        android:id="@+id/tvColum2Value"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_transparent"
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+        android:textColor="@color/bid_color"
+        android:textSize="@dimen/small" />
+
+
+
+
+
+
+
+    <TextView
+        android:id="@+id/tvColum6Value"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_transparent"
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+        android:textColor="@color/bid_color"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:id="@+id/tvColum5Value"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:background="@drawable/border_transparent"
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSectorName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:layout_marginLeft="60dp"
+        android:layout_marginStart="60dp"
+
+
+
+        android:layout_gravity="start"
+        android:gravity="start"
+
+
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+
+</LinearLayout>

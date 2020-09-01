@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:layout_height="40dp"
+    android:orientation="horizontal"
+
+    android:id="@+id/rllayout"
+
+    >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tvSectionTitle"
+            android:textSize="@dimen/normal"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="?attr/colorValues"
+            android:background="@color/gray_header_bg"
+            />
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+        android:orientation="horizontal"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:paddingRight="@dimen/mini_margin"
+    android:paddingLeft="@dimen/mini_margin"
+    android:id="@+id/linearSectionValues"
+    >
+
+        <TextView
+            android:id="@+id/tvStockId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/stock"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/tvStockSymbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="@string/stock"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/normal" />
+
+        <TextView
+            android:id="@+id/tvStockName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:visibility="gone"
+            android:text="@string/stock"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small" />
+
+
+
+</LinearLayout>
+
+
+</LinearLayout>

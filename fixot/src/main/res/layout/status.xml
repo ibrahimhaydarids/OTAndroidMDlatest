@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_gravity="right"
+    android:gravity="right"
+    android:id="@+id/linearSessionsToolbar"
+    android:layout_height="match_parent">
+    <Button
+        android:id="@+id/btTrade"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:background="?attr/gray"
+        android:clipToPadding="false"
+        android:layout_marginLeft="@dimen/margin_start_end"
+        android:layout_marginRight="@dimen/margin_start_end"
+        android:elevation="@dimen/button_elevation"
+        android:visibility="gone"
+        android:text="T"
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/large" />
+
+    <ImageView
+        android:id="@+id/logo2"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:visibility="gone"
+        android:layout_marginLeft="@dimen/margin_start_end"
+        android:layout_marginRight="@dimen/margin_start_end"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:gravity="end">
+        <LinearLayout
+            android:id="@+id/ll_market_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical"
+            android:background="#00FFFFFF"
+            android:elevation="6dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/market_state_value_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/market_status_height"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginStart="@dimen/small_margin"
+                android:background="@color/transparent"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:elevation="0dp"
+                android:textSize="@dimen/xSmall"
+                android:gravity="center_vertical|center_horizontal"
+                android:paddingBottom="2dp"
+                android:textColor="@color/white" />
+
+            <!--android:layout_marginEnd="@dimen/mini_margin"-->
+
+            <View
+                android:layout_width="1sp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/market_time_value_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/market_status_height"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:textSize="@dimen/xSmall"
+                android:gravity="center_vertical|center_horizontal"
+                android:paddingBottom="0dp"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@+id/ll_market_state"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:backgroundTint="@color/white"
+            android:id="@+id/spInstrumentTop"
+            />
+    </LinearLayout>
+
+
+</LinearLayout>

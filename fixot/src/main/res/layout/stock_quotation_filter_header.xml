@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorMedium"
+    android:layout_marginTop="@dimen/small_margin"
+    android:layout_marginBottom="@dimen/small_margin"
+
+
+
+    android:id="@+id/linearHeaderFilters"
+    android:visibility="gone"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="horizontal">
+    <!--android:padding="0dp"-->
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:background="?attr/evenColor"
+        android:id="@+id/linearFilterAllStocks"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAllStockCount"
+            android:textSize="@dimen/xSmall"
+            android:layout_width="@dimen/filter_count_with"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+
+            android:background="@drawable/rectangular_header_filter_1"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="-"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:textSize="@dimen/xSmall"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvAllStocksTitle"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+
+            android:text="@string/all_stocks"
+            android:textColor="@color/header_color_1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingTop="10dp"
+
+        android:id="@+id/linearFilterActive"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvActiveCount"
+            android:textSize="@dimen/xSmall"
+            android:layout_width="@dimen/filter_count_with"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rectangular_header_filter_2"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="-"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:textSize="@dimen/xSmall"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvActiveTitle"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="@string/active"
+            android:layout_gravity="center"
+            android:textColor="@color/header_color_2" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:id="@+id/linearFilterGainer"
+        android:layout_gravity="center"
+        android:paddingTop="10dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvGainerCount"
+            android:textSize="@dimen/xSmall"
+            android:layout_width="@dimen/filter_count_with"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rectangular_header_filter_3"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="-"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:textSize="@dimen/xSmall"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvGainerTitle"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="@string/gainers"
+            android:textColor="@color/header_color_3" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:id="@+id/linearFilterLosers"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvLooserCount"
+            android:textSize="@dimen/xSmall"
+            android:layout_width="@dimen/filter_count_with"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/rectangular_header_filter_4"
+
+            android:padding="@dimen/small_radius"
+            android:text="-"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:textSize="@dimen/xSmall"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvLoosersTitle"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="@string/losers"
+            android:textColor="@color/header_color_4"  />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingTop="10dp"
+        android:id="@+id/linearFilterUnchanged"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvUnchangedCount"
+            android:textSize="@dimen/xSmall"
+            android:layout_width="@dimen/filter_count_with"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rectangular_header_filter_5"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="-"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:textSize="@dimen/xSmall"
+            android:layout_width="wrap_content"
+            android:id="@+id/tvUnchangedTitle"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:padding="@dimen/small_radius"
+            android:text="@string/unchanged"
+            android:textColor="@color/header_color_5"  />
+
+
+    </LinearLayout>
+
+</LinearLayout>

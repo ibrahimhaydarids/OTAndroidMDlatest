@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDark"
+        android:elevation="4dp"
+        android:layoutDirection="ltr"
+        android:title="null">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:padding="@dimen/padding"
+            android:src="@drawable/back" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_below="@+id/my_toolbar"
+
+        android:layout_margin="20sp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+   >
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/subscribe_to_notification"
+                android:textColor="@color/colorValues"
+                android:layout_centerHorizontal="true"
+
+                android:textSize="@dimen/large"
+                android:textStyle="bold" />
+
+
+            <LinearLayout
+                android:id="@+id/ll_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_marginTop="20sp"
+
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvInvestorId"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_margin="5sp"
+                    android:gravity="center"
+                    android:padding="5sp"
+                    android:text="@string/investor_id" />
+                <TextView
+                    android:id="@+id/tvPhone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_margin="5sp"
+                    android:gravity="center"
+                    android:padding="5sp"
+                    android:text="@string/phone" />
+
+                <TextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40sp"
+                    android:layout_margin="5sp"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:padding="5sp"
+                    android:text="@string/email" />
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTitle"
+                android:layout_marginTop="20sp"
+                android:layout_toEndOf="@id/ll_email"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_margin="5sp"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/large"
+                    android:background="@drawable/edittext_border"
+                    android:inputType="textEmailAddress"
+                    android:padding="5sp" />
+                <EditText
+                    android:id="@+id/etInvestorId"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_margin="5sp"
+
+                    android:layout_marginStart="@dimen/large"
+                    android:background="@drawable/edittext_border"
+                    android:inputType="number"
+                    android:padding="5sp" />
+                <EditText
+                    android:id="@+id/etMobileNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="40sp"
+                    android:layout_margin="5sp"
+                    android:layout_marginStart="@dimen/large"
+                    android:background="@drawable/edittext_border"
+                    android:inputType="number"
+                    android:padding="5sp" />
+
+
+
+            </LinearLayout>
+
+
+
+
+
+            <Button
+                android:id="@+id/btSave"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/button_height"
+                android:layout_below="@+id/ll_email"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/large"
+                android:layout_marginBottom="@dimen/large"
+                android:background="@color/colorDark"
+                android:clipToPadding="false"
+                android:elevation="@dimen/button_elevation"
+                android:padding="@dimen/mini_padding"
+                android:text="@string/submit"
+                android:textColor="@color/colorLight" />
+
+
+
+
+        </RelativeLayout>
+    </ScrollView>
+    <include layout="@layout/loading_trans"/>
+</RelativeLayout>

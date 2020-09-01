@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="?attr/colorDarkHeader"
+    android:orientation="horizontal"
+    android:paddingLeft="4dp"
+    android:paddingTop="1dp"
+    android:layout_marginLeft="@dimen/small_margin"
+    android:layout_marginRight="@dimen/small_margin"
+    android:paddingRight="4dp"
+    android:paddingBottom="1dp">
+
+    <TextView
+        android:id="@+id/tvSymbol"
+        style="@style/textListHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_weight="1"
+        android:padding="@dimen/mini_padding"
+
+        android:text="@string/stock_name_title"
+        android:textAlignment="viewStart"
+        android:textColor="?attr/evenColor" />
+
+    <TextView
+        android:id="@+id/tvActionHeader"
+        style="@style/textListHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="0.8"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/mini_padding"
+        android:text="@string/action"
+        android:textColor="?attr/evenColor" />
+
+    <TextView
+        android:id="@+id/tvQtyExecutedHeader"
+        style="@style/textListHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1.2"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/mini_padding"
+        android:text="@string/qty_executed"
+        android:textColor="?attr/evenColor"
+    />
+
+    <TextView
+        android:id="@+id/tvAvgPriceHeader"
+        style="@style/textListHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/mini_padding"
+        android:text="@string/avg_price"
+        android:textColor="?attr/evenColor" />
+
+
+
+</LinearLayout>

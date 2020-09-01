@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_Layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainerSecond"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bid"
+                        android:background="?attr/colorMedium"
+                        android:textSize="@dimen/small"
+                        android:paddingTop="@dimen/small"
+                        android:paddingBottom="@dimen/small"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="?attr/colorDark"
+                        />
+
+
+
+
+                    <include
+                        android:id="@+id/order_book_by_order_header"
+                        layout="@layout/order_book_by_price_header_bid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+
+                    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+                    <!--android:id="@+id/swipeContainer"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent">-->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvOrders"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ask"
+                        android:background="?attr/colorMedium"
+                        android:textSize="@dimen/small"
+                        android:paddingTop="@dimen/small"
+                        android:paddingBottom="@dimen/small"
+                        android:visibility="gone"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textColor="?attr/colorDark"
+                        />
+
+
+                    <include
+                        android:id="@+id/order_book_second_header"
+                        layout="@layout/order_book_by_price_header_ask"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvOrdersSecond"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>

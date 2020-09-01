@@ -1,0 +1,294 @@
+apply plugin: 'com.android.application'
+
+
+
+android {
+
+    compileSdkVersion 29
+    useLibrary 'org.apache.http.legacy'
+    defaultConfig {
+        applicationId "com.ids.fixot"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "7.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    flavorDimensions "color"
+    productFlavors {
+
+        Waseet {
+            applicationId "com.ids.fixot.alseefnew"
+            buildConfigField 'String', "BrokerId", "\"15\""
+            buildConfigField 'String', "label", "\"waseet\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "true"
+
+
+
+/*            buildConfigField 'String', "BaseMD3Link", "\"https://testweb1.waseet.com.kw/\""
+            buildConfigField 'String', "MD3Link", "\"https://testweb1.waseet.com.kw\""*/
+            buildConfigField 'String', "BaseMD3Link", "\"https://mobile01.waseet.com.kw/\""
+            buildConfigField 'String', "MD3Link", "\"https://mobile01.waseet.com.kw\""
+
+
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 54
+            versionName '14.0'
+        }
+
+        Tijari {
+            applicationId "com.ids.fixot.usbc" //com.ids.usbc
+            buildConfigField 'String', "BrokerId", "\"662\""
+            buildConfigField 'String', "label", "\"tijari\""
+            buildConfigField "boolean", "Enable_Media", "true"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+            /*  buildConfigField 'String', "BaseMD3Link", "\"http://appiph.usbc.com.kw/md3androidservice/Mobile/\""
+            buildConfigField 'String', "MD3Link", "\"http://appiph.usbc.com.kw/md3androidservice/Services/DataService.svc\""
+            */
+/*            buildConfigField 'String', "BaseMD3Link", "\"http://62.150.96.116/\""
+            buildConfigField 'String', "MD3Link", "\"http://62.150.96.116\""*/
+
+            buildConfigField 'String', "BaseMD3Link", "\"http://62.150.96.117/\""
+            buildConfigField 'String', "MD3Link", "\"http://62.150.96.117\""
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 232
+            versionName '14'
+        }
+
+
+        TijariOtc {
+            applicationId "com.ids.fixot.usbcOtc" //com.ids.usbc
+            buildConfigField 'String', "BrokerId", "\"662\""
+            buildConfigField 'String', "label", "\"tijariOtc\""
+            buildConfigField "boolean", "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            //  buildConfigField 'boolean', "GoToMenu", "true"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+            buildConfigField 'String', "BaseMD3Link", "\"http://appiph.usbc.com.kw/OTCService/Mobile/\""
+            buildConfigField 'String', "MD3Link", "\"http://appiph.usbc.com.kw/OTCService/Services/DataService.svc\""
+
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+
+            versionCode 227 //4
+            versionName '7.6'
+        }
+
+
+        Oula {
+            applicationId "com.ids.fixot.aloula"
+            buildConfigField 'String', "BrokerId", "\"9\""
+            buildConfigField 'String', "label", "\"oula\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+
+       /*     buildConfigField 'String', "BaseMD3Link", "\"http://oulawasata.com.kw/\""
+            buildConfigField 'String', "MD3Link", "\"http://oulawasata.com.kw/\""
+*/
+
+/*            buildConfigField 'String', "BaseMD3Link", "\"http://168.187.236.148/\""
+            buildConfigField 'String', "MD3Link", "\"http://168.187.236.148\""*/
+
+
+/*
+            buildConfigField 'String', "BaseMD3Link", "\"http://168.187.107.35/\""
+            buildConfigField 'String', "MD3Link", "\"http://168.187.107.35\""
+*/
+
+
+            buildConfigField 'String', "BaseMD3Link", "\"http://mobile.oulawasata.com.kw/\""
+            buildConfigField 'String', "MD3Link", "\"http://mobile.oulawasata.com.kw\""
+
+
+            /*
+            buildConfigField 'String', "BaseMD3Link", "\"http://www.oulawasata.com.kw/MD3Androidservicetest/Mobile/\""
+            buildConfigField 'String', "MD3Link", "\"http://www.oulawasata.com.kw/MD3Androidservicetest/Services/DataService.svc\""
+*/
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 220
+            versionName '9.4'
+        }
+
+        Kic {
+           // applicationId "com.ids.fixot.kic"
+            applicationId "com.ids.fixot.kicPro"
+            buildConfigField 'String', "BrokerId", "\"14\""
+            buildConfigField 'String', "label", "\"kic\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+
+           /* buildConfigField 'String', "BaseMD3Link", "\"http://62.150.96.118/\""
+            buildConfigField 'String', "MD3Link", "\"http://62.150.96.118\""
+*/
+
+            buildConfigField 'String', "BaseMD3Link", "\"http://195.39.136.19/gatewaypro/\""
+            buildConfigField 'String', "MD3Link", "\"http://195.39.136.19/gatewaypro\""
+
+
+
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 259
+            versionName '13.2'
+
+        }
+
+
+
+        Sharq {
+            applicationId "com.ids.fixot.sharq"
+            buildConfigField 'String', "BrokerId", "\"16\""
+            buildConfigField 'String', "label", "\"sharq\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+            buildConfigField 'String', "BaseMD3Link", "\"http://10.2.2.103:1990/\""
+            buildConfigField 'String', "MD3Link", "\"http://10.2.2.103:1990\""
+
+
+
+/*            buildConfigField 'String', "BaseMD3Link", "\"http://195.39.136.20/\""
+            buildConfigField 'String', "MD3Link", "\"http://195.39.136.20\""*/
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 58
+            versionName '15'
+        }
+
+        KicOtc {
+            applicationId "com.ids.fixot.kicWasOtc"
+            buildConfigField 'String', "BrokerId", "\"140\""
+            buildConfigField 'String', "label", "\"kicOtc\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            //buildConfigField 'boolean', "GoToMenu", "true"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+
+            buildConfigField 'String', "BaseMD3Link", "\"http://www.kiconlinetrading.kicwasata.com/iphoneotcwebservice/\""
+            buildConfigField 'String', "MD3Link", "\"http://www.kiconlinetrading.kicwasata.com/iphoneotcwebservice/Services/DataService.svc\""
+
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 4
+            versionName '1.1'
+        }
+
+        WaseetOtc {
+            applicationId "com.ids.alseefOtc"
+            buildConfigField 'String', "BrokerId", "\"150\""
+            buildConfigField 'String', "label", "\"waseetOtc\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "true"
+            buildConfigField 'boolean', "expanded_order", "false"
+            buildConfigField 'String', "BaseMD3Link", "\"https://www.waseet.com.kw/MobileServiceOTC/Mobile/\""
+            buildConfigField 'String', "MD3Link", "\"https://www.waseet.com.kw/MobileServiceOTC/Services/DataService.svc\""
+
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 6
+            versionName '8.8'
+        }
+
+
+        GIG {
+            applicationId "com.ids.fixot.qatar.gig"
+            buildConfigField 'String', "BrokerId", "\"15\""
+            buildConfigField 'String', "label", "\"waseet\""
+            buildConfigField 'boolean', "Enable_Media", "false"
+            buildConfigField 'boolean', "GoToMenu", "false"
+            buildConfigField 'boolean', "Enable_Markets", "false"
+            buildConfigField 'boolean', "expanded_order", "false"
+
+
+           /* buildConfigField 'String', "BaseMD3Link", "\"http://78.100.115.85/\""
+            buildConfigField 'String', "MD3Link", "\"http://78.100.115.85\""*/
+            buildConfigField 'String', "BaseMD3Link", "\"http://78.100.115.85/Test_Gateway/\""
+            buildConfigField 'String', "MD3Link", "\"http://78.100.115.85/Test_Gateway/\""
+            dimension "color"
+            minSdkVersion 21
+            targetSdkVersion 29
+            versionCode 66
+            versionName '8.2'
+        }
+
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            lintOptions {
+                disable 'MissingTranslation'
+                checkReleaseBuilds false
+                abortOnError false
+
+            }
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
+}
+repositories {
+    maven { url "https://jitpack.io" }
+}
+dependencies {
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testImplementation 'junit:junit:4.12'
+    implementation files('libs/ksoap2-android-assembly-2.4-jar-with-dependencies.jar')
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v2.1.6'
+    implementation 'org.apache.commons:commons-io:1.3.2'
+    implementation 'com.google.code.gson:gson:2.8.4'
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation 'me.aflak.libraries:fingerprint:2.5.2'
+    implementation 'com.github.clans:fab:1.6.4'
+    implementation 'androidx.multidex:multidex:2.0.0'
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.3.4'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.chaos.view:pinview:1.4.2'
+    implementation 'com.google.firebase:firebase-analytics:17.4.4'
+    implementation 'com.google.firebase:firebase-core:17.4.4'
+    implementation 'com.google.firebase:firebase-messaging:20.2.3'
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'org.jsoup:jsoup:1.7.2'
+
+
+}
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'com.google.gms.google-services'

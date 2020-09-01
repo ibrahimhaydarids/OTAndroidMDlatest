@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorDark"
+        android:elevation="4dp"
+        android:layoutDirection="ltr"
+        android:title="null">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="back"
+            android:padding="@dimen/padding"
+            android:src="@drawable/back" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/menu_footer"
+        android:layout_below="@+id/my_toolbar"
+        android:fillViewport="true"
+        android:layout_centerInParent="true"
+        android:layout_margin="20sp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/verification_code"
+                    android:textColor="@color/colorValues"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    android:textSize="@dimen/large"
+                    android:textStyle="bold" />
+
+                <com.chaos.view.PinView
+                    android:id="@+id/pvCode"
+                    style="@style/PinWidget.PinView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:cursorVisible="true"
+                    android:inputType="number"
+                    android:itemBackground="@color/colorDark"
+                    android:padding="@dimen/mini_margin"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/normal"
+
+                    android:textStyle="bold"
+                    app:cursorColor="@color/white"
+                    app:cursorWidth="4dp"
+                    app:hideLineWhenFilled="false"
+                    app:itemCount="4"
+                    app:itemHeight="50dp"
+                    app:itemWidth="50dp"
+                    app:itemRadius="4dp"
+                    app:itemSpacing="16dp"
+                    app:lineColor="@android:color/transparent"
+                    app:lineWidth="2dp"
+                    app:viewType="rectangle" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enter_the_verification_code_sent_by_sms"
+                    android:textColor="@color/colorValues"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginRight="@dimen/margin_start_end"
+                    android:layout_marginLeft="@dimen/margin_start_end"
+
+                    android:textSize="@dimen/large"
+                   />
+
+                <Button
+                    android:id="@+id/btVerify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/large"
+                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/large"
+                    android:background="@color/colorDark"
+                    android:clipToPadding="false"
+                    android:elevation="@dimen/button_elevation"
+                    android:padding="@dimen/mini_padding"
+                    android:visibility="gone"
+                    android:text="@string/verify"
+                    android:textColor="@color/colorLight" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+
+
+    </ScrollView>
+    <include layout="@layout/loading_trans"/>
+</RelativeLayout>

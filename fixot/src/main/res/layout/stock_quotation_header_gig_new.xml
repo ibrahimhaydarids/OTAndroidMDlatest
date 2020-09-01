@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="?attr/colorMedium"
+    android:clipToPadding="false"
+    android:gravity="center_vertical"
+    android:visibility="gone"
+    android:id="@+id/linearStockQuotationHeaderGig"
+    android:orientation="horizontal">
+    <!--android:padding="0dp"-->
+
+
+
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"/>
+
+
+        <TextView
+            android:id="@+id/tvColumn1Title"
+            android:textSize="@dimen/small"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="wrap_content"
+
+            android:gravity="start"
+
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/mini_padding"
+
+            android:textColor="?attr/colorValues" />
+
+
+
+    <TextView
+        android:id="@+id/tvColumn4Title"
+        android:textSize="@dimen/small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+
+        android:padding="@dimen/mini_padding"
+
+        android:textColor="?attr/colorValues" />
+
+
+    <TextView
+            android:id="@+id/tvColumn3Title"
+            android:textSize="@dimen/small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+
+            android:padding="@dimen/mini_padding"
+            android:text="@string/price_title"
+            android:textColor="?attr/colorValues" />
+
+    <TextView
+        android:id="@+id/tvColumn2Title"
+        android:textSize="@dimen/small"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+
+        android:padding="@dimen/mini_padding"
+
+        android:textColor="?attr/colorValues" />
+
+
+        <TextView
+            android:id="@+id/tvColumn6Title"
+            android:textSize="@dimen/small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:gravity="center_horizontal"
+            android:padding="@dimen/mini_padding"
+            android:visibility="gone"
+            android:text="@string/trades"
+            android:textColor="?attr/colorValues" />
+
+        <TextView
+            android:id="@+id/tvColumn5Title"
+            android:textSize="@dimen/small"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+
+            android:gravity="center_horizontal"
+            android:padding="@dimen/mini_padding"
+            android:text="@string/price_title"
+            android:textColor="?attr/colorValues" />
+
+
+
+
+</LinearLayout>

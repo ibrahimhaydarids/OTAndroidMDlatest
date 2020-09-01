@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorLight"
+    android:clipToPadding="false"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:minHeight="56dp"
+    android:orientation="vertical"
+    android:paddingTop="1dp"
+    android:paddingBottom="1dp">
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:padding="@dimen/small_margin"
+        android:id="@+id/rlInsideItem"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        >
+        <Button
+            android:id="@+id/trades_button"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:background="?attr/gray"
+            android:clipToPadding="false"
+            android:layout_marginLeft="@dimen/xsmall_margin"
+            android:layout_marginRight="@dimen/xsmall_margin"
+            android:elevation="@dimen/button_elevation"
+            android:text="T"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/normal" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:gravity="start">
+            <TextView
+                android:id="@+id/tvColum1Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="@dimen/xsmall_margin"
+                android:layout_marginStart="@dimen/xsmall_margin"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="?attr/colorValues"
+                android:textSize="@dimen/small_1" />
+
+            <TextView
+                android:id="@+id/tvColum1_2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="@dimen/xsmall_margin"
+                android:layout_marginStart="@dimen/xsmall_margin"
+                android:layout_gravity="start"
+                android:gravity="start"
+                android:textColor="?attr/colorValues"
+                android:textSize="@dimen/small_1" />
+        </LinearLayout>
+
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_weight="1.2"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+  <!--  android:background="@drawable/border_transparent"-->
+    <TextView
+        android:id="@+id/tvColum2Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small_1" />
+
+    <TextView
+        android:id="@+id/tvColum2_2Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:maxLines="1"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/xsmall_margin"
+        android:layout_marginRight="@dimen/xsmall_margin"
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small_1" />
+</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+        <TextView
+            android:id="@+id/tvColum3Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/xsmall_margin"
+            android:layout_marginRight="@dimen/xsmall_margin"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small_1" />
+
+            <TextView
+                android:id="@+id/tvColum3_2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/xsmall_margin"
+                android:layout_marginRight="@dimen/xsmall_margin"
+                android:textColor="?attr/colorValues"
+                android:textSize="@dimen/small_1" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+        <TextView
+            android:id="@+id/tvColum4Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/xsmall_margin"
+            android:layout_marginRight="@dimen/xsmall_margin"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small_1" />
+
+            <TextView
+                android:id="@+id/tvColum4_2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/xsmall_margin"
+                android:layout_marginRight="@dimen/xsmall_margin"
+                android:textColor="?attr/colorValues"
+                android:textSize="@dimen/small_1" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1.6"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/tvColum5_2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/xsmall_margin"
+                android:layout_marginRight="@dimen/xsmall_margin"
+                android:textColor="?attr/colorValues"
+                android:textSize="@dimen/small_1" />
+        <TextView
+            android:id="@+id/tvColum5Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/xsmall_margin"
+            android:layout_marginRight="@dimen/xsmall_margin"
+            android:textColor="?attr/colorValues"
+            android:textSize="@dimen/small_1" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>
