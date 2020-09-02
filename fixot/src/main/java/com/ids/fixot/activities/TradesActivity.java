@@ -222,6 +222,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     private boolean hasFractionalPart;
 
     private Dialog stocksDialog;
+    private Dialog fillDataDialog;
     stockQuotationPopupNewAdapter adapterStockPopup;
     RecyclerView rvStocks;
     EditText etSearchStock;
@@ -1273,6 +1274,10 @@ if(!BuildConfig.Enable_Markets) {
             etQuantity.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
 
         } else {
+
+           // showFillDataDialog();
+
+
             Log.wtf("tradeType", "ORDER_BUY ");
             price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
 
@@ -1287,9 +1292,9 @@ if(!BuildConfig.Enable_Markets) {
                          double rawqty =(BuildConfig.Enable_Markets? ((fr / sr) * 1000):(fr / sr));
                         quantity = (int) rawqty;
 
-                     /*   if(isFromOrderDetails)
+                        if(isFromOrderDetails)
                             quantity = trade.getAvailableShareCount()+onlineOrder.getQuantity();
-*/
+
                         //quantity=onlineqty+
 
                         etQuantity.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
@@ -4010,6 +4015,171 @@ if(stockId!=0) {
 
 
         stocksDialog.show();
+    }
+
+
+
+
+
+
+
+
+    private void showFillDataDialog(){
+
+        Log.wtf("dialog_stock_size",MyApplication.stockQuotations.size()+"");
+        fillDataDialog=new Dialog(this);
+        fillDataDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        fillDataDialog.setContentView(R.layout.popup_fill_data);
+        fillDataDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+       // rvStocks = fillDataDialog.findViewById(R.id.rvStocks);
+        Button btCloseFillData=fillDataDialog.findViewById(R.id.btCloseFillDialog);
+        Button btPurchaseDecrement=fillDataDialog.findViewById(R.id.btPurchaseDecrement);
+        Button btpurchaseIncrement=fillDataDialog.findViewById(R.id.btpurchaseIncrement);
+        Button btFillDialog=fillDataDialog.findViewById(R.id.btFillDialog);
+        EditText etPurchasePowerPopup =fillDataDialog.findViewById(R.id.etPurchasePowerPopup);
+        EditText etQuantityPopup =fillDataDialog.findViewById(R.id.etQuantityPopup);
+        try{etPurchasePowerPopup.setText(tvPurchasePowerValue.getText().toString().replaceAll("\\D+",""));}catch (Exception e){
+            Log.wtf("aaa_",e.toString());
+
+        }
+        btCloseFillData.setOnClickListener(v->{
+            try{   getWindow().setSoftInputMode(
+                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+            ); }catch (Exception e){}
+            fillDataDialog.dismiss();
+        });
+
+        btpurchaseIncrement.setOnClickListener(v->{
+            if(!etPurchasePowerPopup.getText().toString().isEmpty())
+                etPurchasePowerPopup.setText((Integer.parseInt(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))+1)+"");
+            else
+                etPurchasePowerPopup.setText("1");
+        });
+        btPurchaseDecrement.setOnClickListener(v->{
+            if(!etPurchasePowerPopup.getText().toString().isEmpty()) {
+                if(Integer.parseInt(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))>=1)
+                    etPurchasePowerPopup.setText((Integer.parseInt(etPurchasePowerPopup.getText().toString().replaceAll("\\D+","")) -1 ) + "");
+            }
+
+        });
+
+        etPurchasePowerPopup.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                // TODO Auto-generated method stub
+                if (arg0.length() == 0) {
+                 Log.wtf("empty","empty");
+                    etQuantityPopup.setText("");
+
+                } else {
+
+                   // btClear.setVisibility(View.VISIBLE);
+                    etQuantityPopup.setText(arg0);
+
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+                etPurchasePowerPopup.removeTextChangedListener(this);
+
+                try {
+                    int inilen, endlen;
+                    inilen = etPurchasePowerPopup.getText().length();
+
+                    String v = s.toString().replace(String.valueOf(df.getDecimalFormatSymbols().getGroupingSeparator()), "");
+                    Number n = df.parse(v);
+                    int cp = etPurchasePowerPopup.getSelectionStart();
+                    if (hasFractionalPart) {
+                        etPurchasePowerPopup.setText(df.format(n));
+                    } else {
+                        etPurchasePowerPopup.setText(dfnd.format(n));
+                    }
+                    endlen = etPurchasePowerPopup.getText().length();
+                    int sel = (cp + (endlen - inilen));
+                    if (sel > 0 && sel <= etPurchasePowerPopup.getText().length()) {
+                        etPurchasePowerPopup.setSelection(sel);
+                    } else {
+                        // place cursor at the end?
+                        etPurchasePowerPopup.setSelection(etPurchasePowerPopup.getText().length() - 1);
+                    }
+                } catch (NumberFormatException nfe) {
+                    // do nothing?
+                } catch (ParseException e) {
+                    // do nothing?
+                }
+
+                etPurchasePowerPopup.addTextChangedListener(this);
+
+            }
+
+        });
+
+
+        etQuantityPopup.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+
+                etQuantityPopup.removeTextChangedListener(this);
+
+                try {
+                    int inilen, endlen;
+                    inilen = etQuantityPopup.getText().length();
+
+                    String v = s.toString().replace(String.valueOf(df.getDecimalFormatSymbols().getGroupingSeparator()), "");
+                    Number n = df.parse(v);
+                    int cp = etQuantityPopup.getSelectionStart();
+                    if (hasFractionalPart) {
+                        etQuantityPopup.setText(df.format(n));
+                    } else {
+                        etQuantityPopup.setText(dfnd.format(n));
+                    }
+                    endlen = etQuantityPopup.getText().length();
+                    int sel = (cp + (endlen - inilen));
+                    if (sel > 0 && sel <= etQuantityPopup.getText().length()) {
+                        etQuantityPopup.setSelection(sel);
+                    } else {
+                        // place cursor at the end?
+                        etQuantityPopup.setSelection(etQuantityPopup.getText().length() - 1);
+                    }
+                } catch (NumberFormatException nfe) {
+                    // do nothing?
+                } catch (ParseException e) {
+                    // do nothing?
+                }
+
+                etQuantityPopup.addTextChangedListener(this);
+
+            }
+
+        });
+
+
+
+        fillDataDialog.show();
     }
 
 
