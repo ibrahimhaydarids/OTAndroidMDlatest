@@ -29,17 +29,17 @@ android {
 
 
 
-/*            buildConfigField 'String', "BaseMD3Link", "\"https://testweb1.waseet.com.kw/\""
-            buildConfigField 'String', "MD3Link", "\"https://testweb1.waseet.com.kw\""*/
-            buildConfigField 'String', "BaseMD3Link", "\"https://mobile01.waseet.com.kw/\""
-            buildConfigField 'String', "MD3Link", "\"https://mobile01.waseet.com.kw\""
+            buildConfigField 'String', "BaseMD3Link", "\"https://testweb1.waseet.com.kw/\""
+            buildConfigField 'String', "MD3Link", "\"https://testweb1.waseet.com.kw\""
+    /*        buildConfigField 'String', "BaseMD3Link", "\"https://mobile01.waseet.com.kw/\""
+            buildConfigField 'String', "MD3Link", "\"https://mobile01.waseet.com.kw\""*/
 
 
             dimension "color"
             minSdkVersion 21
             targetSdkVersion 29
-            versionCode 54
-            versionName '14.0'
+            versionCode 55
+            versionName '14.1'
         }
 
         Tijari {
@@ -232,8 +232,8 @@ android {
             dimension "color"
             minSdkVersion 21
             targetSdkVersion 29
-            versionCode 66
-            versionName '8.2'
+            versionCode 71
+            versionName '8.7'
         }
 
 

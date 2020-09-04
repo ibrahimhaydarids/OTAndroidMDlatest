@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/colorMedium"
     android:minHeight="60dp"
-
+    android:elevation="10dp"
     android:clipToPadding="false"
     android:gravity="center_vertical"
     android:id="@+id/rlItem"

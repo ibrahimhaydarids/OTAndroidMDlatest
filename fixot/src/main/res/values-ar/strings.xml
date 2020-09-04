@@ -639,7 +639,7 @@
     <string name="cost_value">سعر الكلفة</string>
     <string name="total_cost">سعر الكلفة</string>
     <string name="portfolio_title_3_2"> التكلفة</string>
-    <string name="its_cost">متوسط التكلفة</string>
+    <string name="its_cost">AVG</string>
     <string name="balance_loss">سعر التعادل</string>
     <string name="ungain_loss">الارباح غ م</string>
     <string name="advanced_orders">الأوامر المتقدمة</string>
@@ -660,5 +660,6 @@
     <string name="balance_details">تفاصيل الرصيد</string>
     <string name="equilibrium_price">السعر التطابقي</string>
 
-
+    <string name="shares">أسهم مالية</string>
+    <string name="check_price_msg">يرجى التحقق من السعر المدخل</string>
 </resources>

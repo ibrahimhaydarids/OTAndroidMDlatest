@@ -208,10 +208,11 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     private int selectedRelatedOrderId;
     private OnlineOrder relatedOnlineOrder;
     private Button btAdd;
-   // private ImageView ivShowHideOrders;
+    // private ImageView ivShowHideOrders;
 
     private Boolean isShowOrder=false;
-
+    EditText etPurchasePowerPopup;
+    EditText etQuantityPopup;
     private LinearLayout linearParentOrder;
     private TextView tvSymbolItemsParent,tvPriceItemParent,tvQuantityItemParent,tvExecutedQuantityItemParent,tvExecutedQuantityHeader;
     private LinearLayout popupLoading;
@@ -280,7 +281,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         hasFractionalPart = false;
 
         if(Actions.getSubAccountOTCCount()==0 && Actions.getLastMarketId(getApplicationContext())==enums.MarketType.KWOTC.getValue()){
-           CreateDialog(this,getString(R.string.plz_contact_kic));
+            CreateDialog(this,getString(R.string.plz_contact_kic));
         }else {
 
             setData();
@@ -329,15 +330,15 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
  /*       getUserOrders = new GetUserOrders();
         getUserOrders.executeOnExecutor(MyApplication.threadPoolExecutor);*/
-       started = true;
+        started = true;
 
 
-if(stockId!=0) {
-    getTradeInfo = new GetTradeInfo();
-    getTradeInfo.execute();
-    setInitialData();
-    setOrderDurTypes();
-}
+        if(stockId!=0) {
+            getTradeInfo = new GetTradeInfo();
+            getTradeInfo.execute();
+            setInitialData();
+            setOrderDurTypes();
+        }
 
 
 
@@ -359,7 +360,7 @@ if(stockId!=0) {
         } catch (Exception e) {
             Log.wtf("exception", e.toString());
         }
-       // setPortfolioData(trade);
+        // setPortfolioData(trade);
 
 
         try {
@@ -382,8 +383,8 @@ if(stockId!=0) {
                         }
                     }
                     if(stockId!=0){
-                    getTradeInfo = new GetTradeInfo();
-                    getTradeInfo.execute();
+                        getTradeInfo = new GetTradeInfo();
+                        getTradeInfo.execute();
                     }
 
                 }
@@ -400,9 +401,9 @@ if(stockId!=0) {
 
 
         tvStockTitle.setOnClickListener(view -> {
-           // if(orderTypeAdvanced!=MyApplication.OCA)
+            // if(orderTypeAdvanced!=MyApplication.OCA)
             if(!isFromOrderDetails)
-                 showStocksDialog();
+                showStocksDialog();
         });
     }
 
@@ -590,7 +591,7 @@ if(stockId!=0) {
     @Override
     protected void onResume() {
         super.onResume();
-       // Actions.startStockQuotationService(this);
+        // Actions.startStockQuotationService(this);
         Actions.checkSession(this);
 
         Actions.checkLanguage(this, started);
@@ -609,23 +610,23 @@ if(stockId!=0) {
 
     private void setHeaderColors(){
 
-if(!BuildConfig.Enable_Markets) {
-    if (tradeType == MyApplication.ORDER_BUY) {
-        tvColumn1Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-        tvColumn2Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-        tvColumn3Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-        tvColumn4Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-        tvColumn5Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-        tvColumn6Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-    } else {
-        tvColumn1Title.setBackgroundColor(getResources().getColor(R.color.red_color));
-        tvColumn2Title.setBackgroundColor(getResources().getColor(R.color.red_color));
-        tvColumn3Title.setBackgroundColor(getResources().getColor(R.color.red_color));
-        tvColumn4Title.setBackgroundColor(getResources().getColor(R.color.red_color));
-        tvColumn5Title.setBackgroundColor(getResources().getColor(R.color.red_color));
-        tvColumn6Title.setBackgroundColor(getResources().getColor(R.color.red_color));
-    }
-}
+        if(!BuildConfig.Enable_Markets) {
+            if (tradeType == MyApplication.ORDER_BUY) {
+                tvColumn1Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
+                tvColumn2Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
+                tvColumn3Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
+                tvColumn4Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
+                tvColumn5Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
+                tvColumn6Title.setBackgroundColor(getResources().getColor(R.color.blue_gig));
+            } else {
+                tvColumn1Title.setBackgroundColor(getResources().getColor(R.color.red_color));
+                tvColumn2Title.setBackgroundColor(getResources().getColor(R.color.red_color));
+                tvColumn3Title.setBackgroundColor(getResources().getColor(R.color.red_color));
+                tvColumn4Title.setBackgroundColor(getResources().getColor(R.color.red_color));
+                tvColumn5Title.setBackgroundColor(getResources().getColor(R.color.red_color));
+                tvColumn6Title.setBackgroundColor(getResources().getColor(R.color.red_color));
+            }
+        }
 
     }
 
@@ -637,35 +638,46 @@ if(!BuildConfig.Enable_Markets) {
         if(!BuildConfig.Enable_Markets)
             tvStocksNo.setText(getString(R.string.shares));
 
-               linearTopHighLow=findViewById(R.id.linearTopHighLow);
-               linearDataTopNew=findViewById(R.id.linearDataTopNew);
-               linearDataTop=findViewById(R.id.linearDataTop);
-               llColumn1=findViewById(R.id.llColumn1);
-               llColumn2=findViewById(R.id.llColumn2);
-               llColumn3=findViewById(R.id.llColumn3);
-               llColumn4=findViewById(R.id.llColumn4);
-               llColumn5=findViewById(R.id.llColumn5);
-               llColumn6=findViewById(R.id.llColumn6);
-               tvHighTitleNew=findViewById(R.id.tvHighTitleNew);
-               tvHighValueNew=findViewById(R.id.tvHighValueNew);
-               tvLowTitleNew=findViewById(R.id.tvLowTitleNew);
-               tvLowValueNew=findViewById(R.id.tvLowValueNew);
+        linearTopHighLow=findViewById(R.id.linearTopHighLow);
+        linearDataTopNew=findViewById(R.id.linearDataTopNew);
+        linearDataTop=findViewById(R.id.linearDataTop);
+        llColumn1=findViewById(R.id.llColumn1);
+        llColumn2=findViewById(R.id.llColumn2);
+        llColumn3=findViewById(R.id.llColumn3);
+        llColumn4=findViewById(R.id.llColumn4);
+        llColumn5=findViewById(R.id.llColumn5);
+        llColumn6=findViewById(R.id.llColumn6);
+        tvHighTitleNew=findViewById(R.id.tvHighTitleNew);
+        tvHighValueNew=findViewById(R.id.tvHighValueNew);
+        tvLowTitleNew=findViewById(R.id.tvLowTitleNew);
+        tvLowValueNew=findViewById(R.id.tvLowValueNew);
 
         tvVolumeTitleNew=findViewById(R.id.tvVolumeTitleNew);
         tvVolumeValueNew=findViewById(R.id.tvVolumeValueNew);
 
-               tvColumn1Title=findViewById(R.id.tvColumn1Title);
-               tvColum1Value=findViewById(R.id.tvColum1Value) ;
-               tvColumn2Title=findViewById(R.id.tvColumn2Title);
-               tvColum2Value=findViewById(R.id.tvColum2Value) ;
-               tvColumn3Title=findViewById(R.id.tvColumn3Title);
-               tvColum3Value=findViewById(R.id.tvColum3Value);
-               tvColumn4Title=findViewById(R.id.tvColumn4Title);
-               tvColum4Value=findViewById(R.id.tvColum4Value);
-               tvColumn5Title=findViewById(R.id.tvColumn5Title);
-               tvColum5Value=findViewById(R.id.tvColum5Value);
-               tvColumn6Title=findViewById(R.id.tvColumn6Title);
-               tvColum6Value=findViewById(R.id.tvColum6Value);
+        tvColumn1Title=findViewById(R.id.tvColumn1Title);
+        tvColum1Value=findViewById(R.id.tvColum1Value) ;
+        tvColumn2Title=findViewById(R.id.tvColumn2Title);
+        tvColum2Value=findViewById(R.id.tvColum2Value) ;
+        tvColumn3Title=findViewById(R.id.tvColumn3Title);
+        tvColum3Value=findViewById(R.id.tvColum3Value);
+        tvColumn4Title=findViewById(R.id.tvColumn4Title);
+        tvColum4Value=findViewById(R.id.tvColum4Value);
+        tvColumn5Title=findViewById(R.id.tvColumn5Title);
+        tvColum5Value=findViewById(R.id.tvColum5Value);
+        tvColumn6Title=findViewById(R.id.tvColumn6Title);
+        tvColum6Value=findViewById(R.id.tvColum6Value);
+
+        if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true)){
+            tvColumn1Title.setTextColor(ContextCompat.getColor(this, R.color.white));
+            tvColumn2Title.setTextColor(ContextCompat.getColor(this, R.color.white));
+            tvColumn3Title.setTextColor(ContextCompat.getColor(this, R.color.white));
+            tvColumn4Title.setTextColor(ContextCompat.getColor(this, R.color.white));
+            tvColumn5Title.setTextColor(ContextCompat.getColor(this, R.color.white));
+            tvColumn6Title.setTextColor(ContextCompat.getColor(this, R.color.white));
+        }
+
+
 
 
         if(BuildConfig.Enable_Markets) {
@@ -693,7 +705,7 @@ if(!BuildConfig.Enable_Markets) {
         else
             ivUserSubAccount.setVisibility(View.VISIBLE);
         linearHeaderOrders=findViewById(R.id.linearHeaderOrders);
-       // linearFilterType=findViewById(R.id.linearFilterType);
+        // linearFilterType=findViewById(R.id.linearFilterType);
         rvOrders=findViewById(R.id.rvOrders);
         llDuration=findViewById(R.id.llDuration);
         linearSelectedOrder=findViewById(R.id.linearSelectedOrder);
@@ -720,7 +732,7 @@ if(!BuildConfig.Enable_Markets) {
         }
 
         btAdd=findViewById(R.id.btAdd);
-       // ivShowHideOrders=findViewById(R.id.ivShowHideOrders);
+        // ivShowHideOrders=findViewById(R.id.ivShowHideOrders);
 
         linearParentOrder=findViewById(R.id.linearParentOrder);
         tvSymbolItemsParent=findViewById(R.id.tvSymbolItemsParent);
@@ -730,7 +742,7 @@ if(!BuildConfig.Enable_Markets) {
         linearMaxFloor=findViewById(R.id.linearMaxFloor);
 
         etMaxFloor=findViewById(R.id.etMaxFloor);
-       // ivArrowOrder=findViewById(R.id.ivArrowOrder);
+        // ivArrowOrder=findViewById(R.id.ivArrowOrder);
 
         loading=findViewById(R.id.loading);
 
@@ -805,8 +817,8 @@ if(!BuildConfig.Enable_Markets) {
 
         if (MyApplication.lang == MyApplication.ARABIC) {
             if(stockQuotation.getSymbolAr()!=null && stockQuotation.getNameAr()!=null)
-              tvStockTitle.setText(stockQuotation.getSymbolAr()+"-"+stockQuotation.getNameAr()); //getStockID()
-         } else {
+                tvStockTitle.setText(stockQuotation.getSymbolAr()+"-"+stockQuotation.getNameAr()); //getStockID()
+        } else {
             if(stockQuotation.getSymbolEn()!=null && stockQuotation.getNameEn()!=null)
                 tvStockTitle.setText(stockQuotation.getSymbolEn()+"-"+stockQuotation.getNameEn()); //getStockID()
 
@@ -833,7 +845,7 @@ if(!BuildConfig.Enable_Markets) {
 
         btSell = findViewById(R.id.btSell);
         btBuy = findViewById(R.id.btBuy);
-       // btMarketPrice = findViewById(R.id.btMarketPrice);
+        // btMarketPrice = findViewById(R.id.btMarketPrice);
         //btLimit = findViewById(R.id.btLimit);
 
         etLimitPrice = findViewById(R.id.etLimitPrice);
@@ -860,7 +872,7 @@ if(!BuildConfig.Enable_Markets) {
         if (MyApplication.marketID.matches(Integer.toString(enums.MarketType.KWOTC.getValue()))) {
 
             tvOtcPrice.setVisibility(View.VISIBLE);
-           // llOrderType.setVisibility(View.GONE);
+            // llOrderType.setVisibility(View.GONE);
             spOrderType.setVisibility(View.GONE);
             spOrderTypeAdvanced.setVisibility(View.GONE);
             trade.setOrderType(MyApplication.LIMIT);
@@ -874,10 +886,10 @@ if(!BuildConfig.Enable_Markets) {
 /*            if(isFromOrderDetails && onlineOrder.getAdvancedOrderTypeID()==0){
                 llAdvanced.setVisibility(View.GONE);
             }else {*/
-             //   llAdvanced.setVisibility(View.VISIBLE);
+            //   llAdvanced.setVisibility(View.VISIBLE);
 
-                getOrderTypes = new GetOrderTypes();
-                getOrderTypes.execute();
+            getOrderTypes = new GetOrderTypes();
+            getOrderTypes.execute();
         }
 
 
@@ -985,7 +997,7 @@ if(!BuildConfig.Enable_Markets) {
                 }
 
                 etQuantity.addTextChangedListener(this);
-                
+
             }
 
             @Override
@@ -1025,7 +1037,7 @@ if(!BuildConfig.Enable_Markets) {
             btReview.setBackgroundColor(getResources().getColor(R.color.green_color));
         }else {
             if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
-              tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));
+                tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));
             btReview.setBackgroundColor(getResources().getColor(R.color.blue_gig));
         }
 
@@ -1058,10 +1070,10 @@ if(!BuildConfig.Enable_Markets) {
 
             Log.wtf("trade_price_1",onlineOrder.getPrice()+"");
             etLimitPrice.setText(String.valueOf(onlineOrder.getPrice()));
-           try{
-               etLimitTriggerPrice.setText(onlineOrder.getTriggerPrice()+"");
-               Log.wtf("bobo",onlineOrder.getTriggerPrice()+"aa");
-           }catch (Exception e){}
+            try{
+                etLimitTriggerPrice.setText(onlineOrder.getTriggerPrice()+"");
+                Log.wtf("bobo",onlineOrder.getTriggerPrice()+"aa");
+            }catch (Exception e){}
     /*        if (trade.getOrderType() == MyApplication.MARKET_PRICE) {
 
                 btMarketPrice.performClick();
@@ -1087,66 +1099,100 @@ if(!BuildConfig.Enable_Markets) {
         etLimitPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-              try {
+                try {
 
-                  if (!hasFocus) {
+                    if (!hasFocus) {
 
-                      if (!MyApplication.marketID.matches(Integer.toString(enums.MarketType.KWOTC.getValue()))) {
+                        if (!MyApplication.marketID.matches(Integer.toString(enums.MarketType.KWOTC.getValue()))) {
 
-                          if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
+                            if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
 
-                              if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > HiLimit) || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0)) {
+                                if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > HiLimit) || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0)) {
 
-                                  if (tradeType == MyApplication.ORDER_SELL) {
-                                      etLimitPrice.setText("" + stockQuotation.getHiLimit());
-                                  } else {
-                                      etLimitPrice.setText("" + stockQuotation.getLowlimit());
-                                  }
-                              }
-                          } else {
+                                    if (tradeType == MyApplication.ORDER_SELL) {
+                                        etLimitPrice.setText("" + stockQuotation.getHiLimit());
+                                        Actions.CreateDialog(TradesActivity.this,getString(R.string.check_price_msg),false,false);
 
-                              if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > stockQuotation.getHiLimit())
-                                      || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit())) {
+                                    } else {
+                                        etLimitPrice.setText("" + stockQuotation.getLowlimit());
+                                        Actions.CreateDialog(TradesActivity.this,getString(R.string.check_price_msg),false,false);
 
-                                  if (tradeType == MyApplication.ORDER_SELL) {
-                                      etLimitPrice.setText("" + stockQuotation.getHiLimit());
-                                  } else {
-                                      etLimitPrice.setText("" + stockQuotation.getLowlimit());
+                                    }
 
-                                  }
-                              }
-                          }
+                                }
+                            } else {
 
-                          if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > 100.9) {
-                              etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
-                          } else {
-                              etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
-                          }
-                          price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
-                          setTick();
+                                if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > stockQuotation.getHiLimit())
+                                        || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit())) {
 
-                      } else {
+                                    if (tradeType == MyApplication.ORDER_SELL) {
+                                        etLimitPrice.setText("" + stockQuotation.getHiLimit());
+                                        Actions.CreateDialog(TradesActivity.this,getString(R.string.check_price_msg),false,false);
 
-                          if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > 100.9) {
-                              etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
-                          } else {
-                              etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
-                          }
-                          price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
-                          setTick();
-
-                      }
+                                    } else {
+                                        etLimitPrice.setText("" + stockQuotation.getLowlimit());
+                                        Actions.CreateDialog(TradesActivity.this,getString(R.string.check_price_msg),false,false);
 
 
+                                    }
 
-                  }
+                                }
+                            }
+
+                            if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > 100.9) {
+                                etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
+                            } else {
+                                etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
+                            }
+                            price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+                            setTick();
+
+                        } else {
+
+                            if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > 100.9) {
+                                etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
+                            } else {
+                                etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), priceFormat));
+                            }
+                            price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+                            setTick();
+
+                        }
 
 
-              }catch (Exception e){}
+
+                    }
+
+
+                }catch (Exception e){}
             }
         });
 
 
+
+
+    /*    etLimitPrice.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+                // TODO Auto-generated method stub
+                if (arg0.length() == 0) {
+
+                   // checkPriceLimit();
+                } else {
+
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable arg0) {
+                checkPriceLimit();
+            }
+        });*/
 
 
         etLimitTriggerPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -1261,30 +1307,35 @@ if(!BuildConfig.Enable_Markets) {
     public void fillData() {
         Log.wtf("tvFill", "fillData ");
 
-       // int qtyUpdate=
+        // int qtyUpdate=
 
         if (tradeType == MyApplication.ORDER_SELL) {
             Log.wtf("tradeType", "ORDER_SELL ");
          /*   if(isFromOrderDetails)
                quantity = trade.getAvailableShareCount()+onlineOrder.getQuantity();
             else*/
-               quantity = trade.getAvailableShareCount();
+            quantity = trade.getAvailableShareCount();
 
 //details =>online order qty-executed qty(remaing)
             etQuantity.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
-
+            updateOverAllViews(price, quantity);
         } else {
+            Double p=0.0;
+            if(!tvPurchasePowerValue.getText().toString().isEmpty())
+                p=Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+            if(!tvPurchasePowerValue.getText().toString().matches("0.0")  && (p > 0.0 || orderType == MyApplication.MARKET_PRICE)) {
+                showFillDataDialog();
+            }
 
-           // showFillDataDialog();
 
 
             Log.wtf("tradeType", "ORDER_BUY ");
-            price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+    /*        price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
 
 
             if (trade.getPurchasePower() != 0 && price != 0) {
 
-                for (int i = 0; i < MyApplication.allBrokerageFees.size(); i++) {
+                for (int i =z 0; i < MyApplication.allBrokerageFees.size(); i++) {
                     if (MyApplication.allBrokerageFees.get(i).getInstrumentId().equals(trade.getStockQuotation().getInstrumentId())) {
                         BrokerageFee data = MyApplication.allBrokerageFees.get(i);
                         double fr = trade.getPurchasePower() - data.getClearing();
@@ -1302,9 +1353,62 @@ if(!BuildConfig.Enable_Markets) {
                 }
 
 
-            }
+            }*/
         }
-        updateOverAllViews(price, quantity);
+
+    }
+
+
+    private void updateQty(){
+        //    if (trade.getPurchasePower() != 0 && price != 0) {
+
+  /*      price=Double.parseDouble(stockQuotation.gethi()+"");
+    }    if(orderType == MyApplication.MARKET_PRICE) {
+    */
+
+        for (int i = 0; i < MyApplication.allBrokerageFees.size(); i++) {
+
+            try{
+                if (MyApplication.allBrokerageFees.get(i).getInstrumentId().equals(stockQuotation.getInstrumentId())) {
+                    BrokerageFee brokerageFee = MyApplication.allBrokerageFees.get(i);
+
+                    Double totalBrokerageFee=brokerageFee.getTotalBrokerageFee();
+                    Double minimumBrokerageFee=brokerageFee.getMinimumBrokerageFee();
+                    Double commission=0.0;
+                    if(totalBrokerageFee < minimumBrokerageFee) {
+                        commission = minimumBrokerageFee;
+                    }
+
+                    Double purchasePower=0.0;
+                    if(!etPurchasePowerPopup.getText().toString().isEmpty() && Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))<=trade.getPurchasePower() && Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))> 0)
+                        purchasePower=Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""));
+                    else
+                        purchasePower=trade.getPurchasePower();
+
+                    //(Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+","")))
+                    double fr = purchasePower- brokerageFee.getClearing()-commission;
+                    double sr = price * (1 +(commission>0?0: brokerageFee.getTotalBrokerageFee()));
+                    double rawqty = (BuildConfig.Enable_Markets ? ((fr / sr) * 1000) : (fr / sr));
+                    quantity = (int) rawqty;
+
+                    if (isFromOrderDetails)
+                        quantity = trade.getAvailableShareCount() + onlineOrder.getQuantity();
+
+                    //quantity=onlineqty+
+                    if(quantity>=0)
+                      etQuantityPopup.setText(quantity+"");
+                    else
+                        etQuantityPopup.setText("0");
+                    // etQuantityPopup.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
+                }}catch (Exception e){
+                    Log.wtf("fill_exception",e.toString());
+               }
+
+
+
+        }
+
+
     }
 
 
@@ -1442,27 +1546,27 @@ if(!BuildConfig.Enable_Markets) {
         if(v.getId()==R.id.rllayout){
             try {
                 if(adapterStockPopup.getFilteredItems().get(position).getStockID()!=-1){
-                stocksDialog.dismiss();
-                loading.setVisibility(View.VISIBLE);
-               // Toast.makeText(getApplicationContext(),"aaa",Toast.LENGTH_LONG).show();
-                boolean callDuration=false;
-                if(stockId==0)
-                    callDuration=true;
-                stopAutoUpdate();
+                    stocksDialog.dismiss();
+                    loading.setVisibility(View.VISIBLE);
+                    // Toast.makeText(getApplicationContext(),"aaa",Toast.LENGTH_LONG).show();
+                    boolean callDuration=false;
+                    if(stockId==0)
+                        callDuration=true;
+                    stopAutoUpdate();
 
 
-                stockId=adapterStockPopup.getFilteredItems().get(position).getStockID();
-                MyApplication.selectedStockId=stockId;
-                if (orderTypeAdvanced == MyApplication.OCA && allOrders.size() == 0 || orderTypeAdvanced == MyApplication.OCA && ocaParentTrade.getId() == 0)
-                    ocaParentTrade = trade;
+                    stockId=adapterStockPopup.getFilteredItems().get(position).getStockID();
+                    MyApplication.selectedStockId=stockId;
+                    if (orderTypeAdvanced == MyApplication.OCA && allOrders.size() == 0 || orderTypeAdvanced == MyApplication.OCA && ocaParentTrade.getId() == 0)
+                        ocaParentTrade = trade;
 
-                getOrderTypes = new GetOrderTypes();
-                getOrderTypes.execute();
-                getTradeInfo = new GetTradeInfo();
-                getTradeInfo.execute();
-                if(callDuration){
-                    setOrderDurTypes();
-                }
+                    getOrderTypes = new GetOrderTypes();
+                    getOrderTypes.execute();
+                    getTradeInfo = new GetTradeInfo();
+                    getTradeInfo.execute();
+                    if(callDuration){
+                        setOrderDurTypes();
+                    }
 
                 }
 
@@ -1477,25 +1581,25 @@ if(!BuildConfig.Enable_Markets) {
         }
         else if(v.getId()==R.id.linearPopupOrder){
 
-           try{
+            try{
 
-                   relatedOnlineOrder=arrayFilteredOrderDialog.get(position);
+                relatedOnlineOrder=arrayFilteredOrderDialog.get(position);
 
-           }catch (Exception e){
-               relatedOnlineOrder=new OnlineOrder();
-           }
-           try{
-               selectedRelatedOrderId=arrayFilteredOrderDialog.get(position).getId();
-           }catch (Exception e){
-               selectedRelatedOrderId=0;
-           }
-           try{tvSelectedSymbol.setText("# "+arrayFilteredOrderDialog.get(position).getID());}catch (Exception e){}
-           try{tvSelectedExecutedQuantity.setVisibility(View.GONE);}catch (Exception e){}
-           try {
-               tvSelectedInstruments.setVisibility(View.GONE);
-           }catch (Exception e){}
-           try{tvSelectedPrice.setVisibility(View.GONE);}catch (Exception e){}
-           try{tvSelectedQuantity.setVisibility(View.GONE);}catch (Exception e){}
+            }catch (Exception e){
+                relatedOnlineOrder=new OnlineOrder();
+            }
+            try{
+                selectedRelatedOrderId=arrayFilteredOrderDialog.get(position).getId();
+            }catch (Exception e){
+                selectedRelatedOrderId=0;
+            }
+            try{tvSelectedSymbol.setText("# "+arrayFilteredOrderDialog.get(position).getID());}catch (Exception e){}
+            try{tvSelectedExecutedQuantity.setVisibility(View.GONE);}catch (Exception e){}
+            try {
+                tvSelectedInstruments.setVisibility(View.GONE);
+            }catch (Exception e){}
+            try{tvSelectedPrice.setVisibility(View.GONE);}catch (Exception e){}
+            try{tvSelectedQuantity.setVisibility(View.GONE);}catch (Exception e){}
 
 
            /*           try{tvSelectedSymbol.setText(arrayFilteredOrderDialog.get(position).getStockSymbol());}catch (Exception e){}
@@ -1509,28 +1613,28 @@ if(!BuildConfig.Enable_Markets) {
            try{tvSelectedQuantity.setText(Actions.formatNumber(arrayFilteredOrderDialog.get(position).getQuantity(), Actions.NoDecimalThousandsSeparator));}catch (Exception e){}
           */
 
-           try{ordersDialog.dismiss();}catch (Exception e){}
-          // linearSelectOrder.setVisibility(View.GONE);
-           linearSelectedOrder.setVisibility(View.VISIBLE);
+            try{ordersDialog.dismiss();}catch (Exception e){}
+            // linearSelectOrder.setVisibility(View.GONE);
+            linearSelectedOrder.setVisibility(View.VISIBLE);
 
 
-       }
+        }
 
 
 
-       else if (MyApplication.allOrderDurationType.get(position).getID() != 6) {
+        else if (MyApplication.allOrderDurationType.get(position).getID() != 6) {
             if (!Actions.isMarketOpen() && BuildConfig.Enable_Markets) {
                 if (MyApplication.allOrderDurationType.get(position).getID() == 1 || ((MyApplication.marketStatus.getStatusID() != MyApplication.MARKET_CLOSED || MyApplication.marketStatus.getStatusID() != MyApplication.Enquiry) && position == 0)) {
                     orderDurationType = MyApplication.allOrderDurationType.get(position);
                     selectedPos = position;
-                   try {
-                       setOrderDuration(position);
-                   }catch (Exception e){}
+                    try {
+                        setOrderDuration(position);
+                    }catch (Exception e){}
                     dialog.dismiss();
                 }
             }
 
-           else if (!Actions.isMarketOpen() && !BuildConfig.Enable_Markets) {
+            else if (!Actions.isMarketOpen() && !BuildConfig.Enable_Markets) {
                 if (MyApplication.allOrderDurationType.get(position).getID() == 1 || position == 0) {
                     orderDurationType = MyApplication.allOrderDurationType.get(position);
                     selectedPos = position;
@@ -1545,9 +1649,9 @@ if(!BuildConfig.Enable_Markets) {
             else {
                 orderDurationType = MyApplication.allOrderDurationType.get(position);
                 selectedPos = position;
-               try {
-                   setOrderDuration(position);
-               }catch (Exception e){}
+                try {
+                    setOrderDuration(position);
+                }catch (Exception e){}
                 dialog.dismiss();
             }
         } else {
@@ -1567,214 +1671,239 @@ if(!BuildConfig.Enable_Markets) {
 
 
     public void setLimit(View v) {
-    try {
-    if (etLimitPrice.getText().length() > 0) {
-
         try {
-            price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            price = 0.0;
-        }
-    } else {
+            if (etLimitPrice.getText().length() > 0) {
 
-        try {
-            if (orderType == MyApplication.LIMIT) {
-
-                if (tradeType == MyApplication.ORDER_SELL)
-                    price = stockQuotation.getHiLimit();
-                else
-                    price = stockQuotation.getLowlimit();
+                try {
+                    price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    price = 0.0;
+                }
             } else {
 
-                if (tradeType == MyApplication.ORDER_SELL)
-                    price = stockQuotation.getLowlimit();
-                else
-                    price = stockQuotation.getHiLimit();
-            }
-        } catch (Exception e) {
-            price = 0.0;
-        }
-    }
+                try {
+                    if (orderType == MyApplication.LIMIT) {
 
-    switch (v.getId()) {
-
-        case R.id.btLimitMinus:
-            String quantityText = "";
-            if(stockId!=0) {
-
-                if (orderType != MyApplication.MARKET_PRICE) {
-                    if (setMaxMin) {
-                        if (price > 1) {
-                            double pr = price - ticketPrice;
-                            if (pr >= 1) {
-                                price = pr;
-                                etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
-                            }
-                        } else {
-
-                            etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
-                        }
-
+                        if (tradeType == MyApplication.ORDER_SELL)
+                            price = stockQuotation.getHiLimit();
+                        else
+                            price = stockQuotation.getLowlimit();
                     } else {
 
+                        if (tradeType == MyApplication.ORDER_SELL)
+                            price = stockQuotation.getLowlimit();
+                        else
+                            price = stockQuotation.getHiLimit();
+                    }
+                } catch (Exception e) {
+                    price = 0.0;
+                }
+            }
 
-                        if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
-                            if (price > 0) {
-                                double pr = price - ticketPrice;
-                                if (pr >= 0) {
-                                    price = pr;
+            switch (v.getId()) {
+
+                case R.id.btLimitMinus:
+                    String quantityText = "";
+                    if(stockId!=0) {
+
+                        if (orderType != MyApplication.MARKET_PRICE) {
+                            if (setMaxMin) {
+                                if (price > 1) {
+                                    double pr = price - ticketPrice;
+                                    if (pr >= 1) {
+                                        price = pr;
+                                        etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                    }
+                                } else {
+
                                     etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
                                 }
+
                             } else {
 
-                                etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
-                            }
-                        } else {
-                            if (price > stockQuotation.getLowlimit()) {
-                                double pr = price - ticketPrice;
-                                if (pr >= stockQuotation.getLowlimit()) {
-                                    price = pr;
-                                    etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+
+                                if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
+                                    if (price > 0) {
+                                        double pr = price - ticketPrice;
+                                        if (pr >= 0) {
+                                            price = pr;
+                                            etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                        }
+                                    } else {
+
+                                        etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                    }
+                                } else {
+                                    if (price > stockQuotation.getLowlimit()) {
+                                        double pr = price - ticketPrice;
+                                        if (pr >= stockQuotation.getLowlimit()) {
+                                            price = pr;
+                                            etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                        }
+                                    } else {
+
+                                        etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                    }
                                 }
-                            } else {
-
-                                etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
                             }
                         }
-                    }
-                }
 
 
-                quantityText = etQuantity.getText().toString();
-                if (isFromOrderDetails && quantityText.length() > 0) {
-                    quantity = Integer.parseInt(getNumberFromString(quantityText));
-                }
-                updateOverAllViews(price, quantity);
-                setTick();
+                        quantityText = etQuantity.getText().toString();
+                        if (isFromOrderDetails && quantityText.length() > 0) {
+                            quantity = Integer.parseInt(getNumberFromString(quantityText));
+                        }
+                        updateOverAllViews(price, quantity);
+                        setTick();
 
 
-            }else {
-                if(!isAutoUpdate) {
-                    price = 0;
-                    etLimitPrice.setText("0");
-                }
-            }
-
-
-            break;
-
-
-        case R.id.btTriggerLimitMinus:
-
-            if (triggerPrice > 0) {
-                double pr = triggerPrice - ticketTriggerPrice;
-                if (pr >= 0) {
-                    triggerPrice = pr;
-                    etLimitTriggerPrice.setText(Actions.formatNumber(triggerPrice, limitPriceFormat));
-                }
-            } else {
-
-                etLimitTriggerPrice.setText(Actions.formatNumber(triggerPrice, limitPriceFormat));
-            }
-
-            setTriggerTick();
-
-            break;
-
-
-        case R.id.btTriggerLimitPlus:
-            if (Double.parseDouble(getNumberFromString(etLimitTriggerPrice.getText().toString())) < 0) {
-                etLimitTriggerPrice.setText(Actions.formatNumber(0, limitPriceFormat));
-                etLimitTriggerPrice.setText(0);
-                triggerPrice = 0;
-            } else {
-                double pr = triggerPrice + ticketTriggerPrice;
-                triggerPrice = pr;
-                etLimitTriggerPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
-
-            }
-
-            setTriggerTick();
-            break;
-
-
-        case R.id.btLimitPlus:
-            if (stockId != 0) {
-                if (orderType != MyApplication.MARKET_PRICE) {
-
-                    if (setMaxMin) {
-
-                        int maxHigh = 1000000;
-
-                        if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0) {
-                            if (BuildConfig.Enable_Markets)
-                                etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
-                            else
-                                etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
+                    }else {
+                        if(!isAutoUpdate) {
                             price = 0;
-                        } else if (price < maxHigh) {
-                            double pr = price + ticketPrice;
-                            if (pr <= maxHigh) {
-                                price = pr;
-                                etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
-                            }
-                        } else {
-                            etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
-                        }
-
-
-                    } else {
-
-                        if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
-
-                            if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0) {
-                                etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
-                                price = 0;
-                            } else if (price < HiLimit) {
-                                double pr = price + ticketPrice;
-                                if (pr <= HiLimit) {
-                                    price = pr;
-                                    etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
-                                }
-                            } else {
-                                etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
-                            }
-                        } else {
-                            if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit()) {
-                                etLimitPrice.setText(Actions.formatNumber(stockQuotation.getLowlimit(), limitPriceFormat));
-                                price = stockQuotation.getLowlimit();
-                            } else if (price < stockQuotation.getHiLimit()) {
-                                double pr = price + ticketPrice;
-                                if (pr <= stockQuotation.getHiLimit()) {
-                                    price = pr;
-                                    etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
-                                }
-                            } else {
-                                etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
-                            }
+                            etLimitPrice.setText("0");
                         }
                     }
 
 
-                }
+                    break;
 
-                quantityText = etQuantity.getText().toString();
-                if (isFromOrderDetails && quantityText.length() > 0) {
-                    quantity = Integer.parseInt(getNumberFromString(quantityText));
-                }
-                updateOverAllViews(price, quantity);
-                setTick();
-            }else {
-                if(!isAutoUpdate) {
-                    price = 0;
-                    etLimitPrice.setText("0");
-                }
+
+                case R.id.btTriggerLimitMinus:
+
+                    if (triggerPrice > 0) {
+                        double pr = triggerPrice - ticketTriggerPrice;
+                        if (pr >= 0) {
+                            triggerPrice = pr;
+                            etLimitTriggerPrice.setText(Actions.formatNumber(triggerPrice, limitPriceFormat));
+                        }
+                    } else {
+
+                        etLimitTriggerPrice.setText(Actions.formatNumber(triggerPrice, limitPriceFormat));
+                    }
+
+                    setTriggerTick();
+
+                    break;
+
+
+                case R.id.btTriggerLimitPlus:
+                    if (Double.parseDouble(getNumberFromString(etLimitTriggerPrice.getText().toString())) < 0) {
+                        etLimitTriggerPrice.setText(Actions.formatNumber(0, limitPriceFormat));
+                        etLimitTriggerPrice.setText(0);
+                        triggerPrice = 0;
+                    } else {
+                        double pr = triggerPrice + ticketTriggerPrice;
+                        triggerPrice = pr;
+                        etLimitTriggerPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
+
+                    }
+
+                    setTriggerTick();
+                    break;
+
+
+                case R.id.btLimitPlus:
+                    if (stockId != 0) {
+                        if (orderType != MyApplication.MARKET_PRICE) {
+
+                            if (setMaxMin) {
+
+                                int maxHigh = 1000000;
+
+                                if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0) {
+                                    if (BuildConfig.Enable_Markets)
+                                        etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
+                                    else
+                                        etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
+                                    price = 0;
+                                } else if (price < maxHigh) {
+                                    double pr = price + ticketPrice;
+                                    if (pr <= maxHigh) {
+                                        price = pr;
+                                        etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
+                                    }
+                                } else {
+                                    etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                }
+
+
+                            } else {
+
+                                if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
+
+                                    if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0) {
+                                        etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
+                                        price = 0;
+                                    } else if (price < HiLimit) {
+                                        double pr = price + ticketPrice;
+                                        if (pr <= HiLimit) {
+                                            price = pr;
+                                            etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
+                                        }
+                                    } else {
+                                        etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                    }
+                                } else {
+                                    if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit()) {
+                                        etLimitPrice.setText(Actions.formatNumber(stockQuotation.getLowlimit(), limitPriceFormat));
+                                        price = stockQuotation.getLowlimit();
+                                    } else if (price < stockQuotation.getHiLimit()) {
+                                        double pr = price + ticketPrice;
+                                        if (pr <= stockQuotation.getHiLimit()) {
+                                            price = pr;
+                                            etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
+                                        }
+                                    } else {
+                                        etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                        quantityText = etQuantity.getText().toString();
+                        if (isFromOrderDetails && quantityText.length() > 0) {
+                            quantity = Integer.parseInt(getNumberFromString(quantityText));
+                        }
+                        updateOverAllViews(price, quantity);
+                        setTick();
+                    }else {
+                        if(!isAutoUpdate) {
+                            price = 0;
+                            etLimitPrice.setText("0");
+                        }
+                    }
+                    break;
             }
-            break;
+        }catch (Exception e){}
     }
-   }catch (Exception e){}
+
+
+    private Boolean checkPriceLimit(){
+        Boolean isCheck=true;
+        Double pr=0.0;
+                if(!etLimitPrice.getText().toString().isEmpty()){
+                    pr=  Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+                }
+          if(pr!=0.0){
+           if(pr >= stockQuotation.getLowlimit() || pr <= stockQuotation.getHiLimit())
+               isCheck=false;
+       /*       // etLimitPrice.setText(stockQuotation.getLowlimit()+"");
+               isCheck=true;
+              // Actions.CreateDialog(this,getString(R.string.check_price_msg),false,false);
+           } else if(pr <= stockQuotation.getHiLimit()){
+             //  etLimitPrice.setText(stockQuotation.getHighlimit()+"");
+              // Actions.CreateDialog(this,getString(R.string.check_price_msg),false,false);
+
+           }   */
+
+        }
+          return isCheck;
     }
+
+
 
 
     private void setInitialData() {
@@ -1785,15 +1914,15 @@ if(!BuildConfig.Enable_Markets) {
             e.printStackTrace();
         }
         tvPortfolioNumber.setText(String.valueOf(MyApplication.currentUser.getPortfolioNumber()));
-if(stockId!=0) {
-    Log.wtf("trade_price_2",setEtPriceValue());
-    if(!isAutoUpdate) {
-        etLimitPrice.setText(setEtPriceValue());
-        etLimitTriggerPrice.setText(setEtTriggerPriceValue());
-    }
-}else {
-    etLimitPrice.setText("0");
-}
+        if(stockId!=0) {
+            Log.wtf("trade_price_2",setEtPriceValue());
+            if(!isAutoUpdate) {
+                etLimitPrice.setText(setEtPriceValue());
+                etLimitTriggerPrice.setText(setEtTriggerPriceValue());
+            }
+        }else {
+            etLimitPrice.setText("0");
+        }
 
         trade.setPortfolioId(MyApplication.currentUser.getPortfolioId());
         trade.setPortfolioNumber(MyApplication.currentUser.getPortfolioNumber());
@@ -1884,17 +2013,17 @@ if(stockId!=0) {
 
             btBuy.setTextColor(ContextCompat.getColor(this, R.color.white));
 
-           if(BuildConfig.Enable_Markets) {
-               btBuy.setBackground(ContextCompat.getDrawable(this, R.drawable.border_buy_selected));
+            if(BuildConfig.Enable_Markets) {
+                btBuy.setBackground(ContextCompat.getDrawable(this, R.drawable.border_buy_selected));
 
-               btSell.setTextColor(ContextCompat.getColor(this, R.color.green_color));
-               btSell.setBackground(ContextCompat.getDrawable(this, R.drawable.border_sell_not_selected));
-           }else {
-               btBuy.setBackground(ContextCompat.getDrawable(this, R.drawable.border_buy_gig_selected));
+                btSell.setTextColor(ContextCompat.getColor(this, R.color.green_color));
+                btSell.setBackground(ContextCompat.getDrawable(this, R.drawable.border_sell_not_selected));
+            }else {
+                btBuy.setBackground(ContextCompat.getDrawable(this, R.drawable.border_buy_gig_selected));
 
-               btSell.setTextColor(ContextCompat.getColor(this, R.color.blue_gig));
-               btSell.setBackground(ContextCompat.getDrawable(this, R.drawable.border_sell_gig_not_selected));
-           }
+                btSell.setTextColor(ContextCompat.getColor(this, R.color.blue_gig));
+                btSell.setBackground(ContextCompat.getDrawable(this, R.drawable.border_sell_gig_not_selected));
+            }
 
             llTradeSection.setBackgroundColor(ContextCompat.getColor(this, R.color.trade_buy_color));
         }
@@ -1914,6 +2043,7 @@ if(stockId!=0) {
         } else {
             etLimitPrice.setBackgroundColor(getResources().getColor(R.color.lightgrey));
             etLimitPrice.setTextColor(getResources().getColor(R.color.black));
+            etLimitPrice.setText("0.0");
             etLimitPrice.setEnabled(false);
             btLimitMinus.setEnabled(false);
             btLimitPlus.setEnabled(false);
@@ -1952,35 +2082,35 @@ if(stockId!=0) {
     private void buyClick(){
 
         if(stockId!=0){
-        tradeType = MyApplication.ORDER_BUY;
-       // etQuantity.setText("0");
-        firstTime=false;
-        setSellChecked(false);
-        if(stockId!=0 && !isAutoUpdate)
-           etLimitPrice.setText(setEtPriceValue());
-        else if(!isAutoUpdate)
-            etLimitPrice.setText("0");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            tradeType = MyApplication.ORDER_BUY;
+            // etQuantity.setText("0");
+            firstTime=false;
+            setSellChecked(false);
+            if(stockId!=0 && !isAutoUpdate)
+                etLimitPrice.setText(setEtPriceValue());
+            else if(!isAutoUpdate)
+                etLimitPrice.setText("0");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    tvPurchasePowerValue.setLayoutParams(params);
 //                    tvQuantityValue.setLayoutParams(paramsNull);
 
-            tvPurchasePowerValue.setElevation(getResources().getDimension(R.dimen.padding));
-            tvQuantityValue.setElevation(0);
+                tvPurchasePowerValue.setElevation(getResources().getDimension(R.dimen.padding));
+                tvQuantityValue.setElevation(0);
 
-            if(BuildConfig.Enable_Markets) {
-                tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.even_green_color));
-                btReview.setBackgroundColor(getResources().getColor(R.color.green_color));
-            }else {
+                if(BuildConfig.Enable_Markets) {
+                    tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.even_green_color));
+                    btReview.setBackgroundColor(getResources().getColor(R.color.green_color));
+                }else {
              /*   if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
                   tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));
              */   btReview.setBackgroundColor(getResources().getColor(R.color.blue_gig));
-            }
+                }
 //                    tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.colorLight));
-            tvQuantityValue.setBackgroundColor(ContextCompat.getColor(this, MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorMediumInv));
-        }
+                tvQuantityValue.setBackgroundColor(ContextCompat.getColor(this, MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorMediumInv));
+            }
 
-        trade.setTradeTypeID(tradeType);
-        updateOverAllViews(price, quantity);
+            trade.setTradeTypeID(tradeType);
+            updateOverAllViews(price, quantity);
         }else {
             if (!isAutoUpdate) {
                 etLimitPrice.setText("0");
@@ -2007,7 +2137,7 @@ if(stockId!=0) {
                 tvQuantityValue.setElevation(getResources().getDimension(R.dimen.padding));
                 tvPurchasePowerValue.setElevation(0);
                 if(BuildConfig.Enable_Markets)
-                   tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.even_red_color));
+                    tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.even_red_color));
                 else {
                     if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
                         tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.even_red_color));
@@ -2020,8 +2150,8 @@ if(stockId!=0) {
             updateOverAllViews(price, quantity);
         }else if(!isAutoUpdate){
 
-                etLimitPrice.setText("0");
-                price=0;
+            etLimitPrice.setText("0");
+            price=0;
 
 
         }
@@ -2068,24 +2198,24 @@ if(stockId!=0) {
     private String setEtPriceValue() {
         Log.wtf("setEtPriceValue", "setEtPriceValue");
 
-       if(!isAutoUpdate) {
-           if (!isFromOrderDetails) {
+        if(!isAutoUpdate) {
+            if (!isFromOrderDetails) {
 
-               price = setPriceWithMarketPrice(true);
-               Log.wtf("trade_price_3", price + "");
-           } else {
+                price = setPriceWithMarketPrice(true);
+                Log.wtf("trade_price_3", price + "");
+            } else {
 
-               price = onlineOrder.getPrice();
-               Log.wtf("trade_price_4", price + "");
-           }
+                price = onlineOrder.getPrice();
+                Log.wtf("trade_price_4", price + "");
+            }
 
-           if (orderType == MyApplication.MARKET_IF_TOUCHED || orderType == MyApplication.MARKET_PRICE) {
-               if (!isAutoUpdate) {
-                   etLimitPrice.setText("");
-                   price = 0;
-               }
-           }
-       }
+            if (orderType == MyApplication.MARKET_IF_TOUCHED || orderType == MyApplication.MARKET_PRICE) {
+                if (!isAutoUpdate) {
+                    etLimitPrice.setText("");
+                    price = 0;
+                }
+            }
+        }
 
         trade.setOrderType(orderType);
         if(getIndexFromId(orderType)!=-1) {
@@ -2099,7 +2229,7 @@ if(stockId!=0) {
         if (price > 100.9) {
 
             if(BuildConfig.Enable_Markets)
-               priceValue = Actions.formatNumber(price, Actions.NoDecimalThousandsSeparator);
+                priceValue = Actions.formatNumber(price, Actions.NoDecimalThousandsSeparator);
             else
                 priceValue=price+"";
             return priceValue;
@@ -2132,14 +2262,14 @@ if(stockId!=0) {
             }
 
 
-                tvCostValue.setText(Actions.formatNumber(trade.getOverallTotal(), Actions.ThreeDecimalThousandsSeparator));
+            tvCostValue.setText(Actions.formatNumber(trade.getOverallTotal(), Actions.ThreeDecimalThousandsSeparator));
 
-                tvCommissionValue.setText(Actions.formatNumber(trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
+            tvCommissionValue.setText(Actions.formatNumber(trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
 
             if (tradeType == MyApplication.ORDER_BUY)
-                 tvOverallValue.setText(Actions.formatNumber(trade.getOverallTotal() + trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
+                tvOverallValue.setText(Actions.formatNumber(trade.getOverallTotal() + trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
             else
-                 tvOverallValue.setText(Actions.formatNumber(trade.getOverallTotal() - trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
+                tvOverallValue.setText(Actions.formatNumber(trade.getOverallTotal() - trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
 
 
             // tvOverallValue.setText(Actions.formatNumber(trade.getCost(), Actions.ThreeDecimalThousandsSeparator));
@@ -2216,14 +2346,14 @@ if(stockId!=0) {
                     maxFloor = 0;
                     etMaxFloor.setText(Actions.formatNumber(maxFloor, Actions.NoDecimalThousandsSeparator));
                 }
-               break;
+                break;
 
             case R.id.btMaxFloorPlus:
                 Log.wtf("btQuantityPlus", "maxFloor = " + maxFloor);
-               // if(maxFloor < quantity-1) {
-                    maxFloor += 1;
-                    etMaxFloor.setText(Actions.formatNumber(maxFloor, Actions.NoDecimalThousandsSeparator));
-               // }
+                // if(maxFloor < quantity-1) {
+                maxFloor += 1;
+                etMaxFloor.setText(Actions.formatNumber(maxFloor, Actions.NoDecimalThousandsSeparator));
+                // }
                 break;
         }
     }
@@ -2242,7 +2372,7 @@ if(stockId!=0) {
     protected void onStop() {
         try{
             localTimer.cancel();
-     //       Actions.stopStockQuotationService(this);
+            //       Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");
         }catch (Exception e){
             Log.wtf("quotation_service","destroy_exception "+e.toString());
@@ -2365,7 +2495,7 @@ if(stockId!=0) {
                         .putExtra("isUpdate", isFromOrderDetails)
                         .putExtra("trading_session", trade.getStockQuotation().getTradingSession())
 
-                          .putExtra("trade",  orderTypeAdvanced==MyApplication.OCA ? ocaParentTrade : trade));
+                        .putExtra("trade",  orderTypeAdvanced==MyApplication.OCA ? ocaParentTrade : trade));
             }
 
 
@@ -2425,8 +2555,8 @@ if(stockId!=0) {
     private void addOrderToRelated(){
 
         try{
-        if(allOrders.size()==0 && ocaParentTrade.getId()!=0)
-            ocaParentTrade=trade;}catch (Exception e){
+            if(allOrders.size()==0 && ocaParentTrade.getId()!=0)
+                ocaParentTrade=trade;}catch (Exception e){
 
         }
         try {
@@ -2440,15 +2570,15 @@ if(stockId!=0) {
         setTradeData(quantity, price, tradeType);
 
         try{
-        if (tradeType == MyApplication.ORDER_BUY) { //أBuy
-           Log.wtf("trading_before",trade.getStockQuotation().getTradingSession()+"");
-       } else { //Sell
-            Log.wtf("trade", " getDurationTypeId = " + trade.getDurationTypeId());
-            Log.wtf("trade", " getDurationType = " + trade.getDurationType());
-            Log.wtf("trade", " getGoodUntilDate = " + trade.getGoodUntilDate());
-        }}catch (Exception e){}
+            if (tradeType == MyApplication.ORDER_BUY) { //أBuy
+                Log.wtf("trading_before",trade.getStockQuotation().getTradingSession()+"");
+            } else { //Sell
+                Log.wtf("trade", " getDurationTypeId = " + trade.getDurationTypeId());
+                Log.wtf("trade", " getDurationType = " + trade.getDurationType());
+                Log.wtf("trade", " getGoodUntilDate = " + trade.getGoodUntilDate());
+            }}catch (Exception e){}
         isShowOrder=true;
-       // ivShowHideOrders.setRotationX(180);
+        // ivShowHideOrders.setRotationX(180);
         rvOrders.setVisibility(View.VISIBLE);
 
         allOrders.add(new OnlineOrder(trade.getId(),0,0,0,0,trade.getDurationTypeId(),0,trade.getReference(),0,0,0,0,0,trade.getTradeTypeID(),0,trade.getStatusTypeId(),trade.getExecutedQuantity(),trade.getQuantity(),trade.getOrderType(),trade.getOperationTypeID(),trade.getStatusTypeId(),0,0,trade.getPrice(),trade.getTriggerPrice(),"","",trade.getDate(),trade.getGoodUntilDate(),"","","",trade.getStockQuotation().getStockID()+"","","","","","",trade.getStockQuotation().getSymbolEn(),trade.getStockQuotation().getInstrumentId(),true,true,true,true,true,null,"",MyApplication.lang == MyApplication.ARABIC ? trade.getOrdertypeValueAr() : trade.getOrdertypeValueEn(),trade.getMaxFloor(),orderTypeAdvanced));
@@ -2505,7 +2635,7 @@ if(stockId!=0) {
                         .putExtra("isUpdate", isFromOrderDetails)
                         .putExtra("trading_session",trade.getStockQuotation().getTradingSession())
                         .putExtra("trade",  orderTypeAdvanced==MyApplication.OCA ? ocaParentTrade : trade));
-              }
+            }
 
 
 
@@ -2514,7 +2644,12 @@ if(stockId!=0) {
             etLimitPrice.startAnimation(shake);
             Actions.CreateDialog(TradesActivity.this, getString(R.string.check_limit_price), false, false);
 
-        } else if ((quantityTxt.length() == 0 || getNumberFromString(quantityTxt).equals("0"))) {
+        } else if(checkPriceLimit()){
+            Actions.CreateDialog(this,getString(R.string.check_price_msg),false,false);
+        }
+
+
+        else if ((quantityTxt.length() == 0 || getNumberFromString(quantityTxt).equals("0"))) {
 
             etQuantity.startAnimation(shake);
             Actions.CreateDialog(TradesActivity.this, getString(R.string.check_Quantity), false, false);
@@ -2570,7 +2705,7 @@ if(stockId!=0) {
 
         double brokerage = total * brokerageFee.getTotalBrokerageFee();
 
-        if (brokerage < brokerageFee.getMinimumBrokerageFee() && BuildConfig.Enable_Markets)
+        if (brokerage < brokerageFee.getMinimumBrokerageFee())
             brokerage = brokerageFee.getMinimumBrokerageFee();
 
         if (total >= 50) {
@@ -2586,7 +2721,7 @@ if(stockId!=0) {
         orderDuration = MyApplication.lang == MyApplication.ARABIC ? orderDurationType.getDescriptionAr() : orderDurationType.getDescriptionEn();
 
         if (orderDurationType.getID() == 6) {
-           // orderDuration = orderDuration + " " + etDurationType.getText().toString();
+            // orderDuration = orderDuration + " " + etDurationType.getText().toString();
             orderDuration = etDurationType.getText().toString();
             goodUntilDate = etDurationType.getText().toString();
         }
@@ -2598,7 +2733,7 @@ if(stockId!=0) {
         //trade.setStockQuotation(stockQuotation);
 
         if(!goodUntilDate.isEmpty())
-           trade.setGoodUntilDate(goodUntilDate + " 00:00:00");
+            trade.setGoodUntilDate(goodUntilDate + " 00:00:00");
         else
             trade.setGoodUntilDate(goodUntilDate);
         trade.setTradeTypeID(tradeType);
@@ -2692,6 +2827,22 @@ if(stockId!=0) {
             tvHighValueNew.setText(String.valueOf(stockQuotation.getHiLimitFormatted()));
             tvLowValueNew.setText(String.valueOf(stockQuotation.getLowLimitFormatted()));
             tvVolumeValueNew.setText(String.valueOf(stockQuotation.getVolumeFormatted()));
+
+            tvHighValueNew.setTextColor(ContextCompat.getColor(this, R.color.green_color));
+            tvLowValueNew.setTextColor(ContextCompat.getColor(this, R.color.red_color));
+            if(Double.parseDouble(stockQuotation.getChange())>0){
+                tvColum6Value.setTextColor(ContextCompat.getColor(this, R.color.green_color));
+                tvColum3Value.setTextColor(ContextCompat.getColor(this, R.color.green_color));
+            }else if(Double.parseDouble(stockQuotation.getChange())<0){
+                tvColum6Value.setTextColor(ContextCompat.getColor(this, R.color.red_color));
+                tvColum3Value.setTextColor(ContextCompat.getColor(this, R.color.red_color));
+
+            }else {
+                tvColum6Value.setTextColor(ContextCompat.getColor(this, R.color.orange));
+                tvColum3Value.setTextColor(ContextCompat.getColor(this, R.color.orange));
+
+            }
+
         }
 
 
@@ -2746,7 +2897,7 @@ if(stockId!=0) {
                 MyApplication.lang == MyApplication.ARABIC ? MyApplication.droidbold : MyApplication.giloryBold);
 
         Actions.setTypeface(new TextView[]{tvCloseValue, tvLastValue, tvBidValue, tvAskValue, tvHighValue,
-                tvLowValue, tvPurchasePowerValue, tvQuantityValue, tvCostValue, tvCommissionValue, tvOverallValue,tvColum1Value,tvColum2Value,tvColum3Value,tvColum4Value,tvColum5Value,tvColum6Value}, MyApplication.giloryBold);
+                tvLowValue, tvPurchasePowerValue, tvQuantityValue, tvCostValue, tvCommissionValue, tvOverallValue,tvColum1Value,tvColum2Value,tvColum3Value,tvColum4Value,tvColum5Value,tvColum6Value,tvHighValueNew,tvLowValueNew,tvVolumeValueNew}, MyApplication.giloryBold);
 
         etLimitPrice.setTypeface(MyApplication.giloryBold);
         etQuantity.setTypeface(MyApplication.giloryBold);
@@ -2930,13 +3081,13 @@ if(stockId!=0) {
                 Log.wtf("Actions - isMarketOpen : ", " Actions.isMarketOpen() : " + Actions.isMarketOpen());
                 if (!Actions.isMarketOpen()) {
                     try{
-                    selectedPos = Actions.returnDurationIndex(0);
-                  setOrderDuration(Actions.returnDurationIndex(0));}catch (Exception e){}
+                        selectedPos = Actions.returnDurationIndex(0);
+                        setOrderDuration(Actions.returnDurationIndex(0));}catch (Exception e){}
                 } else {
-                        try {  selectedPos = Actions.returnDurationIndex(0);
+                    try {  selectedPos = Actions.returnDurationIndex(0);
 
-                    setOrderDuration(Actions.returnDurationIndex(0));
-                }catch (Exception e){}
+                        setOrderDuration(Actions.returnDurationIndex(0));
+                    }catch (Exception e){}
 
                 }
             }
@@ -3081,91 +3232,91 @@ if(stockId!=0) {
                     else {
                         if(!MyApplication.mshared.getBoolean("EnableAdvancedTypeSection",false)) {
                             if(allTypeOrders.get(i).getOrderTypeID()==MyApplication.LIMIT || allTypeOrders.get(i).getOrderTypeID()==MyApplication.MARKET_PRICE)
-                              arrayAllOrdertypes.add(allTypeOrders.get(i));
+                                arrayAllOrdertypes.add(allTypeOrders.get(i));
                         }else
                             arrayAllOrdertypes.add(allTypeOrders.get(i));
                     }
                 }
 
-             //   arrayAllOrdertypesAdvanced.add(new Ordertypes(13,1,1,1,"Iceberg","Iceberg"));
+                //   arrayAllOrdertypesAdvanced.add(new Ordertypes(13,1,1,1,"Iceberg","Iceberg"));
 
      /*           arrayAllOrdertypesAdvanced.add(new Ordertypes(11,1,1,1,"MO","MO"));
                 arrayAllOrdertypesAdvanced.add(new Ordertypes(12,1,1,1,"OCA","OCA"));
 */
-              //  arrayAllOrdertypes = GlobalFunctions.GetOrderTypes(aVoid);
+                //  arrayAllOrdertypes = GlobalFunctions.GetOrderTypes(aVoid);
                 //    try{ MyApplication.progress.hide();}catch (Exception e){}
                 if(!isAutoUpdate)
-                  setOrderTypeSpinner();
+                    setOrderTypeSpinner();
 
                 if(!BuildConfig.Enable_Markets && !isAutoUpdate){
-                   maxFloor=onlineOrder.getMaxfloor();
-                   etMaxFloor.setText(maxFloor+"");
+                    maxFloor=onlineOrder.getMaxfloor();
+                    etMaxFloor.setText(maxFloor+"");
                 }
 
 
                 if((isFromOrderDetails && lastSelectedOrderAdvanced==0) ||  !MyApplication.mshared.getBoolean("EnableAdvancedTypeSection",false)){
                     llAdvanced.setVisibility(View.GONE);
                     btAdd.setVisibility(View.GONE);
-                   // ivShowHideOrders.setVisibility(View.GONE);
+                    // ivShowHideOrders.setVisibility(View.GONE);
                     linearParentOrder.setVisibility(View.GONE);
                     linearSelectOrder.setVisibility(View.GONE);
                 }else {
-              if(!isAutoUpdate) {
-                  if (arrayAllOrdertypesAdvanced.size() > 0) {
-                      arrayAllOrdertypesAdvanced.add(0, new Ordertypes(0, 0, 0, 1, getString(R.string.select_order), getString(R.string.select_order)));
-                      llAdvanced.setVisibility(View.VISIBLE);
-                      setOrderTypeAdvancedSpinner();
-                      try {
-                          spOrderTypeAdvanced.setSelection(getIndexFromIdAdvanced(lastSelectedOrderAdvanced));
-                      } catch (Exception e) {
-                          Log.wtf("exception_advanced", e.toString());
-                      }
+                    if(!isAutoUpdate) {
+                        if (arrayAllOrdertypesAdvanced.size() > 0) {
+                            arrayAllOrdertypesAdvanced.add(0, new Ordertypes(0, 0, 0, 1, getString(R.string.select_order), getString(R.string.select_order)));
+                            llAdvanced.setVisibility(View.VISIBLE);
+                            setOrderTypeAdvancedSpinner();
+                            try {
+                                spOrderTypeAdvanced.setSelection(getIndexFromIdAdvanced(lastSelectedOrderAdvanced));
+                            } catch (Exception e) {
+                                Log.wtf("exception_advanced", e.toString());
+                            }
 
 
-                      final Handler handler = new Handler();
-                      handler.postDelayed(new Runnable() {
-                          @Override
-                          public void run() {
-                              if (isFromOrderDetails && orderTypeAdvanced == MyApplication.MO) {
-                                  selectedRelatedOrderId = onlineOrder.getRelatedOnlineOrderID();
-                                  try {
-                                      tvSelectedSymbol.setText("# " + selectedRelatedOrderId);
-                                  } catch (Exception e) {
-                                  }
-                                  try {
-                                      tvSelectedExecutedQuantity.setVisibility(View.GONE);
-                                  } catch (Exception e) {
-                                  }
-                                  try {
-                                      tvSelectedInstruments.setVisibility(View.GONE);
-                                  } catch (Exception e) {
-                                  }
-                                  try {
-                                      tvSelectedPrice.setVisibility(View.GONE);
-                                  } catch (Exception e) {
-                                  }
-                                  try {
-                                      tvSelectedQuantity.setVisibility(View.GONE);
-                                  } catch (Exception e) {
-                                  }
-                                  linearSelectOrder.setVisibility(View.GONE);
-                                  linearSelectedOrder.setVisibility(View.VISIBLE);
+                            final Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (isFromOrderDetails && orderTypeAdvanced == MyApplication.MO) {
+                                        selectedRelatedOrderId = onlineOrder.getRelatedOnlineOrderID();
+                                        try {
+                                            tvSelectedSymbol.setText("# " + selectedRelatedOrderId);
+                                        } catch (Exception e) {
+                                        }
+                                        try {
+                                            tvSelectedExecutedQuantity.setVisibility(View.GONE);
+                                        } catch (Exception e) {
+                                        }
+                                        try {
+                                            tvSelectedInstruments.setVisibility(View.GONE);
+                                        } catch (Exception e) {
+                                        }
+                                        try {
+                                            tvSelectedPrice.setVisibility(View.GONE);
+                                        } catch (Exception e) {
+                                        }
+                                        try {
+                                            tvSelectedQuantity.setVisibility(View.GONE);
+                                        } catch (Exception e) {
+                                        }
+                                        linearSelectOrder.setVisibility(View.GONE);
+                                        linearSelectedOrder.setVisibility(View.VISIBLE);
 
 
-                              } else if (isFromOrderDetails && orderTypeAdvanced == MyApplication.ICEBERG) {
-                                  spOrderTypeAdvanced.setEnabled(false);
-                                  maxFloor = onlineOrder.getMaxfloor();
-                                  etMaxFloor.setText(maxFloor + "");
-                              }
-                          }
-                      }, 300);
+                                    } else if (isFromOrderDetails && orderTypeAdvanced == MyApplication.ICEBERG) {
+                                        spOrderTypeAdvanced.setEnabled(false);
+                                        maxFloor = onlineOrder.getMaxfloor();
+                                        etMaxFloor.setText(maxFloor + "");
+                                    }
+                                }
+                            }, 300);
 
 
-                  } else {
-                      llAdvanced.setVisibility(View.GONE);
-                  }
+                        } else {
+                            llAdvanced.setVisibility(View.GONE);
+                        }
 
-              }
+                    }
                 }
 
 
@@ -3239,8 +3390,8 @@ if(stockId!=0) {
             if(arrayAllOrdertypes.get(i).getOrderTypeID()!=MyApplication.MARKET_PRICE)
                 arraySpinnerOrdertypes.add(arrayAllOrdertypes.get(i));
             else {
-              //  if (!Actions.isMarketClosed())
-                    arraySpinnerOrdertypes.add(arrayAllOrdertypes.get(i));
+                //  if (!Actions.isMarketClosed())
+                arraySpinnerOrdertypes.add(arrayAllOrdertypes.get(i));
             }
         }
 
@@ -3260,14 +3411,14 @@ if(stockId!=0) {
                 }
                 if(orderType == MyApplication.LIMIT || orderType==MyApplication.LIMIT_IF_TOUCHED){
                     // orderType = MyApplication.LIMIT;
-                   // setLimitChecked(true);
+                    // setLimitChecked(true);
                     showLimitPrice(true);
 
 
                     if(stockId!=0) {
                         Log.wtf("trade_price_7",setEtPriceValue()+"");
                         if(!isAutoUpdate)
-                          etLimitPrice.setText(setEtPriceValue());
+                            etLimitPrice.setText(setEtPriceValue());
                     }
 
                     tvPriceLable.setText(getString(R.string.price));
@@ -3281,28 +3432,28 @@ if(stockId!=0) {
                     // setMaxMin=true;
                     updateOverAllViews(price, quantity);
                     if(!isAutoUpdate){
-                      try{  btLimitPlus.performClick();}catch (Exception e){}
-                      try{  btLimitMinus.performClick();}catch (Exception e){}
+                        try{  btLimitPlus.performClick();}catch (Exception e){}
+                        try{  btLimitMinus.performClick();}catch (Exception e){}
                     }
-                   }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MARKET_IF_TOUCHED){
+                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MARKET_IF_TOUCHED){
                     // orderType = MyApplication.MARKET_PRICE;
-                   // setLimitChecked(false);
+                    // setLimitChecked(false);
                     showLimitPrice(false);
                     // setMaxMin=false;
 
                     tvPriceLable.setText(getString(R.string.price));
 
 
-            if(stockId!=0 && !isAutoUpdate){
+                    if(stockId!=0 && !isAutoUpdate){
 
-                //after_submission
-                 //   if(orderType==MyApplication.MARKET_IF_TOUCHED) {
+                        //after_submission
+                        //   if(orderType==MyApplication.MARKET_IF_TOUCHED) {
                         etLimitPrice.setText("");
                         price=0;
        /*             }
                     else
                         etLimitPrice.setText(setEtPriceValue());*/
-            }
+                    }
 
                     trade.setOrderType(orderType);
                     updateOverAllViews(price, quantity);
@@ -3325,7 +3476,7 @@ if(stockId!=0) {
 
                 else {
 
-                   // tvPriceLable.setText(getString(R.string.trigger_price));
+                    // tvPriceLable.setText(getString(R.string.trigger_price));
                     // orderType = MyApplication.MARKET_PRICE;
                     //setLimitChecked(true);
                     showLimitPrice(true);
@@ -3335,8 +3486,8 @@ if(stockId!=0) {
                     trade.setOrderType(orderType);
                     updateOverAllViews(price, quantity);
                     if(!isAutoUpdate){
-                    try{  btLimitPlus.performClick();}catch (Exception e){}
-                    try{  btLimitMinus.performClick();}catch (Exception e){}
+                        try{  btLimitPlus.performClick();}catch (Exception e){}
+                        try{  btLimitMinus.performClick();}catch (Exception e){}
                     }
                 }
 
@@ -3401,17 +3552,17 @@ if(stockId!=0) {
         spOrderTypeAdvanced.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                 selectedRelatedOrderId=0;
-                 relatedOnlineOrder=new OnlineOrder();
-               //  allOrders.clear();
-                 etMaxFloor.setText("");
-                 orderTypeAdvanced=arraySpinnerOrdertypesAdvanced.get(position).getOrderTypeID();
+                selectedRelatedOrderId=0;
+                relatedOnlineOrder=new OnlineOrder();
+                //  allOrders.clear();
+                etMaxFloor.setText("");
+                orderTypeAdvanced=arraySpinnerOrdertypesAdvanced.get(position).getOrderTypeID();
              /*  if(orderTypeAdvanced==0) {
                    linearSelectAdvanced.setVisibility(View.INVISIBLE);
                    linearHeaderOrders.setVisibility(View.GONE);
                }
                else*/
-             if(orderTypeAdvanced==MyApplication.MO){
+                if(orderTypeAdvanced==MyApplication.MO){
                     linearSelectAdvanced.setVisibility(View.VISIBLE);
                     linearHeaderOrders.setVisibility(View.GONE);
                     linearSelectedOrder.setVisibility(View.GONE);
@@ -3428,27 +3579,27 @@ if(stockId!=0) {
                     */// setAllOrdersDialog();
                     linearSelectAdvanced.setOnClickListener(v->{
                         if(!isFromOrderDetails)
-                             showOrderDialog();
+                            showOrderDialog();
                     });
                     btAdd.setVisibility(View.GONE);
-                  //  ivShowHideOrders.setVisibility(View.GONE);
+                    //  ivShowHideOrders.setVisibility(View.GONE);
                     linearParentOrder.setVisibility(View.GONE);
 
 
-               } else if(orderTypeAdvanced==MyApplication.OCA){
+                } else if(orderTypeAdvanced==MyApplication.OCA){
                     linearHeaderOrders.setVisibility(View.VISIBLE);
                     linearSelectAdvanced.setVisibility(View.VISIBLE);
-                 linearSelectedOrder.setVisibility(View.GONE);
-                 linearSelectOrder.setVisibility(View.GONE);
-                 if(!isFromOrderDetails)
-                    btAdd.setVisibility(View.VISIBLE);
+                    linearSelectedOrder.setVisibility(View.GONE);
+                    linearSelectOrder.setVisibility(View.GONE);
+                    if(!isFromOrderDetails)
+                        btAdd.setVisibility(View.VISIBLE);
 
-                   // ivShowHideOrders.setVisibility(View.VISIBLE);
-               //  ivShowHideOrders.setVisibility(View.GONE);
+                    // ivShowHideOrders.setVisibility(View.VISIBLE);
+                    //  ivShowHideOrders.setVisibility(View.GONE);
 
                     rvOrders.setVisibility(View.VISIBLE);
                     linearMaxFloor.setVisibility(View.GONE);
-                  //  allOrders.clear();
+                    //  allOrders.clear();
                     setOrders();
                     isShowOrder=false;
      /*               ivShowHideOrders.setOnClickListener(v->{
@@ -3462,38 +3613,38 @@ if(stockId!=0) {
                         }
                     isShowOrder=!isShowOrder;
                     });*/
-                 linearParentOrder.setVisibility(View.GONE);
-                 btAdd.setOnClickListener(v->{
-                     //Toast.makeText(getApplicationContext(),"aaaaaa",Toast.LENGTH_LONG).show();
-                     addReviewOrder(MyApplication.TYPE_OCA_ADD);
-                 });
-               } else if(orderTypeAdvanced==MyApplication.ICEBERG){
+                    linearParentOrder.setVisibility(View.GONE);
+                    btAdd.setOnClickListener(v->{
+                        //Toast.makeText(getApplicationContext(),"aaaaaa",Toast.LENGTH_LONG).show();
+                        addReviewOrder(MyApplication.TYPE_OCA_ADD);
+                    });
+                } else if(orderTypeAdvanced==MyApplication.ICEBERG){
 
-                 linearSelectAdvanced.setVisibility(View.VISIBLE);
-                 //ivArrowOrder.setVisibility(View.GONE);
-                 linearHeaderOrders.setVisibility(View.GONE);
-                 linearSelectedOrder.setVisibility(View.GONE);
-                 linearSelectOrder.setVisibility(View.GONE);
-                 linearMaxFloor.setVisibility(View.VISIBLE);
-                 allOrders.clear();
-                 rvOrders.setVisibility(View.GONE);
+                    linearSelectAdvanced.setVisibility(View.VISIBLE);
+                    //ivArrowOrder.setVisibility(View.GONE);
+                    linearHeaderOrders.setVisibility(View.GONE);
+                    linearSelectedOrder.setVisibility(View.GONE);
+                    linearSelectOrder.setVisibility(View.GONE);
+                    linearMaxFloor.setVisibility(View.VISIBLE);
+                    allOrders.clear();
+                    rvOrders.setVisibility(View.GONE);
 
-                 btAdd.setVisibility(View.GONE);
-               //  ivShowHideOrders.setVisibility(View.GONE);
-                 linearParentOrder.setVisibility(View.GONE);
+                    btAdd.setVisibility(View.GONE);
+                    //  ivShowHideOrders.setVisibility(View.GONE);
+                    linearParentOrder.setVisibility(View.GONE);
 
-             }
+                }
 
 
 
-             else {
+                else {
                     linearSelectAdvanced.setVisibility(View.GONE);
                     linearHeaderOrders.setVisibility(View.GONE);
                     rvOrders.setVisibility(View.GONE);
                     btAdd.setVisibility(View.GONE);
                     linearParentOrder.setVisibility(View.GONE);
-                   // ivShowHideOrders.setVisibility(View.GONE);
-               }
+                    // ivShowHideOrders.setVisibility(View.GONE);
+                }
 
                 if(isFromOrderDetails)
                     btAdd.setVisibility(View.GONE);
@@ -3508,7 +3659,7 @@ if(stockId!=0) {
 
 
 
-        }
+            }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -3607,59 +3758,59 @@ if(stockId!=0) {
             HashMap<String, String> parameters = new HashMap<String, String>();
 
 
-                MyApplication.setWebserviceItem();
-                String url = MyApplication.link + MyApplication.GetStockQuotation.getValue();
-                String marketid = "";
-                marketid = MyApplication.marketID;
-                Log.wtf("trade_activity","get_stock_quotation call"+url);
+            MyApplication.setWebserviceItem();
+            String url = MyApplication.link + MyApplication.GetStockQuotation.getValue();
+            String marketid = "";
+            marketid = MyApplication.marketID;
+            Log.wtf("trade_activity","get_stock_quotation call"+url);
 
 
-                try {
+            try {
 
-                    if(marketid.matches("0")) {
+                if(marketid.matches("0")) {
 
-                        if(BuildConfig.Enable_Markets) {
-                            marketid = "2";
-                            MyApplication.marketID = "2";
-                            Actions.setLastMarketId(getApplicationContext(), 2);
-                        }else {
-                            marketid = "1";
-                            MyApplication.marketID = "1";
-                            Actions.setLastMarketId(getApplicationContext(), 1);
+                    if(BuildConfig.Enable_Markets) {
+                        marketid = "2";
+                        MyApplication.marketID = "2";
+                        Actions.setLastMarketId(getApplicationContext(), 2);
+                    }else {
+                        marketid = "1";
+                        MyApplication.marketID = "1";
+                        Actions.setLastMarketId(getApplicationContext(), 1);
 
-                        }
-                    }
-
-                    parameters.clear();
-                    parameters.put("InstrumentId", "");
-                    parameters.put("stockIds", stockId+"");
-                    parameters.put("TStamp",/*timeStamp*/"0" );
-                    parameters.put("key", getResources().getString(R.string.beforekey));
-                    parameters.put("MarketId", marketid);
-                    parameters.put("sectorId", "0");
-
-
-                    for (Map.Entry<String, String> map : parameters.entrySet()) {
-                        Log.wtf("trade_activity"," get_stock_quotation  parameters : " + map.getKey() + "= " + map.getValue());
-                    }
-
-                    result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
-                    stockQuotation=GlobalFunctions.GetStockQuotation(result,false).get(0);
-
-                } catch (Exception e) {
-                    Log.wtf("trade_activity","get_stock_quotation exception"+e.toString());
-                    e.printStackTrace();
-                    if (MyApplication.showBackgroundRequestToastError) {
-                        try {
-                            if (MyApplication.isDebug) {
-                                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_code) + MyApplication.GetStockQuotation.getKey(), Toast.LENGTH_LONG).show();
-                            }
-                        } catch (Exception es) {
-                            Log.wtf("Appservice ", "Error - " + MyApplication.GetStockQuotation.getKey() + " : " + es.getMessage());
-                        }
                     }
                 }
-               // publishProgress();
+
+                parameters.clear();
+                parameters.put("InstrumentId", "");
+                parameters.put("stockIds", stockId+"");
+                parameters.put("TStamp",/*timeStamp*/"0" );
+                parameters.put("key", getResources().getString(R.string.beforekey));
+                parameters.put("MarketId", marketid);
+                parameters.put("sectorId", "0");
+
+
+                for (Map.Entry<String, String> map : parameters.entrySet()) {
+                    Log.wtf("trade_activity"," get_stock_quotation  parameters : " + map.getKey() + "= " + map.getValue());
+                }
+
+                result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
+                stockQuotation=GlobalFunctions.GetStockQuotation(result,false).get(0);
+
+            } catch (Exception e) {
+                Log.wtf("trade_activity","get_stock_quotation exception"+e.toString());
+                e.printStackTrace();
+                if (MyApplication.showBackgroundRequestToastError) {
+                    try {
+                        if (MyApplication.isDebug) {
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_code) + MyApplication.GetStockQuotation.getKey(), Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception es) {
+                        Log.wtf("Appservice ", "Error - " + MyApplication.GetStockQuotation.getKey() + " : " + es.getMessage());
+                    }
+                }
+            }
+            // publishProgress();
 
 
 
@@ -3783,7 +3934,7 @@ if(stockId!=0) {
                 e.printStackTrace();
             }
             if(!isAutoUpdate)
-              setAutoUpdate();
+                setAutoUpdate();
 
 
 
@@ -3819,10 +3970,10 @@ if(stockId!=0) {
 
 
 
-       // if(arrayFilteredOrderDialog.size()==0) {
-            getUserOrders = new GetUserOrders();
-            getUserOrders.executeOnExecutor(MyApplication.threadPoolExecutor);
-       // }
+        // if(arrayFilteredOrderDialog.size()==0) {
+        getUserOrders = new GetUserOrders();
+        getUserOrders.executeOnExecutor(MyApplication.threadPoolExecutor);
+        // }
 
         Spinner spFilter=ordersDialog.findViewById(R.id.spFilter);
         linearFilterTypePopup=ordersDialog.findViewById(R.id.linearFilterType);
@@ -3888,29 +4039,29 @@ if(stockId!=0) {
             String url = MyApplication.link + MyApplication.GetUserOrders.getValue(); // this method uses key after login
 
 
-                HashMap<String, String> parameters = new HashMap<String, String>();
-                parameters.put("userId", MyApplication.selectedSubAccount.getUserId() + "");
-                parameters.put("portfolioId", MyApplication.selectedSubAccount.getPortfolioId() + "");
-                parameters.put("key", MyApplication.currentUser.getKey());
-                parameters.put("Lang", Actions.getLanguage());
-                parameters.put("MarketID",MyApplication.marketID);
-                parameters.put("Tstamp","0");
+            HashMap<String, String> parameters = new HashMap<String, String>();
+            parameters.put("userId", MyApplication.selectedSubAccount.getUserId() + "");
+            parameters.put("portfolioId", MyApplication.selectedSubAccount.getPortfolioId() + "");
+            parameters.put("key", MyApplication.currentUser.getKey());
+            parameters.put("Lang", Actions.getLanguage());
+            parameters.put("MarketID",MyApplication.marketID);
+            parameters.put("Tstamp","0");
 
 
             try {
-                    result = ConnectionRequests.GET(url, TradesActivity.this, parameters);
-                    publishProgress(result);
+                result = ConnectionRequests.GET(url, TradesActivity.this, parameters);
+                publishProgress(result);
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (MyApplication.isDebug) {
-                        runOnUiThread(new Runnable() {
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_code) + MyApplication.GetUserOrders.getKey(), Toast.LENGTH_LONG).show();
-                            }
-                        });
-                    }
+            } catch (Exception e) {
+                e.printStackTrace();
+                if (MyApplication.isDebug) {
+                    runOnUiThread(new Runnable() {
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), getApplicationContext().getResources().getString(R.string.error_code) + MyApplication.GetUserOrders.getKey(), Toast.LENGTH_LONG).show();
+                        }
+                    });
                 }
+            }
 
 
 
@@ -4025,6 +4176,10 @@ if(stockId!=0) {
 
 
     private void showFillDataDialog(){
+        if(orderType == MyApplication.MARKET_PRICE) {
+            price=Double.parseDouble(stockQuotation.getHiLimit()+"");
+            Log.wtf("price_hi",price+"");
+        }
 
         Log.wtf("dialog_stock_size",MyApplication.stockQuotations.size()+"");
         fillDataDialog=new Dialog(this);
@@ -4033,17 +4188,19 @@ if(stockId!=0) {
         fillDataDialog.setContentView(R.layout.popup_fill_data);
         fillDataDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.WRAP_CONTENT);
-       // rvStocks = fillDataDialog.findViewById(R.id.rvStocks);
+        // rvStocks = fillDataDialog.findViewById(R.id.rvStocks);
         Button btCloseFillData=fillDataDialog.findViewById(R.id.btCloseFillDialog);
         Button btPurchaseDecrement=fillDataDialog.findViewById(R.id.btPurchaseDecrement);
         Button btpurchaseIncrement=fillDataDialog.findViewById(R.id.btpurchaseIncrement);
         Button btFillDialog=fillDataDialog.findViewById(R.id.btFillDialog);
-        EditText etPurchasePowerPopup =fillDataDialog.findViewById(R.id.etPurchasePowerPopup);
-        EditText etQuantityPopup =fillDataDialog.findViewById(R.id.etQuantityPopup);
-        try{etPurchasePowerPopup.setText(tvPurchasePowerValue.getText().toString().replaceAll("\\D+",""));}catch (Exception e){
-            Log.wtf("aaa_",e.toString());
 
-        }
+        etPurchasePowerPopup =fillDataDialog.findViewById(R.id.etPurchasePowerPopup);
+        etQuantityPopup =fillDataDialog.findViewById(R.id.etQuantityPopup);
+        etQuantityPopup.setEnabled(false);
+
+
+
+
         btCloseFillData.setOnClickListener(v->{
             try{   getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
@@ -4071,14 +4228,14 @@ if(stockId!=0) {
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
                 // TODO Auto-generated method stub
                 if (arg0.length() == 0) {
-                 Log.wtf("empty","empty");
+                    Log.wtf("empty","empty");
                     etQuantityPopup.setText("");
 
                 } else {
 
-                   // btClear.setVisibility(View.VISIBLE);
-                    etQuantityPopup.setText(arg0);
-
+                    // btClear.setVisibility(View.VISIBLE);
+                    // etQuantityPopup.setText(arg0);
+                    updateQty();
                 }
             }
 
@@ -4177,9 +4334,35 @@ if(stockId!=0) {
 
         });
 
+        btFillDialog.setOnClickListener(v->{
+            if(!etQuantityPopup.getText().toString().isEmpty()) {
+                quantity = (Integer.parseInt(etQuantityPopup.getText().toString().replaceAll("\\D+", "")));
+                fillDataDialog.dismiss();
+                etQuantity.setText(quantity+"");
+                updateOverAllViews(price,quantity);
+            }
+        });
+
+
 
 
         fillDataDialog.show();
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                try{etPurchasePowerPopup.setText(tvPurchasePowerValue.getText().toString().replaceAll("\\D+",""));}catch (Exception e){
+                    Log.wtf("aaa_",e.toString());
+
+                }
+                try{
+                    btpurchaseIncrement.performClick();
+                    btPurchaseDecrement.performClick();
+
+                }catch (Exception e){}
+            }
+        }, 200);
     }
 
 
@@ -4201,7 +4384,7 @@ if(stockId!=0) {
                             MyApplication.stockQuotations.get(i).getSymbolAr()
 
 
-                            ));
+                    ));
                 }
             }
 
@@ -4237,8 +4420,8 @@ if(stockId!=0) {
 
                 random = Actions.getRandom();
 
-             //   String cofirmPin = etConfirm.getText().toString();
-             //   encrypted = Actions.MD5(cofirmPin);
+                //   String cofirmPin = etConfirm.getText().toString();
+                //   encrypted = Actions.MD5(cofirmPin);
 
                 encrypted = encrypted + random;
 
@@ -4251,7 +4434,7 @@ if(stockId!=0) {
 
                 tradingPin = "";
             }
-       }
+        }
 
 
 

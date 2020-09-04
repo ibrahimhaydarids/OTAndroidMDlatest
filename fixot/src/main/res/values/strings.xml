@@ -718,6 +718,7 @@
     <string name="avg_price">Avg Price</string>
     <string name="balance_details">Balance Details</string>
     <string name="equilibrium_price">IMP</string>
+    <string name="check_price_msg">Kindly check price range</string>
 
     <!--    <string name="stock_quotation_header_2_1">Bid Price</string>
         <string name="stock_quotation_header_2_2">Bid Quantity</string>

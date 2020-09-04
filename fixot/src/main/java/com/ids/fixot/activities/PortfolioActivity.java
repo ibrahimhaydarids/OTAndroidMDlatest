@@ -243,6 +243,19 @@ try{
             rlKcc.setLayoutParams(params);
             rlCheckRequest.setLayoutParams(params);
             rlBalanceDetails.setLayoutParams(params);
+        }else {
+            rlAccountStatement.setBackgroundResource(R.drawable.edittext_border);
+            rlKcc.setBackgroundResource(R.drawable.edittext_border);
+            rlCheckRequest.setBackgroundResource(R.drawable.edittext_border);
+            rlBalanceDetails.setBackgroundResource(R.drawable.edittext_border);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT,1.0f);
+            params.setMargins(15,15,15,15);
+
+            rlAccountStatement.setLayoutParams(params);
+            rlKcc.setLayoutParams(params);
+            rlCheckRequest.setLayoutParams(params);
+            rlBalanceDetails.setLayoutParams(params);
         }
 
 
