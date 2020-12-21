@@ -130,6 +130,7 @@ public class PdfDisplayActivity extends AppCompatActivity implements MarketStatu
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void loadWebView() {
@@ -236,7 +237,7 @@ public class PdfDisplayActivity extends AppCompatActivity implements MarketStatu
 //Actions.InitializeSessionService(this);
 //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
-        //Actions.InitializeMarketServiceV2(this);
+        Actions.InitializeMarketServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
     }

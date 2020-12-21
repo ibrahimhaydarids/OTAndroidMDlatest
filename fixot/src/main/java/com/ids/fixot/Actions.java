@@ -83,6 +83,8 @@ import com.ids.fixot.model.SubAccount;
 import com.ids.fixot.model.TimeSale;
 import com.ids.fixot.model.mowazi.MoaziViewResizing;
 
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -104,8 +106,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -115,6 +121,8 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.X509TrustManager;
+
+import me.grantland.widget.AutofitHelper;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
@@ -130,6 +138,7 @@ public class Actions {
     public static final String OneDecimal = "#,##0.0";
     public static final String TwoDecimal = "#,##0.00";
     public static final String ThreeDecimal = "#.000";
+    public static final String FourDecimal = "#.0000";
     public static final String OneDecimalThousandsSeparator = "#,###.0";
     public static final String OneDecimalSeparator = "#.0";
     public static final String NoDecimalSeparator = "#";
@@ -280,8 +289,12 @@ public class Actions {
 
     // used to format number
     public static String formatNumber(double num, String format) {
+        if(num==0.0)
+          return "0";
+            else{
         DecimalFormat formatter = new DecimalFormat(format, setInEnglish());
         return formatter.format(num);
+            }
     }
 
     public static void setLanguage(Context context, String languageCode) {
@@ -601,35 +614,47 @@ public class Actions {
                         boolean expired = intent.getExtras().getBoolean(AppService.EXTRA_SESSION, true);
 //                        Log.wtf("expired", "is "+expired);
                         if (expired) {
+                            if(MyApplication.marketServerTime.getMessageStatus()==2)
+                                showDialog(activity, activity.getResources().getString(R.string.sessionExpired));
+                            else
+                                showDialog(activity, activity.getResources().getString(R.string.loginExpired));
                             stopAppService(activity);
-                            showDialog(activity, activity.getResources().getString(R.string.loginExpired));
                         }
                     }
                 }, new IntentFilter(AppService.ACTION_SESSION_SERVICE)
         );
     }
 
-    public static void InitializeSessionServiceV2(final Activity activity) {
+    public static void InitializeSessionServiceV2(Activity activity) {
+        Log.wtf("activity_name",activity.getClass().getSimpleName());
 
         try {
-            sessionReceiver = new BroadcastReceiver() {
+
+             sessionReceiver = new BroadcastReceiver() {
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     boolean expired = intent.getExtras().getBoolean(AppService.EXTRA_SESSION, true);
                     if (expired) {
-                        stopAppService(activity);
-                        showDialog(activity, activity.getResources().getString(R.string.loginExpired));
+                        Log.wtf("activity_name_broadcast",activity.getClass().getSimpleName());
+                        Log.wtf("activity_context_broadcast",context.getClass().getSimpleName());
+                        if(MyApplication.marketServerTime.getMessageStatus()==2)
+                          showDialog(activity, activity.getResources().getString(R.string.sessionExpired));
+                        else
+                          showDialog(activity, activity.getResources().getString(R.string.loginExpired));
+
                     }
                 }
             };
 
+            Log.wtf("activity_session_receiver",sessionReceiver.getClass().getSimpleName());
             LocalBroadcastManager.getInstance(activity).registerReceiver(sessionReceiver, new IntentFilter(AppService.ACTION_SESSION_SERVICE));
         } catch (Resources.NotFoundException e) {
+            Log.wtf("broadcast_error",e.toString());
             e.printStackTrace();
         }
     }
 
-    public static void unregisterSessionReceiver(final Activity c) {
+    public static void unregisterSessionReceiver( Activity c) {
         try {
             LocalBroadcastManager.getInstance(c).unregisterReceiver(sessionReceiver);
         } catch (Exception e) {
@@ -646,6 +671,39 @@ public class Actions {
 
         return MyApplication.marketStatus.getStatusID() == MyApplication.MARKET_CLOSED;
     }
+
+   /* public static void DownloadFile(String fileUrl, File directory){
+        try {
+             final int  MEGABYTE = 1024 * 1024;
+            URL url = new URL(fileUrl);
+            HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setDoOutput(true);
+            urlConnection.setRequestProperty("portfolionumber", String.valueOf(MyApplication.currentUser.getPortfolioNumber()));
+            urlConnection.setRequestProperty("key", MyApplication.currentUser.getKey());
+            urlConnection.setRequestProperty("Content-Type", "application/pdf");
+
+
+            urlConnection.connect();
+
+            InputStream inputStream = urlConnection.getInputStream();
+            FileOutputStream fileOutputStream = new FileOutputStream(directory);
+            int totalSize = urlConnection.getContentLength();
+
+            byte[] buffer = new byte[MEGABYTE];
+            int bufferLength = 0;
+            while((bufferLength = inputStream.read(buffer))>0 ){
+                fileOutputStream.write(buffer, 0, bufferLength);
+            }
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
 
 
     public static void DownloadFile(String fileURL, File directory) {
@@ -676,13 +734,11 @@ public class Actions {
             output.close();
             input.close();
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             Log.wtf("exception 1", e.getMessage());
         }
 
     }
-
     public static void setMarketTime(final String marketTimestring, Activity c) {
 
         View includedLayout = c.findViewById(R.id.my_toolbar);
@@ -856,10 +912,10 @@ public class Actions {
         MyApplication.contactKicPortfolioShown=false;
         MyApplication.contactKicMarketIndexShown=false;
        try {
-           SqliteDb_TimeSales timeSales_DB = new SqliteDb_TimeSales(activity);
+          /* SqliteDb_TimeSales timeSales_DB = new SqliteDb_TimeSales(activity);
            timeSales_DB.open();
            timeSales_DB.deleteTimeSales();
-           timeSales_DB.close();
+           timeSales_DB.close();*/
        }catch (Exception e){}
         MyApplication.timeSales=new ArrayList<>();
 
@@ -870,6 +926,122 @@ public class Actions {
         Intent i = new Intent(activity, LoginFingerPrintActivity.class);
         activity.startActivity(i);
         activity.finish();
+    }
+
+
+    private static int getDifferenceDateKw(String itemDate){
+        try{
+            Date settDate = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(itemDate);
+            Date today = new Date();
+            TimeZone.setDefault( TimeZone.getTimeZone("Asia/Kuwait"));
+
+            long diff =  settDate.getTime()-today.getTime();
+            int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+            return numOfDays;
+        }catch (Exception e){
+            return 10000000;
+        }
+    }
+
+
+    public static void  checkTimeSalesRecords(Context activity){
+
+        try {
+           ArrayList<TimeSale> timeSales = new ArrayList<>();
+            SqliteDb_TimeSales timeSales_DB = new SqliteDb_TimeSales(activity);
+            timeSales_DB.open();
+            timeSales = timeSales_DB.getAllTimeSales();
+            Log.wtf("check_time_sale",timeSales.size()+"");
+            if(timeSales.size()>0){
+                if(getDifferenceDateKw(timeSales.get(0).getTradeDate())!=0){
+                    timeSales_DB.deleteTimeSales();
+                    timeSales_DB.close();
+                }else {
+                    MyApplication.timeSalesTimesTampMap=Actions.loadMap(activity.getApplicationContext());
+                 //   MyApplication.timeSalesTimesTampMap.put(MyApplication.marketID,getDifferenceDateKw(timeSales.get(0).gett());
+                }
+            }else {
+                MyApplication.timeSalesTimesTampMap.put("2","0");
+                MyApplication.timeSalesTimesTampMap.put("3","0");
+                MyApplication.timeSalesTimesTampMap.put("1","0");
+            }
+
+
+
+
+
+            timeSales_DB.close();
+        }catch (Exception e){
+            Log.wtf("check_time_sale_exp",e.toString()+"");
+            MyApplication.timeSalesTimesTampMap.put("2","0");
+            MyApplication.timeSalesTimesTampMap.put("3","0");
+            MyApplication.timeSalesTimesTampMap.put("1","0");
+        }
+
+
+
+
+/*        appDelegate.getTrades { (data) in
+            let trades = data ?? [ExecutedOrderList]()
+            let tradeDate = String(trades.first?.tradeDate ?? "")
+
+            if !trades.isEmpty {
+                let dateformat = DateFormatter()
+                dateformat.locale = Locale(identifier: "en_US_POSIX")
+                dateformat.dateFormat = "dd/MM/yyyy"
+                dateformat.timeZone = TimeZone(abbreviation: "KW")
+                print("tradeDate:",tradeDate)
+
+                let lastDate = dateformat.date(from: tradeDate)!
+
+                if !Calendar.autoupdatingCurrent.isDateInToday(lastDate) {
+                    self.deleteAllRecords()
+                }else{
+
+                    let defaults = UserDefaults.standard
+                    if let savedPerson = defaults.object(forKey: "timeSaleStamp") as? Data {
+                        let decoder = JSONDecoder()
+                        if let loadedData = try? decoder.decode(timeSaleStamp.self, from: savedPerson) {
+                            self.timeSaleTimeStamp = loadedData.market
+                        }
+                    }
+                }
+            }
+        }*/
+    }
+
+
+
+    public static void saveMap(Context context,Map<String,String> inputMap){
+        SharedPreferences pSharedPref = context.getApplicationContext().getSharedPreferences("MyVariables", Context.MODE_PRIVATE);
+        if (pSharedPref != null){
+            JSONObject jsonObject = new JSONObject(inputMap);
+            String jsonString = jsonObject.toString();
+            SharedPreferences.Editor editor = pSharedPref.edit();
+            editor.remove("My_map").commit();
+            editor.putString("My_map", jsonString);
+            editor.commit();
+        }
+    }
+
+    public static HashMap<String,String> loadMap(Context context){
+        HashMap<String,String> outputMap = new HashMap<String,String>();
+        SharedPreferences pSharedPref = context.getApplicationContext().getSharedPreferences("MyVariables", Context.MODE_PRIVATE);
+        try{
+            if (pSharedPref != null){
+                String jsonString = pSharedPref.getString("My_map", (new JSONObject()).toString());
+                JSONObject jsonObject = new JSONObject(jsonString);
+                Iterator<String> keysItr = jsonObject.keys();
+                while(keysItr.hasNext()) {
+                    String key = keysItr.next();
+                    String value = (String) jsonObject.get(key);
+                    outputMap.put(key, value);
+                }
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return outputMap;
     }
 
 
@@ -921,7 +1093,7 @@ public class Actions {
                         activity.getString(R.string.save),
                         (dialog, id) -> {
                             dialog.dismiss();
-
+                            stopAppService(activity);
                             returnToLogin(activity);
                         });
 
@@ -930,6 +1102,12 @@ public class Actions {
         try {
             alert.show();
         } catch (Exception e) {
+            Log.wtf("excption_alert",e.toString());
+          /*  try {
+                returnToLogin(activity);
+            }catch (Exception e2){
+                Log.wtf("excption_return",e.toString());
+            }*/
             e.printStackTrace();
         }
 
@@ -1237,6 +1415,10 @@ public class Actions {
 
     }
 
+    public static void autofitText(TextView... texts) {
+        for (int i=0;i<texts.length;i++)
+            AutofitHelper.create(texts[i]);
+      }
 
     public static void checkLanguage(final Activity act, final boolean started) {
 
@@ -1463,6 +1645,7 @@ public class Actions {
             }
             MyApplication.sessionOut = null;
         } else {
+            checkTimeSalesRecords(context);
             Log.wtf("onResume ", "date == null");
         }
     }
@@ -1631,16 +1814,16 @@ public class Actions {
             orderType=enums.OrderTypes.MIT+"";
         else if(enums.OrderTypes.LIT.getValue()==value)
             orderType=enums.OrderTypes.LIT+"";
-        else if(enums.OrderTypes.SMART_ICEBERG.getValue()==value)
-            orderType=enums.OrderTypes.SMART_ICEBERG+"";
+        else if(enums.OrderTypes.SMART_ICEBERG_ORDERBOOK.getValue()==value)
+            orderType=enums.OrderTypes.SMART_ICEBERG_ORDERBOOK +"";
         else if(enums.OrderTypes.MANAGED_ORDERS.getValue()==value)
             orderType=enums.OrderTypes.MANAGED_ORDERS+"";
         else if(enums.OrderTypes.OCA.getValue()==value)
             orderType=enums.OrderTypes.OCA+"";
         else if(enums.OrderTypes.ICEBERG_REVERSE.getValue()==value)
             orderType=enums.OrderTypes.ICEBERG_REVERSE+"";
-        else if(enums.OrderTypes.MARKET_IF_TOUCHED.getValue()==value)
-            orderType=enums.OrderTypes.MARKET_IF_TOUCHED+"";
+        else if(enums.OrderTypes.SMART_ICEBERG.getValue()==value)
+            orderType=enums.OrderTypes.SMART_ICEBERG+"";
 
         return orderType;
 
@@ -2668,6 +2851,7 @@ public class Actions {
                         android.R.layout.simple_spinner_item, removeDuplicatelist);
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spInstrumentsTop.setAdapter(dataAdapter);
+
             } catch (Exception e) {
             }
 
@@ -2707,6 +2891,8 @@ public class Actions {
                    else {
                       try {
                           ((TextView) parent.getChildAt(0)).setTextColor(Color.parseColor("#ffffff"));
+                          ((TextView) parent.getChildAt(0)).setMaxLines(1);
+                          AutofitHelper.create(((TextView) parent.getChildAt(0)));
                       } catch (Exception e) {
                       }
                       Actions.setLastMarketId(context, getMarketId(removeDuplicatelist.get(position)));

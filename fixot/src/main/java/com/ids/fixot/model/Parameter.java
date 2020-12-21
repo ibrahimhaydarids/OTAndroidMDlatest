@@ -9,7 +9,7 @@ public class Parameter {
     private int id, MaximumPasswordLength, MinimumPasswordLength, DefaultDMABrokerEmployeeID, broker_ID;
     private String messageEn, messageAr, serverVersionNumber, status, mowaziBrokerId, mowaziServiceLink, defaultPriceOnTrade;
     private String ContactUsUrl,forgotPasswordUrl, forgotUsernameUrl, unlockUserUrl, clientRegistrationUrl, facebookLink, rssLink, twitterLink, youTubeLink, AlmowaziRegistrationLink, AlmowaziPolicyLink,MobileReportingPath;
-    private boolean forceUpdate, renewPasswordHashing, tradeOnlyIslamicStocks, mowaziCompanyDetail, enableMowazi,enableNotification, ComplexPasswordEnabled, CanUserManageTraderOrder, EnableOTC,enableAdvancedTypeSection,ActivateChequeRequest;
+    private boolean forceUpdate, renewPasswordHashing, tradeOnlyIslamicStocks, mowaziCompanyDetail, enableMowazi,enableNotification, ShowChangePin,ComplexPasswordEnabled, CanUserManageTraderOrder, EnableOTC,enableAdvancedTypeSection,ActivateChequeRequest,ShowStockTransactionRequest,ShowBalanceDetails,ShowCashTransactionRequest;
 
     public Parameter() {
     }
@@ -108,6 +108,15 @@ public class Parameter {
 
     public void setEnableNotification(boolean enableNotification) {
         this.enableNotification = enableNotification;
+    }
+
+
+    public boolean isShowChangePin() {
+        return ShowChangePin;
+    }
+
+    public void setShowChangePin(boolean showChangePin) {
+        ShowChangePin = showChangePin;
     }
 
     public boolean isEnableMowazi() {
@@ -223,6 +232,30 @@ public class Parameter {
 
     public void setActivateChequeRequest(boolean activateChequeRequest) {
         ActivateChequeRequest = activateChequeRequest;
+    }
+
+    public boolean isShowStockTransactionRequest() {
+        return ShowStockTransactionRequest;
+    }
+
+    public void setShowStockTransactionRequest(boolean showStockTransactionRequest) {
+        ShowStockTransactionRequest = showStockTransactionRequest;
+    }
+
+    public boolean isShowBalanceDetails() {
+        return ShowBalanceDetails;
+    }
+
+    public void setShowBalanceDetails(boolean showBalanceDetails) {
+        ShowBalanceDetails = showBalanceDetails;
+    }
+
+    public boolean isShowCashTransactionRequest() {
+        return ShowCashTransactionRequest;
+    }
+
+    public void setShowCashTransactionRequest(boolean showCashTransactionRequest) {
+        ShowCashTransactionRequest = showCashTransactionRequest;
     }
 
     public int getBroker_ID() {

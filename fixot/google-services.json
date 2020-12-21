@@ -188,6 +188,42 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:924487695480:android:1902edb6b43130bebf818d",
+        "android_client_info": {
+          "package_name": "com.ids.fixot.kicPro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "924487695480-9i2h3i3tfcv5pieu79telp267h6u8l7c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDXpXUgoV6PsvC-96EY-yIt2tcPCZCW9IU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "924487695480-9i2h3i3tfcv5pieu79telp267h6u8l7c.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "924487695480-jqjiddii93o4470hce6cvd7qvudgk4j9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ids.gig"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:924487695480:android:a9a31c9bb6d630c5bf818d",
         "android_client_info": {
           "package_name": "com.ids.fixot.qatar.gig"
@@ -222,44 +258,6 @@
         }
       }
     },
-
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:924487695480:android:a9a31c9bb6d630c5bf818d",
-        "android_client_info": {
-          "package_name": "com.ids.fixot.kicPro"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "924487695480-9i2h3i3tfcv5pieu79telp267h6u8l7c.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDXpXUgoV6PsvC-96EY-yIt2tcPCZCW9IU"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "924487695480-9i2h3i3tfcv5pieu79telp267h6u8l7c.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "924487695480-jqjiddii93o4470hce6cvd7qvudgk4j9.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ids.fixot.kicPro"
-              }
-            }
-          ]
-        }
-      }
-    },
-
     {
       "client_info": {
         "mobilesdk_app_id": "1:924487695480:android:edbd810ef1e77a7b",

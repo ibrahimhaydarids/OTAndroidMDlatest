@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
@@ -55,6 +55,7 @@
         <item name="colorMediumTransparent">@color/colorMediumTransparent</item>
         <item name="tradegrey">@color/tradegrey</item>
         <item name="grey">@color/grey</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <declare-styleable name="AppTheme.NoActionBar_Dark">
@@ -91,6 +92,7 @@
         <item name="colorMediumTransparent">@color/colorMediumTransparentInv</item>
         <item name="tradegrey">@color/colorValues</item>
         <item name="grey">@color/greyInv</item>
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
     </style>
 
     <!--<style name="AppTheme.NoActionBar">-->

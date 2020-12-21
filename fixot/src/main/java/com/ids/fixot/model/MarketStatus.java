@@ -8,11 +8,20 @@ import com.ids.fixot.MyApplication;
 
 public class MarketStatus {
 
-    private int statusID;
+    private int statusID,messageStatus;
     private String serverTime, StatusDescriptionAr, StatusDescriptionEn, StatusName, MessageAr, MessageEn, marketTime = "";
     private boolean sessionChanged;
 
     public MarketStatus() {
+    }
+
+
+    public int getMessageStatus() {
+        return messageStatus;
+    }
+
+    public void setMessageStatus(int messageStatus) {
+        this.messageStatus = messageStatus;
     }
 
     public String getMarketTime() {

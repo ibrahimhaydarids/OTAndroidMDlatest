@@ -182,7 +182,12 @@ public class StockQuotationRecyclerNewAdapter extends RecyclerView.Adapter<Stock
             holder.tvVolumePercTitle.setTypeface(MyApplication.giloryBold);
             holder.tvAsKQtyTitle.setTypeface(MyApplication.giloryBold);
 
-
+            Actions.autofitText(holder.tvStockId,
+                    holder.tvVolumeTitle,
+                    holder.tvBidQtyTitle,
+                    holder.tvVolumePercTitle,
+                    holder.tvAsKQtyTitle
+            );
 
             holder.rllayout.setOnClickListener(v -> {
                 Intent i = new Intent(context, StockDetailActivity.class);
@@ -324,7 +329,14 @@ public class StockQuotationRecyclerNewAdapter extends RecyclerView.Adapter<Stock
             Actions.overrideFonts(context, holder.rllayout, false);
             Actions.setTypeface(new TextView[]{holder.tvColum1Value,holder.tvSectorName, holder.tvColum2Value,holder.tvColum3Value,holder.tvColum4Value,holder.tvColum5Value,holder.tvColum6Value},
                     MyApplication.lang == MyApplication.ENGLISH ? MyApplication.giloryBold : MyApplication.droidbold);
-
+            Actions.autofitText(holder.tvColum1Value,
+                    holder.tvSectorName,
+                    holder.tvColum2Value,
+                    holder.tvColum3Value,
+                    holder.tvColum4Value,
+                    holder.tvColum5Value,
+                    holder.tvColum6Value
+                    );
 
 
 
@@ -469,7 +481,7 @@ public class StockQuotationRecyclerNewAdapter extends RecyclerView.Adapter<Stock
 
             String filterableString;
 
-
+try{
             for (int i = 0; i < count; i++) {
 
                 if (MyApplication.instrumentId.length() > 0) {
@@ -495,7 +507,7 @@ public class StockQuotationRecyclerNewAdapter extends RecyclerView.Adapter<Stock
                     }
                 }
 
-            }
+            }}catch (Exception e){}
 
             results.values = nlist;
             results.count = nlist.size();
@@ -517,7 +529,7 @@ public class StockQuotationRecyclerNewAdapter extends RecyclerView.Adapter<Stock
         protected TextView tvStockId, tvStockSymbol, tvStockName, tvLow, tvPrice, tvHigh, tvChange, tvSession,tvVolumeValue,tvVolumePercentage,tvBidValue,tvAskQuantityValue;
         protected View v;
         Button btTrades;
-        ImageView ivExpand;
+        Button ivExpand;
         LinearLayout rllayout; // RelativeLayout // LinearLayout
         TextView tvIndexBoxValue,tvIndexBoxPercentage,tvSupplyQty,tvOrderQty;
         TextView tvColum1Value,tvSectorName,tvColum2Value,tvColum3Value,tvColum4Value,tvColum5Value,tvColum6Value;

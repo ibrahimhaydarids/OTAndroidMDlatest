@@ -24,7 +24,7 @@ public class StockQuotation implements Parcelable {
     private int Amount;
     private int stockID;
     private boolean isIslamic;
-    private double last, ask, bid, HiLimit, lowlimit, tickDirection, previousClosing, referencePrice,volume;
+    private double last, ask, bid, HiLimit, lowlimit, tickDirection, previousClosing, referencePrice,volume,buyPercent,sellPercent;
     private int highlimit, normalMarketSize;
     private boolean changed,isExpanded;
     private boolean isFavorite;
@@ -33,7 +33,7 @@ public class StockQuotation implements Parcelable {
     private String instrumentId, marketCapital, numberOfOrders, sessionNameEn, sessionNameAr, sessionId = "", nms, instrumentNameAr, instrumentNameEn, sectorID, tradeSettlementDate;
     private int  open, stockTradingStatus, trade, volumeAsk, volumeBid, marketId,TradingSession;
     private String securityId,high;
-    private String highFormatted,lowFormatted,hiLimitFormatted,lowLimitFormatted;
+    private String highFormatted,lowFormatted,hiLimitFormatted,lowLimitFormatted,buyPercentFormatted,sellPercentFormatted;
     private String volumeBidFormatted,volumeAskFormatted,lastFormatted,volumeFormatted,equilibriumPriceFormatted,sectorNameEn,sectorNameAr,sectorSymbolEn,sectorSymbolAr;
 
 
@@ -106,6 +106,11 @@ public class StockQuotation implements Parcelable {
         orderType = in.readString();
         durationType = in.readString();
         securityId = in.readString();
+
+        buyPercent = in.readDouble();
+        sellPercent = in.readDouble();
+        buyPercentFormatted = in.readString();
+        sellPercentFormatted = in.readString();
     }
 
     public boolean isExpanded() {
@@ -632,6 +637,39 @@ public class StockQuotation implements Parcelable {
         this.sectorID = sectorID;
     }
 
+
+    public double getBuyPercent() {
+        return buyPercent;
+    }
+
+    public void setBuyPercent(double buyPercent) {
+        this.buyPercent = buyPercent;
+    }
+
+    public double getSellPercent() {
+        return sellPercent;
+    }
+
+    public void setSellPercent(double sellPercent) {
+        this.sellPercent = sellPercent;
+    }
+
+    public String getBuyPercentFormatted() {
+        return buyPercentFormatted;
+    }
+
+    public void setBuyPercentFormatted(String buyPercentFormatted) {
+        this.buyPercentFormatted = buyPercentFormatted;
+    }
+
+    public String getSellPercentFormatted() {
+        return sellPercentFormatted;
+    }
+
+    public void setSellPercentFormatted(String sellPercentFormatted) {
+        this.sellPercentFormatted = sellPercentFormatted;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -705,6 +743,11 @@ public class StockQuotation implements Parcelable {
         dest.writeString(orderType);
         dest.writeString(durationType);
         dest.writeString(securityId);
+
+        dest.writeDouble(buyPercent);
+        dest.writeDouble(sellPercent);
+        dest.writeString(buyPercentFormatted);
+        dest.writeString(sellPercentFormatted);
     }
 
     public StockQuotation(int stockID,String sectorID, String nameAr, String nameEn, String symbolAr, String symbolEn) {

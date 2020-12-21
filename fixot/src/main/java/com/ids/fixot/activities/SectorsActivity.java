@@ -121,7 +121,7 @@ public class SectorsActivity extends AppCompatActivity implements SectorRecycler
         Actions.overrideFonts(this, rootLayout, false);
         Actions.showHideFooter(this);
         Actions.setTypeface(new TextView[]{tvStockIDHeader, tvChangePercentHeader, tvPriceHeader}, MyApplication.lang == MyApplication.ARABIC ? MyApplication.droidbold : MyApplication.giloryBold);
-
+        Actions.autofitText(tvStockIDHeader, tvChangePercentHeader, tvPriceHeader);
         try {
             spInstrumentsTop = (Spinner) findViewById(R.id.spInstrumentTop);
             if(BuildConfig.Enable_Markets)
@@ -143,6 +143,7 @@ public class SectorsActivity extends AppCompatActivity implements SectorRecycler
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
 
         try {
             running = false;

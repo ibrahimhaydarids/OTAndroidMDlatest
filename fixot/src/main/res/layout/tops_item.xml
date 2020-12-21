@@ -8,19 +8,21 @@
     android:orientation="horizontal"
     android:padding="4dp">
 
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvStockSymbol"
         style="@style/textListHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
         android:layout_weight="0.4"
+        android:gravity="center_vertical"
         android:padding="5dp"
+        android:maxLines="2"
         android:text="@string/symbol"
         android:textAlignment="viewStart"
         android:textColor="?attr/colorValues" />
 
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvPrice"
         style="@style/textListHeader"
         android:layout_width="0dp"
@@ -29,17 +31,19 @@
         android:layout_weight="0.4"
         android:gravity="center_horizontal"
         android:padding="5dp"
+        android:maxLines="1"
         android:text="@string/price"
         android:textColor="?attr/colorValues"
         android:textDirection="ltr" />
 
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvTradingItem"
         style="@style/textListHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.47"
+        android:maxLines="1"
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:text="@string/trading_value"
@@ -47,10 +51,11 @@
         android:textDirection="ltr"
         android:visibility="gone" />
 
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvChange"
         style="@style/textListHeader"
         android:layout_width="0dp"
+        android:maxLines="1"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.32"
@@ -60,13 +65,14 @@
         android:textColor="?attr/colorValues"
         android:textDirection="ltr" />
 
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvChangePercent"
         style="@style/textListHeader"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="0.3"
+        android:maxLines="1"
         android:gravity="center_horizontal"
         android:padding="5dp"
         android:text="@string/change_weight_percent_title"

@@ -50,6 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/my_toolbar"
+        android:id="@+id/linearSettings"
+        android:background="?attr/evenColor"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -104,6 +106,96 @@
 
             </RadioGroup>
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutChangeFont"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:visibility="gone"
+            android:background="?attr/evenColor"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="start"
+                android:text="@string/font_size"
+                android:textColor="?attr/colorValues" />
+
+            <TextView
+                android:id="@+id/tvChangeFont"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:text="@string/change"
+                android:padding="@dimen/padding"
+                android:textStyle="bold"
+                android:showText="true"
+                android:textColor="?attr/colorDark"
+                android:textSize="@dimen/normal" />
+
+        </RelativeLayout>
+
+
+
+        <RelativeLayout
+            android:id="@+id/changePassword"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/white"
+            android:padding="@dimen/padding"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="start"
+                android:text="@string/change_password"
+                android:textColor="?attr/colorValues" />
+
+            <ImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:rotation="180"
+                android:src="@drawable/back"
+                android:tint="@color/colorValues" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/changePin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:layout_gravity="center_horizontal"
+            android:background="?attr/evenColor"
+            android:padding="@dimen/padding"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:gravity="start"
+                android:text="@string/change_trading_pin"
+                android:textColor="?attr/colorValues" />
+
+            <ImageView
+                android:id="@+id/ivArrowPin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:rotation="180"
+                android:src="@drawable/back"
+                android:tint="@color/colorValues" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -193,6 +285,117 @@
         </RelativeLayout>
 
 
+
+        <RelativeLayout
+            android:id="@+id/layoutFontSizes"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/settings_row_height"
+            android:background="?attr/evenColor"
+            android:padding="@dimen/padding">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="start"
+                android:id="@+id/tvFontSizeTitle"
+                android:text="@string/font_size"
+                android:textColor="?attr/colorValues"
+                android:textSize="@dimen/normal" />
+
+            <LinearLayout
+                android:id="@+id/linearFonts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/margin_start_end"
+                android:layout_marginRight="@dimen/margin_start_end"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/xsmall_margin"
+
+                android:background="@drawable/rounded_gray"
+                android:layout_margin="@dimen/mini_margin"
+                android:layout_toEndOf="@id/tvFontSizeTitle"
+                android:checked="true"
+                android:orientation="horizontal"
+                >
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="@string/normal_font"
+                    android:textSize="@dimen/small"
+                    android:id="@+id/btNormalFont"
+                    android:textStyle="bold"
+                    android:background="@color/transparent"
+                    android:textColor="?attr/colorValues"
+                    android:layout_marginTop="@dimen/xsmall_margin"
+                    android:layout_marginBottom="@dimen/xsmall_margin"
+                    android:layout_marginLeft="@dimen/small"
+                    android:layout_marginRight="@dimen/small"
+                    android:layout_gravity="center"
+                    android:textAllCaps="false"
+                    android:gravity="center"
+                    />
+
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:background="#ceced0"
+               />
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:layout_marginTop="@dimen/xsmall_margin"
+                    android:layout_marginBottom="@dimen/xsmall_margin"
+                    android:layout_marginLeft="@dimen/small"
+                    android:layout_marginRight="@dimen/small"
+                    android:background="@color/transparent"
+                    android:text="@string/large"
+                    android:textSize="@dimen/small"
+                    android:textStyle="bold"
+                    android:id="@+id/btLargeFont"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/colorValues"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+                <LinearLayout
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:background="#ceced0"/>
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:text="@string/larger"
+                    android:textSize="@dimen/small"
+                    android:textColor="?attr/colorValues"
+                    android:layout_marginTop="@dimen/xsmall_margin"
+                    android:layout_marginBottom="@dimen/xsmall_margin"
+                    android:layout_marginLeft="@dimen/small"
+                    android:layout_marginRight="@dimen/small"
+                    android:textStyle="bold"
+                    android:background="@color/transparent"
+                    android:id="@+id/btLargerFont"
+                    android:textAllCaps="false"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
         <RelativeLayout
             android:id="@+id/layoutVersionNumber"
             android:layout_width="match_parent"
@@ -223,73 +426,17 @@
 
 
 
-        <RelativeLayout
-            android:id="@+id/layoutChangeFont"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_row_height"
-            android:visibility="gone"
-            android:background="?attr/evenColor"
-            android:padding="@dimen/padding">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:gravity="start"
-                android:text="@string/font_size"
-                android:textColor="?attr/colorValues" />
-
-            <TextView
-                android:id="@+id/tvChangeFont"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:text="@string/change"
-                android:padding="@dimen/padding"
-                android:textStyle="bold"
-                android:showText="true"
-                android:textColor="?attr/colorDark"
-                android:textSize="@dimen/normal" />
-
-        </RelativeLayout>
 
 
 
-        <RelativeLayout
-            android:id="@+id/changePassword"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_row_height"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/white"
-            android:padding="@dimen/padding"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:gravity="start"
-                android:text="@string/change_password"
-                android:textColor="?attr/colorValues" />
-
-            <ImageView
-                android:id="@+id/ivArrow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:rotation="180"
-                android:src="@drawable/back"
-                android:tint="@color/colorValues" />
-        </RelativeLayout>
 
 
+    </LinearLayout>
         <LinearLayout
             android:id="@+id/layoutSignIn"
             android:layout_width="match_parent"
             android:layout_height="@dimen/settings_row_height"
+            android:layout_below="@id/linearSettings"
             android:layout_marginStart="100dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="100dp"
@@ -312,7 +459,7 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+
 
     <include
         android:id="@+id/footer"

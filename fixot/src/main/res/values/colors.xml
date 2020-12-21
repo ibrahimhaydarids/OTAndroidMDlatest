@@ -112,5 +112,7 @@
     <color name="text_selected_dark">#cbcbcb</color>
     <color name="gray_selected_light">#eeeeee</color>
 
+    <color name="portfolio_header">#6b87a7</color>
+
 
 </resources>

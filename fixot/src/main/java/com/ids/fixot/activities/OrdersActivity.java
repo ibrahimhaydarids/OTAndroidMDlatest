@@ -48,6 +48,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
+import me.grantland.widget.AutofitHelper;
+
 import static com.ids.fixot.MyApplication.lang;
 
 /**
@@ -99,6 +101,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
     private int selectedStockPosition=0;
     private Boolean isCalled=false;
     private Boolean isFirsttime=true;
+    private LinearLayout llItem;
     private TextView tvRemainingQuantityHeader;
     LinearLayout disableLayout;
     TextView tvTotalBuyTitle,tvTotalBuyValue,tvBuyAmountTitle,tvBuyAmountValue,tvTotalSellTitle,tvTotalSellValue,tvSellAmountTitle,tvSellAmountValue;
@@ -106,9 +109,17 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
 
     @Override
     public void onItemSelectedListener(AdapterView<?> parent, View v, int p, long id) {
-        try{ subAccountsSpinnerAdapter = new SubAccountsSpinnerAdapter(this, Actions.getfilteredSubAccount()/*MyApplication.currentUser.getSubAccounts()*/);
+    /*    try{ subAccountsSpinnerAdapter = new SubAccountsSpinnerAdapter(this, Actions.getfilteredSubAccount()*//*MyApplication.currentUser.getSubAccounts()*//*);
              spSubAccounts.setAdapter(subAccountsSpinnerAdapter);}catch (Exception e){}
-        try{ spSubAccounts.setSelection(Actions.getDefaultSubPosition());}catch (Exception e){}
+        try{
+            if(MyApplication.selectedSubAccount==null)
+                spSubAccounts.setSelection(Actions.getDefaultSubPosition());
+
+
+
+        }catch (Exception e){
+            Log.wtf("selection_exceptipn",e.toString());
+        }*/
 
         disableLayout=findViewById(R.id.disableLayout);
         if(Actions.getSubAccountOTCCount()==0 && Actions.getLastMarketId(getApplicationContext())== enums.MarketType.KWOTC.getValue()){
@@ -208,6 +219,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
         newArrayFilter.add(o4);*/
 
 
+
         tvTotalBuyTitle=findViewById(R.id.tvTotalBuyTitle);
         tvTotalBuyValue=findViewById(R.id.tvTotalBuyValue);
         tvBuyAmountTitle=findViewById(R.id.tvBuyAmountTitle);
@@ -234,6 +246,13 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
         myToolbar = findViewById(R.id.my_toolbar);
         ivBack = myToolbar.findViewById(R.id.ivBack);
         linearTotalResults=findViewById(R.id.linearTotalResults);
+
+        llItem=findViewById(R.id.llOrdersHeader);
+        if(!BuildConfig.Enable_Markets) {
+            llItem.setBackgroundColor(ContextCompat.getColor(this, R.color.portfolio_header));
+            linearTotalResults.setBackgroundColor(ContextCompat.getColor(this, R.color.portfolio_header));
+        }
+
         ivBack.setVisibility((BuildConfig.GoToMenu) ? View.VISIBLE : View.GONE);
 
         tvLogout = myToolbar.findViewById(R.id.tvLogout);
@@ -243,9 +262,29 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
 
         tvInstruments = findViewById(R.id.tvInstruments);
         tvSymbolHeader = findViewById(R.id.tvSymbolHeader);
+
         tvPriceHeader = findViewById(R.id.tvPriceHeader);
         tvQuantityHeader = findViewById(R.id.tvQuantityHeader);
         tvExecutedQuantityHeader = findViewById(R.id.tvExecutedQuantityHeader);
+
+        AutofitHelper.create(tvPriceHeader);
+        AutofitHelper.create(tvQuantityHeader);
+        AutofitHelper.create(tvExecutedQuantityHeader);
+        AutofitHelper.create(tvRemainingQuantityHeader);
+        if(!BuildConfig.Enable_Markets ){
+            tvPriceHeader.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+            tvQuantityHeader.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+            tvExecutedQuantityHeader.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+            tvRemainingQuantityHeader.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+
+            tvTotalBuyTitle.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+            tvBuyAmountTitle.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+            tvTotalSellTitle.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+            tvSellAmountTitle.setTextColor(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true )? ContextCompat.getColor(this, R.color.colorLight):ContextCompat.getColor(this, R.color.colorLightInv));
+
+            Actions.autofitText(tvPriceHeader,tvQuantityHeader,tvExecutedQuantityHeader,tvRemainingQuantityHeader,tvTotalBuyTitle,tvBuyAmountTitle,tvTotalSellTitle,tvSellAmountTitle);
+        }
+
         tvActionHeader = findViewById(R.id.tvActionHeader);
         tvStatusHeader = findViewById(R.id.tvStatusHeader);
 
@@ -292,7 +331,7 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
         try {
             subAccountsSpinnerAdapter = new SubAccountsSpinnerAdapter(this, Actions.getfilteredSubAccount()/*MyApplication.currentUser.getSubAccounts()*/);
             spSubAccounts.setAdapter(subAccountsSpinnerAdapter);
-            spSubAccounts.setSelection(returnAccountIndex(),false);
+
             spSubAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -327,8 +366,10 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
 
                 }
             });
-        }catch (Exception e){
 
+            spSubAccounts.setSelection(returnAccountIndex(),false);
+        }catch (Exception e){
+            Log.wtf("selection_exceptipn2",e.toString());
 
                 }
 
@@ -421,7 +462,9 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
         running = true;
         Log.wtf("Orders Activity OnResume", "Actions.isNetworkAvailable(this) : " + Actions.isNetworkAvailable(this) + " / running = " + running);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
-
+        try{spSubAccounts.setSelection(returnAccountIndex(),false);}catch (Exception e){
+            Log.wtf("selection_exceptipn3",e.toString());
+        }
        if(pause){
            allOrders.clear();
            allOrdersMerged.clear();
@@ -443,17 +486,22 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
         MyApplication.sessionOut = Calendar.getInstance();
     }
 
-    @Override
+ /*   @Override
     public void onBackPressed() {
         if (BuildConfig.GoToMenu) {
             super.onBackPressed();
         }
-    }
 
+    }*/
+ @Override
+ public void onBackPressed() {
+     Actions.exitApp(this);
+ }
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
+        Actions.unregisterSessionReceiver(this);
         try {
             getUserOrders.cancel(true);
             MyApplication.threadPoolExecutor.getQueue().remove(getUserOrders);
@@ -673,6 +721,17 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
         tvBuyAmountValue.setText(totalBuyAmount+"");
         tvTotalSellValue.setText(totalSellQty+"");
         tvSellAmountValue.setText(totalSellAmount+"");
+
+        if(!BuildConfig.Enable_Markets){
+            tvTotalSellValue.setTextColor(ContextCompat.getColor(this, R.color.bid_quanity_value_color));
+            tvSellAmountValue.setTextColor(ContextCompat.getColor(this, R.color.bid_quanity_value_color));
+
+
+            tvTotalBuyValue.setTextColor(ContextCompat.getColor(this, R.color.blue_text_color));
+            tvBuyAmountValue.setTextColor(ContextCompat.getColor(this, R.color.blue_text_color));
+
+
+        }
     }
 
     private int countId(int id){
@@ -882,10 +941,24 @@ public class OrdersActivity extends AppCompatActivity implements OrdersRecyclerA
 
           }
 
+        Log.wtf("order_duplicate_before",arrayFiltered.size()+"aaa");
 
+          ArrayList<OnlineOrder> lastArray=new ArrayList<>();
+          for (int i=0;i<arrayFiltered.size();i++){
+              Boolean isInList=false;
+              for (int j=0;j<lastArray.size();j++){
+                  if(lastArray.get(j).getID()==arrayFiltered.get(i).getID()){
+                      isInList=true;
+                      break;
+                  }
+              }
+              if(!isInList)
+                  lastArray.add(arrayFiltered.get(i));
 
+          }
+        Log.wtf("order_duplicate_after",lastArray.size()+"aaa");
                 allOrdersMerged.clear();
-                allOrdersMerged.addAll(arrayFiltered);
+                allOrdersMerged.addAll(lastArray);
                 Log.wtf("filter_allmerged_size_after",allOrdersMerged.size()+"aaa");
 
 

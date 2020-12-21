@@ -132,6 +132,7 @@ public class MoreActivity extends AppCompatActivity implements MarketStatusListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     public void back(View v) {
@@ -161,6 +162,7 @@ public class MoreActivity extends AppCompatActivity implements MarketStatusListe
         rlNews = findViewById(R.id.rlNews);
         rlLinks = findViewById(R.id.rlLinks);
         rlChangePassword = findViewById(R.id.rlChangePassword);
+        rlChangePassword.setVisibility(View.GONE);
         rlSettings = findViewById(R.id.rlSettings);
         rlRegister = findViewById(R.id.rlRegister);
         rlNotification = findViewById(R.id.rlNotification);
@@ -187,6 +189,8 @@ public class MoreActivity extends AppCompatActivity implements MarketStatusListe
           //  rlBonds.setVisibility(View.VISIBLE);
 
         rlNotification.setVisibility(MyApplication.mshared.getBoolean("EnableNotification", false) ? View.VISIBLE : View.GONE);
+      //  rlNotification.setVisibility(View.GONE);
+
         rlStockAlerts.setVisibility(MyApplication.mshared.getBoolean("EnableNotification", false) ? View.VISIBLE : View.GONE);
 
         if(BuildConfig.Enable_Markets)
@@ -246,7 +250,7 @@ public class MoreActivity extends AppCompatActivity implements MarketStatusListe
         Actions.InitializeSessionServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
     }
 
     @Override

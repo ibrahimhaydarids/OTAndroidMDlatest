@@ -51,7 +51,7 @@
             android:id="@+id/rlUserHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorMedium"
+            android:background="@drawable/border_selected_dark"
             android:minHeight="@dimen/header_height"
             android:orientation="horizontal"
             android:padding="@dimen/mini_padding">
@@ -163,43 +163,87 @@
                 android:textSize="@dimen/normal"
                 android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/tvFromDate"
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_gravity="center"
+                android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:background="@drawable/border_edit_text"
-                android:gravity="center"
-                android:padding="@dimen/mini_padding"
-                android:text="@string/from_date"
-                android:textColor="@color/colorValues" />
+                android:orientation="vertical">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding"
+                    android:text="@string/from_date"
+                    android:textColor="@color/colorValues"
+                    android:textSize="@dimen/normal"
+                   />
+
+                <TextView
+                    android:id="@+id/tvFromDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_gravity="center"
+                    android:background="@drawable/border_edit_text"
+                    android:gravity="center"
+                    android:padding="@dimen/mini_padding"
+                    android:text="@string/from_date"
+                    android:textColor="@color/colorValues" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding"
+                    android:text="@string/to_date"
+                    android:textColor="@color/colorValues"
+                    android:textSize="@dimen/normal"
+                    />
             <TextView
                 android:id="@+id/tvToDate"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
                 android:layout_gravity="center"
-                android:layout_weight="3"
                 android:background="@drawable/border_edit_text"
                 android:gravity="center"
                 android:padding="@dimen/mini_padding"
                 android:text="@string/to_date"
                 android:textColor="@color/colorValues" />
-
-            <Button
-                android:id="@+id/btAccountStatement"
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="@dimen/button_height"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/mini_margin"
                 android:layout_weight="1.5"
-                android:background="@color/colorDark"
-                android:elevation="@dimen/button_elevation"
-                android:padding="@dimen/mini_padding"
-                android:text="@string/generate"
-                android:textColor="@color/colorLight"
-                android:textSize="@dimen/small" />
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/padding"
+
+                    android:maxLines="1"
+                    android:visibility="invisible"
+                    android:textColor="@color/colorValues"
+                    android:textSize="@dimen/normal"
+                    />
+                <Button
+                    android:id="@+id/btAccountStatement"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:gravity="center"
+                    android:background="@color/colorDark"
+                    android:elevation="@dimen/button_elevation"
+                    android:padding="@dimen/mini_padding"
+                    android:text="@string/generate"
+                    android:textColor="@color/colorLight"
+                    android:textSize="@dimen/small" />
+            </LinearLayout>
+
 
         </LinearLayout>
 

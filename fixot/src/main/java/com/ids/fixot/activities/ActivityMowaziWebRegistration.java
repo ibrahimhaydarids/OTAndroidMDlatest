@@ -124,6 +124,7 @@ public class ActivityMowaziWebRegistration extends AppCompatActivity implements 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         try {
             Runtime.getRuntime().gc();
         } catch (Exception e) {
@@ -221,7 +222,7 @@ public class ActivityMowaziWebRegistration extends AppCompatActivity implements 
 //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
 
-        //Actions.InitializeMarketServiceV2(this);
+        Actions.InitializeMarketServiceV2(this);
     }
 
     @Override

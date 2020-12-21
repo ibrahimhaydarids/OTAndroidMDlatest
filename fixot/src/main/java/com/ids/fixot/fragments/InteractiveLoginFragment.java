@@ -367,7 +367,7 @@ public class InteractiveLoginFragment extends Fragment {
 
             try {
                 result = ConnectionRequests.GET(url, getActivity(), parameters);
-                retrievedTimeSales = GlobalFunctions.GetTimeSales(result,true);
+                retrievedTimeSales = GlobalFunctions.GetTimeSales(getActivity(),result,true);
 
 
                 SqliteDb_TimeSales timeSales_DB = new SqliteDb_TimeSales(getActivity());

@@ -22,7 +22,7 @@
 
         android:text="@string/stock_name_title"
         android:textAlignment="viewStart"
-        android:textColor="?attr/evenColor" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/tvActionHeader"
@@ -34,7 +34,7 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/mini_padding"
         android:text="@string/action"
-        android:textColor="?attr/evenColor" />
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/tvQtyExecutedHeader"
@@ -46,7 +46,7 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/mini_padding"
         android:text="@string/qty_executed"
-        android:textColor="?attr/evenColor"
+        android:textColor="@color/white"
     />
 
     <TextView
@@ -59,7 +59,7 @@
         android:gravity="center_horizontal"
         android:padding="@dimen/mini_padding"
         android:text="@string/avg_price"
-        android:textColor="?attr/evenColor" />
+        android:textColor="@color/white" />
 
 
 

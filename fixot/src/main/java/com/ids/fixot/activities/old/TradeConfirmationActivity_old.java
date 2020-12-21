@@ -258,7 +258,7 @@ public class TradeConfirmationActivity_old extends AppCompatActivity implements 
                 tvOrderTypeValue.setText(trade.getOrdertypeValueEn());
             //  tvOrderTypeValue.setText(Actions.getStringFromValue(trade.getOrderType()));
         }catch (Exception e){}
-        if(trade.getOrderType()== MyApplication.MARKET_IF_TOUCHED || trade.getOrderType()==MyApplication.LIMIT_IF_TOUCHED) {
+        if(trade.getOrderType()== MyApplication.MIT || trade.getOrderType()==MyApplication.LIMIT_IF_TOUCHED) {
             // tvPriceTitle.setText(getString(R.string.trigger_price));
             llTriggerPrice.setVisibility(View.VISIBLE);
             tvTriggerPricevalue.setText(Actions.formatNumber(trade.getTriggerPrice(), Actions.TwoDecimal));
@@ -338,7 +338,7 @@ public class TradeConfirmationActivity_old extends AppCompatActivity implements 
         //Actions.InitializeSessionService(this);
         //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
 

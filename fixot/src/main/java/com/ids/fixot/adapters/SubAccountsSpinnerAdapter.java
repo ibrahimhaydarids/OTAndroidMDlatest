@@ -1,6 +1,7 @@
 package com.ids.fixot.adapters;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,6 +63,9 @@ public class SubAccountsSpinnerAdapter extends ArrayAdapter<SubAccount> {
         LinearLayout linearHeader = view.findViewById(R.id.linearHeader);
         LinearLayout linearValues = view.findViewById(R.id.linearValues);
         linearHeader.setVisibility(View.GONE);
+
+        if(!BuildConfig.Enable_Markets){
+            llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorValues));}
 
 
         TextView tvIdTitle = view.findViewById(R.id.tvIdTitle);
@@ -149,11 +153,14 @@ public class SubAccountsSpinnerAdapter extends ArrayAdapter<SubAccount> {
 
 
 
-        if(MyApplication.selectedSubAccount.getPortfolioId()==subAccounts.get(i).getPortfolioId())
-            llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ?  R.color.yellow  : R.color.yellow));
-        else
-            llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ?  R.color.transparent  : R.color.transparent));
-
+        if(BuildConfig.Enable_Markets) {
+            if (MyApplication.selectedSubAccount.getPortfolioId() == subAccounts.get(i).getPortfolioId())
+                llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ? R.color.yellow : R.color.yellow));
+            else
+                llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ? R.color.transparent : R.color.transparent));
+        }else {
+            llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorValues));
+        }
 
         /*if (i%2 == 0 ){
             llItem.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ?  R.color.white  : R.color.colorDarkTheme));

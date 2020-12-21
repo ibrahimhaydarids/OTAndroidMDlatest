@@ -51,7 +51,6 @@ import com.ids.fixot.enums.enums;
 import com.ids.fixot.interfaces.spItemListener;
 import com.ids.fixot.model.OnlineOrder;
 import com.ids.fixot.model.OrderDurationType;
-import com.ids.fixot.model.OrderInfo;
 import com.ids.fixot.model.Ordertypes;
 import com.ids.fixot.model.StockQuotation;
 import com.ids.fixot.model.Trade;
@@ -343,6 +342,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void setOrderOptions() {
@@ -407,7 +407,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
     }
 
     public void setUpdate(Boolean stt) {
-       //Boolean stt=true;
+       // Boolean stt=true;
         fabEdit.setEnabled(stt);
         fabFastEdit.setEnabled(stt);
 
@@ -465,7 +465,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
         Actions.InitializeSessionServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
     }
 
     @Override
@@ -484,6 +484,10 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
 
 
     private void findViews() {
+        if(!BuildConfig.Enable_Markets)
+            MyApplication.VALUES_SPAN_COUNT = 2;
+
+
 
         famOrderMenu = findViewById(R.id.famOrderMenu);
         loading=findViewById(R.id.loading);
@@ -770,7 +774,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
             btLimit.performClick();
             setLimitChecked(btLimit, btMarketPrice, true);
             showLimitPrice(llPrice, true);
-        } else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MARKET_IF_TOUCHED) {
+        } else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MIT) {
 
             btMarketPrice.performClick();
             setLimitChecked(btLimit, btMarketPrice, false);
@@ -1768,7 +1772,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
                                                           // orderType = MyApplication.LIMIT;
                                                           setLimitChecked(btLimit, btMarketPrice, true);
                                                           showLimitPrice(llPrice, true);
-                                                      } else if (orderType == MyApplication.MARKET_PRICE || orderType == MyApplication.MARKET_IF_TOUCHED) {
+                                                      } else if (orderType == MyApplication.MARKET_PRICE || orderType == MyApplication.MIT) {
                                                           orderType = MyApplication.MARKET_PRICE;
                                                           setLimitChecked(btLimit, btMarketPrice, false);
                                                           showLimitPrice(llPrice, false);
@@ -1780,7 +1784,7 @@ public class OrderDetailsActivity extends AppCompatActivity implements OrderDura
 
                                                       }
 
-                                                      if (orderType == MyApplication.MARKET_IF_TOUCHED || orderType == MyApplication.LIMIT_IF_TOUCHED) {
+                                                      if (orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED) {
                                                           llTriggerPrice.setVisibility(View.VISIBLE);
                                                       } else {
                                                           llTriggerPrice.setVisibility(View.GONE);

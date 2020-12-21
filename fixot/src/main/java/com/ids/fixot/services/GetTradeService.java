@@ -40,7 +40,9 @@ public class GetTradeService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        Actions.checkTimeSalesRecords(getApplicationContext());
         if(BuildConfig.Enable_Markets){
+
         if(MyApplication.currentUser.getId() == Actions.getLastUserId(getApplicationContext())) {
             if(Actions.getLastUserId(getApplicationContext())!=0)
                MyApplication.marketID = Actions.getLastMarketId(getApplicationContext()) + "";
@@ -48,8 +50,6 @@ public class GetTradeService extends Service {
 
                     MyApplication.marketID = "2";
                     Actions.setLastMarketId(getApplicationContext(),2);
-
-
             }
         }}else {
             MyApplication.marketID = "1";
@@ -76,8 +76,9 @@ public class GetTradeService extends Service {
             super.onPreExecute();
 
             retrievedTimeSales = new ArrayList<>();
-            MyApplication.timeSalesTimesTamp = "0";
-            MyApplication.timeSalesTimesTampMap.put(MyApplication.marketID,"0");
+           // MyApplication.timeSalesTimesTamp = "0";
+           // MyApplication.timeSalesTimesTampMap.put(MyApplication.marketID,"0");
+           // Actions.saveMap(getApplicationContext(),MyApplication.timeSalesTimesTampMap);
         }
 
         @Override
@@ -106,7 +107,7 @@ public class GetTradeService extends Service {
             try {
 
                 result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
-                retrievedTimeSales = GlobalFunctions.GetTimeSales(result,true);
+                retrievedTimeSales = GlobalFunctions.GetTimeSales(getApplicationContext(),result,true);
 
                 try{Log.wtf("test_service_login","size:"+retrievedTimeSales.size());}catch (Exception e){
                     Log.wtf("test_service_login",e.toString());

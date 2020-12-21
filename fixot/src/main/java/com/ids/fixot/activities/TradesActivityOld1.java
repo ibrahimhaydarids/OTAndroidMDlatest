@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -25,7 +24,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Handler;
-import android.telecom.GatewayInfo;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -62,12 +60,10 @@ import com.ids.fixot.R;
 import com.ids.fixot.adapters.OrderDurationTypeAdapter;
 import com.ids.fixot.adapters.OrderTypeSpinnerAdapter;
 import com.ids.fixot.adapters.OrdersPopupTrades;
-import com.ids.fixot.adapters.OrdersPopupTrades;
 import com.ids.fixot.adapters.PredefineQuantityAdapter;
 import com.ids.fixot.adapters.SubAccountsSpinnerAdapter;
 import com.ids.fixot.adapters.stockQuotationPopupAdapter;
 import com.ids.fixot.enums.enums;
-import com.ids.fixot.interfaces.spItemListener;
 import com.ids.fixot.model.BrokerageFee;
 import com.ids.fixot.model.OnlineOrder;
 import com.ids.fixot.model.OrderDurationType;
@@ -1642,7 +1638,7 @@ public class TradesActivityOld1 extends AppCompatActivity implements OrderDurati
             price = onlineOrder.getPrice();
         }
 
-        if(orderType==MyApplication.MARKET_IF_TOUCHED) {
+        if(orderType==MyApplication.MIT) {
             etLimitPrice.setText("");
             price=0;
         }
@@ -1798,6 +1794,7 @@ public class TradesActivityOld1 extends AppCompatActivity implements OrderDurati
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
    /*     try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");
@@ -2760,7 +2757,7 @@ public class TradesActivityOld1 extends AppCompatActivity implements OrderDurati
                     updateOverAllViews(price, quantity);
                     try{  btLimitPlus.performClick();}catch (Exception e){}
                     try{  btLimitMinus.performClick();}catch (Exception e){}
-                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MARKET_IF_TOUCHED){
+                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MIT){
                     // orderType = MyApplication.MARKET_PRICE;
                     // setLimitChecked(false);
                     showLimitPrice(false);
@@ -2771,7 +2768,7 @@ public class TradesActivityOld1 extends AppCompatActivity implements OrderDurati
 
                     if(stockId!=0){
 
-                        if(orderType==MyApplication.MARKET_IF_TOUCHED) {
+                        if(orderType==MyApplication.MIT) {
                             etLimitPrice.setText("");
                             price=0;
                         }
@@ -2818,7 +2815,7 @@ public class TradesActivityOld1 extends AppCompatActivity implements OrderDurati
 
                 if (arrayAllOrdertypesAdvanced.size() > 0) {
 
-                    if (orderType == MyApplication.MARKET_IF_TOUCHED || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI)
+                    if (orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK)
                         llAdvanced.setVisibility(View.GONE);
                     else
                         llAdvanced.setVisibility(View.VISIBLE);
@@ -2996,7 +2993,7 @@ public class TradesActivityOld1 extends AppCompatActivity implements OrderDurati
 
 
     private void setPriceViews(){
-        if(orderType == MyApplication.MARKET_IF_TOUCHED || orderType==MyApplication.LIMIT_IF_TOUCHED || orderType==MyApplication.SI){
+        if(orderType == MyApplication.MIT || orderType==MyApplication.LIMIT_IF_TOUCHED || orderType==MyApplication.SI_ORDERBOOK){
             linearTriggerPrice.setVisibility(View.VISIBLE);
             tvTriggerPricelabel.setVisibility(View.VISIBLE);
             etLimitTriggerPrice.setText("");

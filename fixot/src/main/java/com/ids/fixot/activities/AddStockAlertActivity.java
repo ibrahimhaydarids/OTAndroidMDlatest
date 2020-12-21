@@ -180,6 +180,7 @@ public class AddStockAlertActivity extends AppCompatActivity implements MarketSt
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
         try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");

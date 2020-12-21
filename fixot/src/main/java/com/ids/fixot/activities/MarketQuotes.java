@@ -147,7 +147,7 @@ public class MarketQuotes extends AppCompatActivity implements MarketStatusListe
         Actions.InitializeSessionServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
     }
 
     @Override
@@ -166,6 +166,7 @@ public class MarketQuotes extends AppCompatActivity implements MarketStatusListe
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     @Override

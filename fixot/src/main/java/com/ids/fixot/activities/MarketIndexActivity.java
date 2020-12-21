@@ -516,7 +516,7 @@ public class MarketIndexActivity extends AppCompatActivity implements OnChartGes
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        Actions.unregisterSessionReceiver(this);
         try {
             System.gc();
             Runtime.getRuntime().gc();
@@ -2012,7 +2012,7 @@ public class MarketIndexActivity extends AppCompatActivity implements OnChartGes
             String url = MyApplication.link + MyApplication.GetPriceTickerData.getValue(); // this method uses key after login
 
             HashMap<String, String> parameters = new HashMap<String, String>();
-            parameters.put("sectorID", ""/*selectedSectorID*/);
+            parameters.put("sectorID", selectedSectorID.matches("0")?selectedSectorID:""/*selectedSectorID*/);
             parameters.put("key", getString(R.string.beforekey));
             parameters.put("MarketId", MyApplication.marketID);
             parameters.put("TradingSession", "0");

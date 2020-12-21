@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+
     package="com.ids.fixot">
 
     <uses-sdk tools:overrideLibrary="me.aflak.libraries" />
@@ -33,10 +34,12 @@
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:usesCleartextTraffic="true">
+      <!--  tools:replace="android:allowBackup"-->
         <activity
             android:name=".activities.ActivityPinCode"
             android:configChanges="layoutDirection|locale"
@@ -114,8 +117,15 @@
             android:name=".activities.RequestActivity"
             android:configChanges="layoutDirection|locale"
             android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activities.RequestActivityNew"
+            android:configChanges="layoutDirection|locale"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.BalanceDetailsActivity"
             android:configChanges="layoutDirection|locale"
@@ -211,7 +221,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activities.StockOrderBookActivity"
-            android:configChanges="layoutDirection|locale"
+            android:configChanges="layoutDirection|locale|orientation|screenSize"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
@@ -298,6 +308,13 @@
             android:configChanges="layoutDirection|locale"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activities.ChangePinActivity"
+            android:configChanges="layoutDirection|locale"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
             android:name=".activities.ChangePassFromLoginActivity"
             android:configChanges="layoutDirection|locale"

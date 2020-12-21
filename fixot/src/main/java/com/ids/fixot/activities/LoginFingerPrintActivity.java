@@ -209,6 +209,7 @@ public class LoginFingerPrintActivity extends AppCompatActivity implements SiteM
 
     private void findViews() {
 
+
         fragmentManager = getSupportFragmentManager();
 
         llSocialMedia = findViewById(R.id.llSocialMedia);
@@ -912,6 +913,7 @@ public class LoginFingerPrintActivity extends AppCompatActivity implements SiteM
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public Boolean isValidEmail(String target) {

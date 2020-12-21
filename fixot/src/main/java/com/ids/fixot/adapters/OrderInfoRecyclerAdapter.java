@@ -64,10 +64,13 @@ public class OrderInfoRecyclerAdapter extends RecyclerView.Adapter<OrderInfoRecy
         holder.tvTitle.setText(infos.get(position).getKey());
         holder.tvValue.setText(infos.get(position).getValue());
 
-        if (position % 2 == 1)
-           holder.llItems.setBackgroundColor(ContextCompat.getColor(context, R.color.colorLight));
-        else
-           holder.llItems.setBackgroundColor(ContextCompat.getColor(context, R.color.white));
+
+
+        if (position % 2 == 0) {
+            holder.llItems.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ? R.color.white : R.color.colorDarkTheme));
+        } else {
+            holder.llItems.setBackgroundColor(ContextCompat.getColor(context, MyApplication.mshared.getBoolean(context.getResources().getString(R.string.normal_theme), true) ? R.color.colorLight : R.color.colorLightInv));
+        }
 
 
         overrideFonts(context, holder.tvTitle, false);

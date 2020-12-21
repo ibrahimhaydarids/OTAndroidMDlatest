@@ -155,6 +155,8 @@ public class SectorRecyclerAdapter extends RecyclerView.Adapter<SectorRecyclerAd
             this.tvChangePercent = v.findViewById(R.id.tvChangePercent);
             this.btStocks = v.findViewById(R.id.btStocks);
             this.lllayout = v.findViewById(R.id.lllayout);
+
+            Actions.autofitText(tvSector, tvIndexValue, tvChangePercent);
         }
 
         @Override

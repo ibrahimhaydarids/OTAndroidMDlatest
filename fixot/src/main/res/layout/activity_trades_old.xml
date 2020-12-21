@@ -96,7 +96,7 @@
                     android:id="@+id/rlUserHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorMedium"
+                    android:background="@drawable/border_selected_dark"
                     android:minHeight="@dimen/header_height"
                     android:orientation="horizontal"
                     android:padding="@dimen/mini_padding">
@@ -816,12 +816,13 @@
                                 android:layout_width="wrap_content"
 
                                 android:text="@string/trigger_price"
-                                android:layout_gravity="center"
+                                android:layout_gravity="center_vertical"
                                 android:gravity="center"
                                 android:visibility="gone"
 
                                 android:layout_marginTop="24dp"
                                 android:layout_height="wrap_content"
+
                                 android:id="@+id/tvTriggerPricelabel"
                                 />
                         </LinearLayout>

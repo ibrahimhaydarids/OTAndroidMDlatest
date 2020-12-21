@@ -31,6 +31,8 @@
              android:layout_height="wrap_content"
              android:text="@string/purchase_power_title"
              android:layout_gravity="center_vertical"
+             android:id="@+id/tvPurchasePowerTitle"
+             android:maxLines="1"
              android:gravity="center_vertical"
              android:textColor="?attr/colorValues"
              android:textSize="@dimen/normal"
@@ -40,7 +42,7 @@
 
       <LinearLayout
           android:layout_width="0dp"
-          android:layout_weight="1"
+          android:layout_weight="1.6"
           android:layout_gravity="center_vertical"
           android:gravity="center_vertical"
           android:layout_height="wrap_content">
@@ -54,16 +56,18 @@
              android:id="@+id/btPurchaseDecrement"
              />
 
-         <EditText
+         <com.ids.fixot.Custom.CurrencyEditText
              android:layout_width="0dp"
              android:layout_weight="1"
              android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:id="@+id/etPurchasePowerPopup"
-             android:inputType="number"
-             android:textSize="@dimen/normal"
+             android:selectAllOnFocus="true"
+             android:inputType="numberDecimal"
+             android:textSize="@dimen/normal_1"
              android:paddingLeft="@dimen/small_margin"
+             android:textDirection="ltr"
              android:paddingRight="@dimen/small_margin"
              android:background="@drawable/edittext_border"
              android:layout_marginLeft="@dimen/mini_margin"
@@ -100,6 +104,7 @@
              android:text="@string/quantity_full"
              android:layout_gravity="center_vertical"
              android:gravity="center_vertical"
+             android:maxLines="1"
              android:textColor="?attr/colorValues"
              android:textSize="@dimen/normal"
              />
@@ -108,7 +113,7 @@
 
       <LinearLayout
           android:layout_width="0dp"
-          android:layout_weight="1"
+          android:layout_weight="1.6"
           android:layout_gravity="center_vertical"
           android:gravity="center_vertical"
           android:layout_height="wrap_content">
@@ -132,6 +137,7 @@
              android:id="@+id/etQuantityPopup"
              android:inputType="number"
              android:paddingLeft="@dimen/small_margin"
+             android:textDirection="ltr"
              android:paddingRight="@dimen/small_margin"
              android:textSize="@dimen/normal"
              android:background="@drawable/edittext_border"

@@ -33,7 +33,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ChangeIndicator INTEGER, " +
                 "StockID INTEGER, " +
                 "orderType INTEGER, " +
-                "MarketId INTEGER)";
+                "MarketId INTEGER, " +
+                "tradeDate TEXT)";
         db.execSQL(timeSalesQuery);
     }
 

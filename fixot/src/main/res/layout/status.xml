@@ -15,6 +15,8 @@
         android:clipToPadding="false"
         android:layout_marginLeft="@dimen/margin_start_end"
         android:layout_marginRight="@dimen/margin_start_end"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:elevation="@dimen/button_elevation"
         android:visibility="gone"
         android:text="T"
@@ -48,7 +50,7 @@
             android:orientation="horizontal"
             >
 
-            <TextView
+          <me.grantland.widget.AutofitTextView
                 android:id="@+id/market_state_value_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/market_status_height"
@@ -57,7 +59,8 @@
                 android:background="@color/transparent"
                 android:layout_marginEnd="@dimen/small_margin"
                 android:elevation="0dp"
-                android:textSize="@dimen/xSmall"
+                 android:maxLines="1"
+                android:textSize="@dimen/small"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingBottom="2dp"
                 android:textColor="@color/white" />
@@ -68,14 +71,15 @@
                 android:layout_width="1sp"
                 android:layout_height="wrap_content" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/market_time_value_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/market_status_height"
                 android:layout_gravity="center_vertical|start"
                 android:layout_marginStart="@dimen/small_margin"
                 android:layout_marginEnd="@dimen/small_margin"
-                android:textSize="@dimen/xSmall"
+                android:maxLines="1"
+                android:textSize="@dimen/small"
                 android:gravity="center_vertical|center_horizontal"
                 android:paddingBottom="0dp"
                 android:textColor="@color/white" />

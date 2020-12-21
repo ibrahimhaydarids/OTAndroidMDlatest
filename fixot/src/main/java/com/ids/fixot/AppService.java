@@ -217,7 +217,9 @@ public class AppService extends Service {
             HashMap<String, String> parameters = new HashMap<String, String>();
             parameters.put("userId", MyApplication.currentUser.getId() + "");
             parameters.put("currentUserSessionID", MyApplication.currentUser.getSessionID() + "");
-            parameters.put("key", getResources().getString(R.string.beforekey));
+          // parameters.put("key", getResources().getString(R.string.beforekey));
+            parameters.put("key",MyApplication.mshared.getString(getString(R.string.afterkey), ""));
+
             parameters.put("MarketID", MyApplication.marketID);
 
 
@@ -252,7 +254,7 @@ public class AppService extends Service {
 
                     String marketTime = MyApplication.marketServerTime.getServerTime();
 
-                    sendBroadcastSession(MyApplication.marketServerTime.isSessionChanged());
+                    sendBroadcastSession(MyApplication.marketServerTime.isSessionChanged() || MyApplication.marketServerTime.getMessageStatus()==2);
 
                     if(localFinish) {
                         try {

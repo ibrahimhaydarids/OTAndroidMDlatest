@@ -135,7 +135,7 @@
             <TextView
                 android:id="@+id/tvLastTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="?attr/grey"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/mini_padding"
@@ -151,6 +151,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:padding="@dimen/mini_padding"
                 android:textColor="?attr/colorValues"
+                android:maxLines="1"
                 android:textSize="@dimen/small" />
         </LinearLayout>
 
@@ -167,7 +168,7 @@
             <TextView
                 android:id="@+id/tvHighTitle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="?attr/grey"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/mini_padding"
@@ -180,6 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="?attr/colorMedium"
+                android:maxLines="1"
                 android:gravity="center_horizontal|center_vertical"
                 android:padding="@dimen/mini_padding"
                 android:textColor="?attr/colorValues"
@@ -198,7 +200,7 @@
             <TextView
                 android:id="@+id/tvLowHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="?attr/grey"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/mini_padding"
@@ -214,6 +216,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:padding="@dimen/mini_padding"
                 android:textColor="?attr/colorValues"
+                android:maxLines="1"
                 android:textSize="@dimen/small" />
         </LinearLayout>
 
@@ -232,7 +235,7 @@
             <TextView
                 android:id="@+id/tvEquilibriumHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="?attr/grey"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/mini_padding"
@@ -248,6 +251,7 @@
                 android:gravity="center_horizontal|center_vertical"
                 android:padding="@dimen/mini_padding"
                 android:textColor="?attr/colorValues"
+                android:maxLines="1"
                 android:textSize="@dimen/small" />
         </LinearLayout>
 
@@ -264,7 +268,7 @@
             <TextView
                 android:id="@+id/tvVolumeHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="?attr/grey"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/mini_padding"
@@ -279,6 +283,7 @@
                 android:background="?attr/colorMedium"
                 android:gravity="center_horizontal|center_vertical"
                 android:padding="@dimen/mini_padding"
+                android:maxLines="1"
                 android:textColor="?attr/colorValues"
                 android:textSize="@dimen/small" />
         </LinearLayout>
@@ -295,7 +300,7 @@
             <TextView
                 android:id="@+id/tvTradesCountHeader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:background="?attr/grey"
                 android:gravity="center_horizontal"
                 android:padding="@dimen/mini_padding"
@@ -310,6 +315,7 @@
                 android:background="?attr/colorMedium"
                 android:gravity="center_horizontal|center_vertical"
                 android:padding="@dimen/mini_padding"
+                android:maxLines="1"
                 android:text="0"
                 android:textColor="?attr/colorValues"
                 android:textSize="@dimen/small" />

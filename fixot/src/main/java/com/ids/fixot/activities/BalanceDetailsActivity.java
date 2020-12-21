@@ -51,13 +51,16 @@ import com.ids.fixot.MyApplication;
 import com.ids.fixot.R;
 import com.ids.fixot.adapters.BalanceSummaryAdapter;
 import com.ids.fixot.adapters.ExecutedAdapter;
+import com.ids.fixot.adapters.MarginPaymentAdapter;
 import com.ids.fixot.adapters.PortoflioStockForwardAdapter;
 import com.ids.fixot.adapters.SubAccountsSpinnerAdapter;
 import com.ids.fixot.adapters.ValuesGridRecyclerAdapter;
+import com.ids.fixot.enums.enums;
 import com.ids.fixot.interfaces.spItemListener;
 import com.ids.fixot.model.BalanceSummary;
 import com.ids.fixot.model.BalanceSummaryParent;
 import com.ids.fixot.model.ExecutedOrders;
+import com.ids.fixot.model.MarginPayment;
 import com.ids.fixot.model.NewsItem;
 import com.ids.fixot.model.StockSummary;
 import com.ids.fixot.model.SubAccount;
@@ -90,31 +93,36 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
     SubAccountsSpinnerAdapter subAccountsSpinnerAdapter;
     //SwipeRefreshLayout swipeContainer;
     ScrollView scrollView;
-
+    ValuesGridRecyclerAdapter adapterMarginDetailsValues;
 
     LinearLayout loading;
-
+    GridLayoutManager llUserData;
     Double initialAvailableAmount=0.0;
-    Boolean isBalance=true;
+
 
     private ArrayList<ExecutedOrders> arrayExecuted = new ArrayList<>();
+    private ArrayList<MarginPayment> arrayMarginPayments = new ArrayList<>();
     private ArrayList<BalanceSummaryParent> arrayParentBalanced = new ArrayList<>();
 
     private ArrayList<BalanceSummary> arrayBalacedFields = new ArrayList<>();
     private ArrayList<BalanceSummary> arrayBalancedGroups = new ArrayList<>();
     LinearLayoutManager llm;
     LinearLayoutManager llm2;
-    LinearLayout linearExecuted;
-    Button btBalanceSummary,btExecutedOrdersGrouped;
-    RecyclerView rvBalanceSummary,rvExecuted;
+    LinearLayoutManager llm3;
+    LinearLayout linearExecuted,linearMarginDetails,linearMarginPayments;
+    Button btBalanceSummary,btExecutedOrdersGrouped,btMarginPayments,btMarginDetails;
+    RecyclerView rvBalanceSummary,rvExecuted,rvMarginDetails,rvMarginPayments;
+    int selectedTab=1;
 
     private BalanceSummaryAdapter balanceAdapter;
     private ExecutedAdapter executedAdapter;
+    private MarginPaymentAdapter marginPaymentAdapter;
     RelativeLayout rlUserHeader, rootLayout;
     private boolean isCalled=false;
     GetBalanceDetails getBalanceDetails = new GetBalanceDetails();
-
-
+    ArrayList<ValueItem> arrayMarginDetailsValueItems = new ArrayList<>();
+    GetMarginDetails getMarginDetails = new GetMarginDetails();
+    GetMarginPayments getMarginPayments = new GetMarginPayments();
     private BroadcastReceiver receiver;
     private boolean started = false, showProgress = false;
     Spinner spInstrumentsTop;
@@ -122,6 +130,8 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
         LocalUtils.updateConfig(this);
     }
     private SwipeRefreshLayout swipeContainer;
+    TextView tvTotalAmountTitle,tvTotalAmount;
+
     @Override
     public void refreshMarketTime(String status, String time, Integer color) {
 
@@ -135,10 +145,10 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
 
     }
 
-    @Override
+/*    @Override
     public void onItemSelectedListener(AdapterView<?> parent, View v, int p, long id) {
 
-        try{subAccountsSpinnerAdapter = new SubAccountsSpinnerAdapter(this, Actions.getfilteredSubAccount()/*MyApplication.currentUser.getSubAccounts()*/);
+        try{subAccountsSpinnerAdapter = new SubAccountsSpinnerAdapter(this, Actions.getfilteredSubAccount()*//*MyApplication.currentUser.getSubAccounts()*//*);
             spSubAccounts.setAdapter(subAccountsSpinnerAdapter);}catch (Exception e){}
         try{ spSubAccounts.setSelection(Actions.getDefaultSubPosition(),false);}catch (Exception e){}
 
@@ -148,16 +158,19 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
             @Override
             public void run() {
                 clearArrays();
-                try{executedAdapter.notifyDataSetChanged();}catch (Exception e){}
-                try{balanceAdapter.notifyDataSetChanged();}catch (Exception e){}
+
                 callData();
             }
         }, 200);
 
 
+    }*/
+
+    @Override
+    public void onItemSelectedListener(AdapterView<?> parent, View v, int p, long id) {
+        // Toast.makeText(getApplicationContext(),p+"aaaaa",Toast.LENGTH_LONG).show();
+
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -173,7 +186,6 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
         Actions.initializeBugsTracking(this);
 
         findViews();
-        clearArrays();
         if(!isCalled)
            callData();
         Log.wtf("portfolio_id",MyApplication.selectedSubAccount.getPortfolioId()+"");
@@ -232,10 +244,21 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
         if (getBalanceDetails != null)
             getBalanceDetails.cancel(true);
 
+        if (getMarginDetails != null)
+            getMarginDetails.cancel(true);
+
+        if (getMarginPayments != null)
+            getMarginPayments.cancel(true);
         getBalanceDetails = new GetBalanceDetails();
         getBalanceDetails.executeOnExecutor(MyApplication.threadPoolExecutor);
 
+        getMarginDetails = new GetMarginDetails();
+        getMarginDetails.executeOnExecutor(MyApplication.threadPoolExecutor);
+
+        getMarginPayments = new GetMarginPayments();
+        getMarginPayments.executeOnExecutor(MyApplication.threadPoolExecutor);
     }
+
 
     private void findViews() {
         ImageView ivUserSubAccount=findViewById(R.id.ivUserSubAccount);
@@ -243,11 +266,16 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
             ivUserSubAccount.setVisibility(View.GONE);
         else
             ivUserSubAccount.setVisibility(View.VISIBLE);
+        llUserData = new GridLayoutManager(this, MyApplication.GRID_VALUES_SPAN_COUNT);
+
+        tvTotalAmountTitle = findViewById(R.id.tvTotalAmountTitle);
+        tvTotalAmount = findViewById(R.id.tvTotalAmount);
+        tvTotalAmountTitle.setTypeface((lang == MyApplication.ARABIC) ? MyApplication.droidbold : MyApplication.giloryBold);
+
         spSubAccounts = findViewById(R.id.spSubAccounts);
         swipeContainer = findViewById(R.id.swipeContainer);
         swipeContainer.setOnRefreshListener(() -> {
 
-            clearArrays();
             try{executedAdapter.notifyDataSetChanged();}catch (Exception e){}
             try{balanceAdapter.notifyDataSetChanged();}catch (Exception e){}
             callData();
@@ -257,28 +285,42 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
 
         llm = new LinearLayoutManager(BalanceDetailsActivity.this);
         llm2 = new LinearLayoutManager(BalanceDetailsActivity.this);
+        llm3 = new LinearLayoutManager(BalanceDetailsActivity.this);
         rootLayout = findViewById(R.id.rootLayout);
         myToolbar = findViewById(R.id.my_toolbar);
 
-
+        linearMarginDetails = findViewById(R.id.linearMarginDetails);
+        linearMarginPayments = findViewById(R.id.linearMarginPayments);
         linearExecuted = findViewById(R.id.linearExecuted);
         btBalanceSummary = findViewById(R.id.btBalanceSummary);
         btExecutedOrdersGrouped = findViewById(R.id.btExecutedOrdersGrouped);
+
+        btMarginDetails = findViewById(R.id.btMarginDetails);
+        btMarginPayments = findViewById(R.id.btMarginPayments);
+
         rvBalanceSummary = findViewById(R.id.rvBalanceSummary);
         rvExecuted = findViewById(R.id.rvExecuted);
-
-
+        rvMarginDetails= findViewById(R.id.rvMarginDetails);
+        rvMarginPayments= findViewById(R.id.rvMarginPayments);
 
         btBalanceSummary.setOnClickListener(v->{
-            isBalance=true;
+            selectedTab=MyApplication.TAB_BALANCE_SUMMARY;
             checkLayout();
         });
 
         btExecutedOrdersGrouped.setOnClickListener(v->{
-            isBalance=false;
+            selectedTab=MyApplication.TAB_EXECUTED_ORDERS;
             checkLayout();
         });
 
+        btMarginDetails.setOnClickListener(v->{
+            selectedTab=MyApplication.TAB_MARGIN_DETAILS;
+            checkLayout();
+        });
+        btMarginPayments.setOnClickListener(v->{
+            selectedTab=MyApplication.TAB_MARGIN_PAYMENTS;
+            checkLayout();
+        });
 
         rlUserHeader = findViewById(R.id.rlUserHeader);
         tvToolbarTitle = findViewById(R.id.toolbar_title);
@@ -304,8 +346,7 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
             spSubAccounts.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    MyApplication.selectedSubAccount = subAccountsSpinnerAdapter.getItem(position);
-                    clearArrays();
+                   try{ MyApplication.selectedSubAccount = subAccountsSpinnerAdapter.getItem(position);}catch (Exception e){}
                     callData();
 
                 }
@@ -317,9 +358,8 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
             });
         }catch (Exception e){}
 
-       checkLayout();
-
-        setAdapters();
+         try{checkLayout();}catch (Exception e){}
+         try{setAdapters();}catch (Exception e){}
     }
 
     private void setAdapters(){
@@ -330,58 +370,62 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
         rvExecuted.setAdapter(executedAdapter);
         rvBalanceSummary.setLayoutManager(llm);
         rvExecuted.setLayoutManager(llm2);
+
+
+        marginPaymentAdapter = new MarginPaymentAdapter(this, arrayMarginPayments);
+        rvMarginPayments.setAdapter(marginPaymentAdapter);
+        rvMarginPayments.setLayoutManager(llm3);
     }
 
 
-    private void setBalanceSummaryActive(){
-        btBalanceSummary.setBackgroundResource(R.drawable.order_book_border_active);
-        //btBalanceSummary.setTextColor(getResources().getColor(R.color.colorDark));
-
-        btExecutedOrdersGrouped.setBackgroundResource(R.drawable.order_book_border_disable);
-       // btExecutedOrdersGrouped.setTextColor(getResources().getColor(R.color.colorValues));
 
 
-    }
 
-
-    private void setExecutedActive(){
-        btExecutedOrdersGrouped.setBackgroundResource(R.drawable.order_book_border_active);
-       // btExecutedOrdersGrouped.setTextColor(getResources().getColor(R.color.colorDark));
-
-
+    private void resetTabs(){
         btBalanceSummary.setBackgroundResource(R.drawable.order_book_border_disable);
-   //     btBalanceSummary.setTextColor(getResources().getColor(R.color.colorValues));
+        btExecutedOrdersGrouped.setBackgroundResource(R.drawable.order_book_border_disable);
+        btMarginDetails.setBackgroundResource(R.drawable.order_book_border_disable);
+        btMarginPayments.setBackgroundResource(R.drawable.order_book_border_disable);
 
-
+        rvBalanceSummary.setVisibility(View.GONE);
+        linearExecuted.setVisibility(View.GONE);
+        linearMarginDetails.setVisibility(View.GONE);
+        linearMarginPayments.setVisibility(View.GONE);
 
     }
 
 
 
     private void checkLayout(){
-        if(isBalance){
+        if(selectedTab==MyApplication.TAB_BALANCE_SUMMARY){
+            resetTabs();
             rvBalanceSummary.setVisibility(View.VISIBLE);
-            linearExecuted.setVisibility(View.GONE);
-            setBalanceSummaryActive();
-        }else {
-
+            btBalanceSummary.setBackgroundResource(R.drawable.order_book_border_active);
+        }else  if(selectedTab==MyApplication.TAB_EXECUTED_ORDERS){
+            resetTabs();
             linearExecuted.setVisibility(View.VISIBLE);
-            rvBalanceSummary.setVisibility(View.GONE);
-            setExecutedActive();
+            btExecutedOrdersGrouped.setBackgroundResource(R.drawable.order_book_border_active);
+        }else  if(selectedTab==MyApplication.TAB_MARGIN_DETAILS){
+            resetTabs();
+            linearMarginDetails.setVisibility(View.VISIBLE);
+            btMarginDetails.setBackgroundResource(R.drawable.order_book_border_active);
+        }else  if(selectedTab==MyApplication.TAB_MARGIN_PAYMENTS){
+            resetTabs();
+            linearMarginPayments.setVisibility(View.VISIBLE);
+            btMarginPayments.setBackgroundResource(R.drawable.order_book_border_active);
         }
 
-
-
-
-    }
+        }
 
     private void clearArrays(){
-        arrayBalacedFields.clear();
-        arrayBalancedGroups.clear();
-        arrayExecuted.clear();
-        arrayParentBalanced.clear();
+        try{arrayBalacedFields.clear();}catch (Exception e){}
+        try{arrayBalancedGroups.clear();}catch (Exception e){}
+            try{arrayExecuted.clear();}catch (Exception e){}
+                try{arrayMarginPayments.clear();}catch (Exception e){}
+                    try{arrayParentBalanced.clear();}catch (Exception e){}
         try{balanceAdapter.notifyDataSetChanged();}catch (Exception e){}
         try{executedAdapter.notifyDataSetChanged();}catch (Exception e){}
+        try{marginPaymentAdapter.notifyDataSetChanged();}catch (Exception e){}
     }
 
 
@@ -421,7 +465,7 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
         Actions.InitializeSessionServiceV2(this);
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
     }
 
     @Override
@@ -441,7 +485,7 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        Actions.unregisterSessionReceiver(this);
         try {
             System.gc();
             Runtime.getRuntime().gc();
@@ -483,6 +527,9 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
         protected void onPreExecute() {
             super.onPreExecute();
             loading.setVisibility(View.VISIBLE);
+            try{arrayExecuted.clear();}catch (Exception e){}
+            try{arrayBalacedFields.clear();}catch (Exception e){}
+                try{arrayBalancedGroups.clear();}catch (Exception e){}
             isCalled=true;
         }
 
@@ -505,7 +552,6 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
             parameters.put("key", MyApplication.mshared.getString(getString(R.string.afterkey), ""));
 
             try {
-                clearArrays();
                 result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
                 arrayExecuted.addAll(GlobalFunctions.getBalancedExecuted(result));
                 arrayBalacedFields.addAll(GlobalFunctions.getBalancedFields(result));
@@ -560,6 +606,164 @@ public class BalanceDetailsActivity extends AppCompatActivity implements Portofl
     }
 
 
+
+
+
+    private class GetMarginDetails extends AsyncTask<Void, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading.setVisibility(View.VISIBLE);
+            isCalled=true;
+            arrayMarginDetailsValueItems.clear();
+            if(adapterMarginDetailsValues!=null)
+               adapterMarginDetailsValues.notifyDataSetChanged();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result = "";
+
+            String url = MyApplication.link + MyApplication.GetMarginDetails.getValue(); // this method uses key after login
+            HashMap<String, String> parameters = new HashMap<String, String>();
+            Log.wtf("balance_url",url);
+
+            parameters.put("userId", MyApplication.selectedSubAccount.getUserId() + "");
+            parameters.put("portfolioId", MyApplication.selectedSubAccount.getPortfolioId() + "");
+            parameters.put("lang", MyApplication.lang == MyApplication.ARABIC ? "Arabic" : "English");
+            parameters.put("key", MyApplication.mshared.getString(getString(R.string.afterkey), ""));
+
+            try {
+                result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
+
+                arrayMarginDetailsValueItems.addAll(GlobalFunctions.getBalanceDetailsValues(result));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            setBalanceDetailsData();
+            loading.setVisibility(View.GONE);
+
+            // setStockAlerts();
+
+        }
+    }
+
+
+    private void setBalanceDetailsData(){
+        rvMarginDetails.setLayoutManager(llUserData);
+        if (arrayMarginDetailsValueItems.size() % 2 != 0) {
+            llUserData.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    //Log.wtf("position" , "is " + position);
+                    if (position == arrayMarginDetailsValueItems.size() - 1)
+                        return MyApplication.GRID_VALUES_SPAN_COUNT;
+                    else return 1;
+                }
+            });
+        } else {
+            llUserData.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    //Log.wtf("position" , "is " + position);
+                    if (position == arrayMarginDetailsValueItems.size() - 1) return 1;
+                    else return 1;
+                }
+            });
+        }
+        adapterMarginDetailsValues = new ValuesGridRecyclerAdapter(BalanceDetailsActivity.this, arrayMarginDetailsValueItems);
+        rvMarginDetails.setAdapter(adapterMarginDetailsValues);
+        rvMarginDetails.setNestedScrollingEnabled(false);
+    }
+
+
+
+
+    private class GetMarginPayments extends AsyncTask<Void, String, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            loading.setVisibility(View.VISIBLE);
+            isCalled=true;
+            arrayMarginPayments.clear();
+            if(marginPaymentAdapter!=null)
+               marginPaymentAdapter.notifyDataSetChanged();
+    /*        arrayMarginPayments.clear();
+            if(marginPaymentAdapter!=null)
+                marginPaymentAdapter.notifyDataSetChanged();*/
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+
+            String result = "";
+
+            String url = MyApplication.link + MyApplication.GetMarginPayments.getValue(); // this method uses key after login
+            HashMap<String, String> parameters = new HashMap<String, String>();
+            Log.wtf("balance_url",url);
+
+            parameters.put("UserID", MyApplication.selectedSubAccount.getUserId() + "");
+            parameters.put("PortfolioID", MyApplication.selectedSubAccount.getPortfolioId() + "");
+            parameters.put("key", MyApplication.mshared.getString(getString(R.string.afterkey), ""));
+
+            try {
+                result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
+
+/*                arrayMarginPayments.add(new MarginPayment("1112.234","03/12/2020","10/12/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/12/2020","11/12/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/12/2020","01/12/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/12/2020","30/11/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/12/2020","29/11/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/11/2020","28/11/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/11/2020","27/11/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/11/2020","26/11/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/11/2020","25/11/2020"));
+                arrayMarginPayments.add(new MarginPayment("2112.234","03/11/2020","24/11/2020"));*/
+               arrayMarginPayments.addAll(GlobalFunctions.getMarginPayments(result));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+           // setBalanceDetailsData();
+            loading.setVisibility(View.GONE);
+            try{marginPaymentAdapter.notifyDataSetChanged();}catch (Exception e){}
+            setTotalAmount();
+            // setStockAlerts();
+
+        }
+    }
+
+    private void setTotalAmount(){
+        Double totalAmount=0.0;
+        try{
+        for (int i=0;i<arrayMarginPayments.size();i++){
+            totalAmount+=Double.parseDouble(arrayMarginPayments.get(i).getAmounDue());
+        }}catch (Exception e){}
+        tvTotalAmount.setText(Actions.formatNumber(totalAmount,Actions.TwoDecimalThousandsSeparator));
+
+    }
 
 
 }

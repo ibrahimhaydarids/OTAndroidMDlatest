@@ -50,7 +50,7 @@ public class MarketsSpinnerAdapter extends ArrayAdapter<enums.TradingSession> {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.item_market_name, null);
+        view = inflter.inflate(R.layout.item_market_selected_spinner, null);
 
         TextView tvItem = view.findViewById(R.id.tvItem);
         LinearLayout llItem = view.findViewById(R.id.llItem);

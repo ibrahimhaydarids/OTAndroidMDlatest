@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/OT_Merged_Notification_phase2.iml" filepath="$PROJECT_DIR$/OT_Merged_Notification_phase2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/fixot/fixot.iml" filepath="$PROJECT_DIR$/fixot/fixot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/OT_Merged_Notification_phase2.iml" filepath="$PROJECT_DIR$/OT_Merged_Notification_phase2.iml" group="OT_Merged_Notification_phase2" />
+      <module fileurl="file://$PROJECT_DIR$/fixot/fixot.iml" filepath="$PROJECT_DIR$/fixot/fixot.iml" group="OT_Merged_Notification_phase2/fixot" />
     </modules>
   </component>
 </project>

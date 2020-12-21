@@ -24,12 +24,13 @@
             android:padding="@dimen/padding"
             android:src="@drawable/back" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:gravity="center"
+            android:maxLines="1"
             android:paddingStart="@dimen/padding"
             android:paddingEnd="@dimen/padding"
             android:text="@string/logout"
@@ -84,7 +85,7 @@
                     android:id="@+id/rlUserHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorMedium"
+                    android:background="@drawable/border_selected_dark"
                     android:minHeight="@dimen/header_height"
                     android:orientation="horizontal"
                     android:padding="@dimen/mini_padding">

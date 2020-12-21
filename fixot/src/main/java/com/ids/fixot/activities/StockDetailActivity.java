@@ -102,6 +102,10 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
     private ArrayList<NewsItem> allNews = new ArrayList<>();
     private NewsRecyclerAdapter adapter;
     Spinner spInstrumentsTop;
+    LinearLayout linearPercentages;
+
+    LinearLayout progressBuy,progressCell;
+    TextView tvBuyPerTitle,tvBuyPerValue,tvSellPerTitle,tvSellPerValue;
 
     public StockDetailActivity() {
         LocalUtils.updateConfig(this);
@@ -180,7 +184,8 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
         }
 
         Actions.overrideFonts(this, rootLayout, false);
-
+        tvBuyPerValue.setTypeface(MyApplication.droidbold);
+        tvSellPerValue.setTypeface(MyApplication.droidbold);
         try {
             spInstrumentsTop = (Spinner) findViewById(R.id.spInstrumentTop);
             if(BuildConfig.Enable_Markets)
@@ -259,9 +264,19 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Actions.unregisterSessionReceiver(this);
     }
 
     public void findViews() {
+
+        linearPercentages= findViewById(R.id.linearPercentages);
+
+        if(BuildConfig.APPLICATION_ID.matches("com.ids.fixot.sharq") || BuildConfig.APPLICATION_ID.matches("com.ids.fixot.kicPro"))
+            linearPercentages.setVisibility(View.VISIBLE);
+        else
+            linearPercentages.setVisibility(View.GONE);
+
 
         nsScroll = findViewById(R.id.nsScroll);
         btTimeSales = findViewById(R.id.btTimeSales);
@@ -287,6 +302,18 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
         ivFavorite = findViewById(R.id.ivFavorite);
         tvStockName = findViewById(R.id.stockName);
         ivArrow = findViewById(R.id.ivInfo);
+
+
+         progressBuy= findViewById(R.id.progressBuy);
+         progressCell= findViewById(R.id.progressCell);
+         tvBuyPerTitle= findViewById(R.id.tvBuyPerTitle);
+         tvBuyPerValue= findViewById(R.id.tvBuyPerValue);
+         tvSellPerTitle= findViewById(R.id.tvSellPerTitle);
+         tvSellPerValue= findViewById(R.id.tvSellPerValue);
+
+
+
+
 //        if (MyApplication.lang == MyApplication.ARABIC)
 //            ivArrow.setRotation(0);
 //        else
@@ -425,7 +452,7 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
         //Actions.InitializeSessionService(this);
         //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
-        //Actions.InitializeMarketServiceV2(this);
+        Actions.InitializeMarketServiceV2(this);
     }
 
     @Override
@@ -441,6 +468,8 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
         super.onPause();
         MyApplication.sessionOut = Calendar.getInstance();
     }
+
+
 
     //<editor-fold desc="chart functions">
     @Override
@@ -518,6 +547,12 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
                 stock.setSessionId(json_data.getString("SessionId"));
                 stock.setSecurityId(json_data.getString("SecurityID"));
                 stock.setLast(json_data.getDouble("Last"));
+
+                try{ stock.setBuyPercent(json_data.getDouble("BuyPercent"));}catch (Exception e){stock.setBuyPercent(0.0);}
+                try{ stock.setSellPercent(json_data.getDouble("SellPercent"));}catch (Exception e){stock.setSellPercent(0.0);}
+                try{ stock.setBuyPercentFormatted(json_data.getString("BuyPercentFormatted"));}catch (Exception e){stock.setBuyPercentFormatted("");}
+                try{ stock.setSellPercentFormatted(json_data.getString("SellPercentFormatted"));}catch (Exception e){stock.setSellPercentFormatted("");}
+
                 isFavorite = json_data.getBoolean("IsFavorite");
 
                 stock.setInstrumentId(instrumentId);
@@ -693,6 +728,11 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
             title.setText("" + stock.getLast());
             value.setText(stock.getChange());
             Log.wtf("getChange getChange", "ss " + stock.getChange());
+
+            if(BuildConfig.APPLICATION_ID.matches("com.ids.fixot.sharq") || BuildConfig.APPLICATION_ID.matches("com.ids.fixot.kicPro"))
+               setPercentageData();
+
+
 
             try {
                 double change = Double.parseDouble(stock.getChangePercent().split("%")[0]);
@@ -1007,5 +1047,27 @@ public class StockDetailActivity extends AppCompatActivity implements OnChartGes
             Log.wtf("News Count for STock", stock.getSymbolEn() + " = " + allNews.size());
 
         }
+    }
+
+
+    private void setPercentageData(){
+        try{tvBuyPerValue.setText(stock.getBuyPercentFormatted());}catch (Exception e){}
+        try{tvSellPerValue.setText(stock.getSellPercentFormatted());}catch (Exception e){}
+        try{
+            setWeight(progressBuy,Float.parseFloat(stock.getBuyPercent()+""));
+            setWeight(progressCell,Float.parseFloat(stock.getSellPercent()+""));
+        }catch (Exception e){
+
+        }
+    }
+
+
+    private void setWeight(View myView,Float weight){
+        LinearLayout.LayoutParams param = new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                weight
+        );
+        myView.setLayoutParams(param);
     }
 }

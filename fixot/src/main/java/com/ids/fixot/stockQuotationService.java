@@ -221,7 +221,6 @@ public class stockQuotationService extends Service {
                     parameters.put("MarketId", marketid);
                     parameters.put("sectorId", "0");
 
-
                     result = ConnectionRequests.GET(url, getApplicationContext(), parameters);
 
                     if (appServiceFirstTime || MyApplication.stockQuotations.size() == 0) {

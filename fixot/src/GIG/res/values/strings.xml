@@ -156,6 +156,7 @@
     <string name="sector">Sector</string>
     <string name="sectors">Sectors</string>
     <string name="stock">Stocks</string>
+    <string name="stock_btn">Stocks</string>
     <string name="time_sales">Trades</string>
     <string name="top_trades">Trades</string>
     <string name="top_value">Value</string>

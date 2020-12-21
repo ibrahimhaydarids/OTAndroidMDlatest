@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="?attr/colorDarkHeader"
+    android:orientation="horizontal"
+    android:paddingLeft="4dp"
+    android:paddingTop="1dp"
+    android:layout_marginLeft="@dimen/small_margin"
+    android:layout_marginRight="@dimen/small_margin"
+    android:paddingRight="4dp"
+    android:paddingBottom="1dp">
+
+
+
+    <TextView
+        android:id="@+id/tvTradeDateTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="@dimen/small"
+        android:layout_gravity="start|center_vertical"
+        android:padding="@dimen/mini_padding"
+        android:textAlignment="viewStart"
+        android:text="@string/trade_date"
+        android:textColor="@color/white" />
+
+
+    <TextView
+        android:id="@+id/tvAmountDue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:padding="@dimen/mini_padding"
+        android:textSize="@dimen/small"
+
+        android:text="@string/due_amount"
+
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tvSettelementDateTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="@dimen/small"
+        android:padding="@dimen/mini_padding"
+        android:text="@string/settlement_date"
+        android:textColor="@color/white"
+        />
+
+
+    <TextView
+        android:id="@+id/tvDaysTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:textSize="@dimen/small"
+        android:padding="@dimen/mini_padding"
+        android:text="@string/days"
+        android:textColor="@color/white"
+        />
+
+
+</LinearLayout>

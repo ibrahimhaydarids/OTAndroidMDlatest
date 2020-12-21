@@ -104,7 +104,7 @@
             android:id="@+id/rlUserHeader"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorMedium"
+            android:background="@drawable/border_selected_dark"
             android:minHeight="@dimen/header_height"
             android:orientation="horizontal"
             android:padding="@dimen/mini_padding">

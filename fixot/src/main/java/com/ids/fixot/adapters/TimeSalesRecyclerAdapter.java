@@ -97,6 +97,12 @@ public class TimeSalesRecyclerAdapter extends RecyclerView.Adapter<TimeSalesRecy
 
         }
 
+        if(BuildConfig.Enable_Markets){
+            holder.tvTypeItem.setVisibility(View.VISIBLE);
+        }else {
+            holder.tvTypeItem.setVisibility(View.GONE);
+        }
+
 
         holder.tvStockItem.setOnClickListener(new View.OnClickListener() {
             @Override

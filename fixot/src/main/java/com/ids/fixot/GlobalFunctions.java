@@ -1,10 +1,13 @@
 package com.ids.fixot;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.ids.fixot.classes.ReportPageSetup;
+import com.ids.fixot.classes.RequestTicketTypes;
+import com.ids.fixot.classes.ResponseRequestTickets;
 import com.ids.fixot.model.ApplicationList;
 import com.ids.fixot.model.BalanceSummary;
 import com.ids.fixot.model.BrokerageFee;
@@ -15,6 +18,7 @@ import com.ids.fixot.model.ExecutedOrders;
 import com.ids.fixot.model.ForwardContract;
 import com.ids.fixot.model.Instrument;
 import com.ids.fixot.model.Lookups;
+import com.ids.fixot.model.MarginPayment;
 import com.ids.fixot.model.MarketStatus;
 import com.ids.fixot.model.NewsItem;
 import com.ids.fixot.model.NotificationItem;
@@ -764,6 +768,32 @@ public class GlobalFunctions {
 
 
         try {
+            parameter.setShowCashTransactionRequest(object.getBoolean("ShowCashTransactionRequest"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            parameter.setShowCashTransactionRequest(false);
+        }
+
+        try {
+            parameter.setShowBalanceDetails(object.getBoolean("ShowBalanceDetails"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            parameter.setShowBalanceDetails(false);
+        }
+
+        try {
+            parameter.setShowStockTransactionRequest(object.getBoolean("ShowStockTransactionRequest"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            parameter.setShowStockTransactionRequest(false);
+        }
+
+
+
+
+
+
+        try {
             parameter.setEnableNotification(object.getBoolean("EnableNotification"));
             MyApplication.editor.putBoolean("EnableNotification", object.getBoolean("EnableNotification")).apply();
         } catch (Exception e) {
@@ -771,6 +801,14 @@ public class GlobalFunctions {
             parameter.setEnableNotification(true);
         }
 
+
+        try {
+            parameter.setShowChangePin(object.getBoolean("ShowChangePIN"));
+            MyApplication.editor.putBoolean("ShowChangePIN", object.getBoolean("ShowChangePIN")).apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+            parameter.setShowChangePin(false);
+        }
 
         try {
             parameter.setEnableAdvancedTypeSection(object.getBoolean("EnableAdvancedTypeSection"));
@@ -987,6 +1025,13 @@ public class GlobalFunctions {
         String successAr = jsondata_msg.getString("MessageAr");
         marketStatus.setMessageAr(successAr);
 
+        try{
+        int statusMessage = jsondata_msg.getInt("Status");
+        marketStatus.setMessageStatus(statusMessage);
+        }catch (Exception e){
+
+        }
+
         try {
 
             try {
@@ -1018,6 +1063,8 @@ public class GlobalFunctions {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
 
             try {
                 marketStatus.setStatusName(object.getString("StatusName"));
@@ -2776,6 +2823,68 @@ public class GlobalFunctions {
 
 
 
+
+    public static ArrayList<ValueItem> getBalanceDetailsValues(String JsonString)
+            throws JSONException, UnsupportedEncodingException {
+        ArrayList<ValueItem> valueItems = new ArrayList<ValueItem>();
+
+        JSONObject object = new JSONObject(JsonString);
+
+
+        String msgdata = object.getString("ResponseMessage");
+        JSONObject jsondata_msg = new JSONObject(msgdata);
+        String success = jsondata_msg.getString("MessageEn");
+
+        if (success.equals("Success")) {
+            try {
+                JSONArray jarray = object.getJSONObject("CashSummary").getJSONArray("Fields");
+                for (int i = 0; i < jarray.length(); i++) {
+                    ValueItem item = new ValueItem();
+                    JSONObject json_data = jarray.getJSONObject(i);
+
+                    try {
+                        item.setTitle(json_data.getString("Key"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+          /*          try {
+                        item.setSymbol(json_data.getString("Symbol"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    try {
+                        item.setGroupId(json_data.getString("GroupId"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        item.setGroupId("");
+                    }*/
+
+
+                    try {
+                        item.setValue(json_data.getString("Value"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        item.setValue("");
+                    }
+
+
+
+
+                    valueItems.add(item);
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return valueItems;
+    }
+
+
     public static ArrayList<BalanceSummary> getBalancedGroups(String JsonString)
             throws JSONException, UnsupportedEncodingException {
         ArrayList<BalanceSummary> balanceItems = new ArrayList<BalanceSummary>();
@@ -2922,6 +3031,60 @@ public class GlobalFunctions {
 
 
 
+    public static ArrayList<MarginPayment> getMarginPayments(String JsonString)
+            throws JSONException, UnsupportedEncodingException {
+        ArrayList<MarginPayment> arrayMarginPayments = new ArrayList<MarginPayment>();
+
+        JSONObject object = new JSONObject(JsonString);
+
+
+        String msgdata = object.getString("ResponseMessage");
+        JSONObject jsondata_msg = new JSONObject(msgdata);
+        String success = jsondata_msg.getString("MessageEn");
+
+        if (success.equals("Success")) {
+            try {
+                JSONArray jarray = object.getJSONArray("MarginPayment");
+                for (int i = 0; i < jarray.length(); i++) {
+                    MarginPayment marginPayment = new MarginPayment();
+                    JSONObject json_data = jarray.getJSONObject(i);
+
+
+                    try {
+                        marginPayment.setAmounDue(json_data.getString("AmounDue"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        marginPayment.setAmounDue("");
+                    }
+
+                    try {
+                        marginPayment.setTradeDate(json_data.getString("TradeDate"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        marginPayment.setTradeDate("");
+                    }
+
+                    try {
+                        marginPayment.setSettlementDate(json_data.getString("SettlementDate"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        marginPayment.setSettlementDate("");
+                    }
+
+
+
+                    arrayMarginPayments.add(marginPayment);
+
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayMarginPayments;
+    }
+
+
 
     public static ArrayList<WebItem> GetSiteMap(String JsonString)
             throws JSONException, UnsupportedEncodingException {
@@ -3030,7 +3193,7 @@ public class GlobalFunctions {
     }
 
 
-    public static ArrayList<TimeSale> GetTimeSales(String JsonString,boolean isTimeSaleTrade)
+    public static ArrayList<TimeSale> GetTimeSales(Context context,String JsonString, boolean isTimeSaleTrade)
             throws JSONException, UnsupportedEncodingException {
 
         ArrayList<TimeSale> trades = new ArrayList<TimeSale>();
@@ -3108,6 +3271,13 @@ public class GlobalFunctions {
                 }
 
                 try {
+                    trade.setTradeDate(json_data.getString("TradeDate"));
+                } catch (Exception e) {
+                    trade.setTradeDate("");
+                    e.printStackTrace();
+                }
+
+                try {
                     trade.setInstrumentId(json_data.getString("InstrumentId"));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -3151,6 +3321,7 @@ public class GlobalFunctions {
             if (!jsonobj.getString("MaxTimeStamp").equals("0") && isTimeSaleTrade && !jsonobj.getString("MaxTimeStamp").trim().matches("null") && jsonobj.getString("MaxTimeStamp")!=null){
                 MyApplication.timeSalesTimesTamp = jsonobj.getString("MaxTimeStamp");
                 MyApplication.timeSalesTimesTampMap.put(CurrentMarketId,jsonobj.getString("MaxTimeStamp"));
+                Actions.saveMap(context,MyApplication.timeSalesTimesTampMap);
             }
         } catch (JSONException e) {
             try{
@@ -6064,6 +6235,144 @@ public class GlobalFunctions {
         }
         return stockAlerts;
     }
+
+
+
+
+
+    public static ArrayList<RequestTicketTypes> GetClientTypes(String JsonString)
+            throws JSONException, UnsupportedEncodingException {
+
+        JSONObject object = new JSONObject(JsonString);
+
+        ArrayList<RequestTicketTypes> arrayTypes = new ArrayList<>();
+
+        String msgdata = object.getString("ResponseMessage");
+        JSONObject jsondata_msg = new JSONObject(msgdata);
+        String success = jsondata_msg.getString("MessageEn");
+        if (success.equals("Success")) {
+
+            try {
+
+                JSONArray jsonArray = object.getJSONArray("CashTicketTypes");
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject json_data = jsonArray.getJSONObject(i);
+                    RequestTicketTypes ticketTypes = new RequestTicketTypes();
+
+                    try {
+                        ticketTypes.setDescriptionEn(json_data.getString("DescriptionEn"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        ticketTypes.setDescriptionEn("");
+                    }
+
+                    try {
+                        ticketTypes.setDescriptionAr(json_data.getString("DescriptionAr"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        ticketTypes.setDescriptionAr("");
+                    }
+
+                    try {
+                        ticketTypes.setCashTicketTypeID(json_data.getInt("CashTicketTypeID"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        ticketTypes.setCashTicketTypeID(0);
+                    }
+
+                    arrayTypes.add(ticketTypes);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayTypes;
+    }
+
+
+
+
+    public static ArrayList<ResponseRequestTickets> GetRequestTickets(String JsonString)
+            throws JSONException, UnsupportedEncodingException {
+
+        JSONObject object = new JSONObject(JsonString);
+
+        ArrayList<ResponseRequestTickets> arrayRequests = new ArrayList<>();
+
+        String msgdata = object.getString("ResponseMessage");
+        JSONObject jsondata_msg = new JSONObject(msgdata);
+        String success = jsondata_msg.getString("MessageEn");
+        if (success.equals("Success")) {
+
+            try {
+
+                JSONArray jsonArray = object.getJSONArray("CashTransactionRequestList");
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+
+                    JSONObject json_data = jsonArray.getJSONObject(i);
+                    ResponseRequestTickets request = new ResponseRequestTickets();
+
+                    try {
+                        request.setAmount(json_data.getString("Amount"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setAmount("");
+                    }
+
+                    try {
+                        request.setTicketDate(json_data.getString("TicketDate"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setTicketDate("");
+                    }
+
+                    try {
+                        request.setStatusID(json_data.getInt("StatusID"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setStatusID(0);
+                    }
+
+                    try {
+                        request.setTypeID(json_data.getInt("TypeID"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setTypeID(0);
+                    }
+
+                    try {
+                        request.setStatusDescription(json_data.getString("StatusDescription"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setStatusDescription("");
+                    }
+
+                    try {
+                        request.setTypeDescription(json_data.getString("TypeDescription"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setTypeDescription("");
+                    }
+
+                    try {
+                        request.setCanCancel(json_data.getBoolean("CanCancel"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        request.setCanCancel(false);
+                    }
+
+                    arrayRequests.add(request);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return arrayRequests;
+    }
+
 
 
 

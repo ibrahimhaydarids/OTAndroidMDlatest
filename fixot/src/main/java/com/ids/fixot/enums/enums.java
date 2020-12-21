@@ -56,11 +56,11 @@ public class enums {
         MARKET_TO_LIMIT("MarketToLimit", 7),
         MIT("MIT", 8),
         LIT("LIT", 9),
-        SMART_ICEBERG("SmartIceberg", 10),
+        SMART_ICEBERG_ORDERBOOK("SmartIcebergOrderbook", 10),
         MANAGED_ORDERS("ManagedOrders", 11),
         OCA("OCA", 12),
         ICEBERG_REVERSE("Iceberg Reverse", 13),
-        MARKET_IF_TOUCHED("Market if Touched", 14),
+        SMART_ICEBERG("Smart Iceberg", 14),
 
 
         LIMIT_AR("Limit", 2),
@@ -116,7 +116,8 @@ public class enums {
         UPDATE_ORDER("UpdateOrder", 2),
         PRIVATE_ORDER("PrivateOrder", 4),
         MANAGED_ORER("ManagedOrders", 5),
-        ICEBERG_ORDER("IcebergOrders", 6);
+        ICEBERG_ORDER("IcebergOrders", 6),
+        SMART_ICEBERG_ORDER("SmartIcebergOrders", 7);
         private String stringValue;
         private int intValue;
 

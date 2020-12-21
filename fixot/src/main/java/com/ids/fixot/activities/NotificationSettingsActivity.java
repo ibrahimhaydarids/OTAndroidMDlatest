@@ -149,6 +149,7 @@ public class NotificationSettingsActivity extends AppCompatActivity implements M
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void setListeners() {

@@ -255,7 +255,7 @@ public class SectorDetailActivity extends AppCompatActivity implements OnChartGe
 //Actions.InitializeSessionService(this);
 //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
 
     }
 
@@ -298,6 +298,7 @@ public class SectorDetailActivity extends AppCompatActivity implements OnChartGe
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
 
@@ -586,6 +587,7 @@ public class SectorDetailActivity extends AppCompatActivity implements OnChartGe
 
             HashMap<String, String> parameters = new HashMap<String, String>();
             parameters.put("sectorID", "" + sector.getSectorID());
+            parameters.put("MarketID", "" + MyApplication.marketID);
             parameters.put("key", getString(R.string.beforekey));
 
             try {

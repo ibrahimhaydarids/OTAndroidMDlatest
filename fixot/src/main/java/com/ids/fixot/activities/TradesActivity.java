@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -27,7 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.telecom.GatewayInfo;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -65,13 +63,11 @@ import com.ids.fixot.R;
 import com.ids.fixot.adapters.OrderDurationTypeAdapter;
 import com.ids.fixot.adapters.OrderTypeSpinnerAdapter;
 import com.ids.fixot.adapters.OrdersPopupTrades;
-import com.ids.fixot.adapters.OrdersPopupTrades;
 import com.ids.fixot.adapters.PredefineQuantityAdapter;
 import com.ids.fixot.adapters.SubAccountsSpinnerAdapter;
 import com.ids.fixot.adapters.stockQuotationPopupNewAdapter;
 import com.ids.fixot.classes.NumberTextWatcher;
 import com.ids.fixot.enums.enums;
-import com.ids.fixot.interfaces.spItemListener;
 import com.ids.fixot.model.BrokerageFee;
 import com.ids.fixot.model.OnlineOrder;
 import com.ids.fixot.model.OrderDurationType;
@@ -80,6 +76,11 @@ import com.ids.fixot.model.SectorTitles;
 import com.ids.fixot.model.StockQuotation;
 import com.ids.fixot.model.SubAccount;
 import com.ids.fixot.model.Trade;
+
+/*
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+*/
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -95,6 +96,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import me.grantland.widget.AutofitHelper;
 
 
 public class TradesActivity extends AppCompatActivity implements OrderDurationTypeAdapter.RecyclerViewOnItemClickListener,
@@ -121,6 +124,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     TextView tvCostValue, tvCommissionValue, tvOverallValue;
     ImageView tvFill;
     Button btReview, btCancel;
+    boolean isBuySellClick=false;
     double price = 0;
     //    double tickDirection = 0 ;
     double ticketPrice = 0.1, ticketTriggerPrice=0.1,ticketQtt = 0.1;
@@ -144,7 +148,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     AlertDialog dialog;
     RecyclerView rvDurationType;
     GetOrderTypes getOrderTypes;
+
     int remainingQty = 0;
+    int lastSelectedOrderAdvanced=0;
     int[] predefinedQuantityData = new int[]{};
     GetOrderDurationTypes getOrderDurationTypes;
     GetTradeInfo getTradeInfo;
@@ -221,7 +227,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     private DecimalFormat df;
     private DecimalFormat dfnd;
     private boolean hasFractionalPart;
-
+    private boolean hasFractionalPartValue;
     private Dialog stocksDialog;
     private Dialog fillDataDialog;
     stockQuotationPopupNewAdapter adapterStockPopup;
@@ -239,7 +245,10 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     private CountDownTimer localTimer;
     public boolean localFinish=true;
 
-
+    private Activity activity;
+    private LinearLayout linearFooter;
+    private Double overallFirst=0.0;
+    private Double shareFirst=0.0;
 
 
 
@@ -262,6 +271,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activity=this;
+
+
 
         receiver = new marketStatusReceiver(this);
         LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(AppService.ACTION_MARKET_SERVICE));
@@ -275,11 +287,12 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         setContentView(R.layout.activity_trades_new);
 
-        df = new DecimalFormat("#,###.##",Actions.setInEnglish());
+
+        df = new DecimalFormat("#,###.####",Actions.setInEnglish());
         df.setDecimalSeparatorAlwaysShown(true);
         dfnd = new DecimalFormat("#,###",Actions.setInEnglish());
         hasFractionalPart = false;
-
+        hasFractionalPartValue = true;
         if(Actions.getSubAccountOTCCount()==0 && Actions.getLastMarketId(getApplicationContext())==enums.MarketType.KWOTC.getValue()){
             CreateDialog(this,getString(R.string.plz_contact_kic));
         }else {
@@ -287,8 +300,22 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             setData();
             findViews();
             initAndCall();
+        /*    KeyboardVisibilityEvent.setEventListener(
+                    this,
+                    new KeyboardVisibilityEventListener() {
+                        @Override
+                        public void onVisibilityChanged(boolean isOpen) {
+                            Log.wtf("keyboard_status",isOpen+"");
+                           if(isOpen)
+                              linearFooter.setVisibility(View.GONE);
+                           else
+                               linearFooter.setVisibility(View.VISIBLE);
+                        }
+                    });*/
 
         }
+
+
 /*        LocalBroadcastManager.getInstance(TradesActivity.this).registerReceiver(
                 new BroadcastReceiver() {
                     @Override
@@ -595,8 +622,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         Actions.checkSession(this);
 
         Actions.checkLanguage(this, started);
-
-        Actions.InitializeSessionServiceV2(this);
+        Actions.InitializeMarketServiceV2(this);
+        Actions.InitializeSessionServiceV2(activity);
         firstTime=true;
         running = true;
         setAutoUpdate();
@@ -635,8 +662,12 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
 
         TextView tvStocksNo=findViewById(R.id.tvStocksNo);
-        if(!BuildConfig.Enable_Markets)
+        if(!BuildConfig.Enable_Markets) {
             tvStocksNo.setText(getString(R.string.shares));
+            tvStocksNo.setBackgroundColor(getResources().getColor(R.color.even_red_color));
+
+        }
+        linearFooter=findViewById(R.id.linearFooter);
 
         linearTopHighLow=findViewById(R.id.linearTopHighLow);
         linearDataTopNew=findViewById(R.id.linearDataTopNew);
@@ -682,7 +713,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         if(BuildConfig.Enable_Markets) {
             priceFormat = Actions.TwoDecimalThousandsSeparator;
-            limitPriceFormat="##.##";
+            limitPriceFormat="######.##";
         }
         else {
             priceFormat = Actions.ThreeDecimalThousandsSeparator;
@@ -784,7 +815,16 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         rlBuySell = findViewById(R.id.rlBuySell);
         rootLayout = findViewById(R.id.rootLayout);
+
+
+
+
         cbPrivate = findViewById(R.id.cbPrivate);
+        if(stockId==0 || !BuildConfig.Enable_Markets) {
+            llDuration.setVisibility(View.GONE);
+            cbPrivate.setVisibility(View.GONE);
+        }
+
         llTradeSection = findViewById(R.id.llTradeSection);
         rlUserHeader = findViewById(R.id.rlUserHeader);
         myToolbar = findViewById(R.id.my_toolbar);
@@ -805,13 +845,18 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         tvQuantityValue = findViewById(R.id.tvQuantityValue);
         tvPurchasePowerValue = findViewById(R.id.tvPurchasePowerValue);
 
+        TextView tvPurchasePower=findViewById(R.id.tvPurchasePower);
         if(!BuildConfig.Enable_Markets){
             tvPurchasePowerValue.setBackgroundColor(Color.TRANSPARENT);
+            tvQuantityValue.setBackgroundColor(Color.TRANSPARENT);
+            tvPurchasePower.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));
         }
 
-        if(!BuildConfig.Enable_Markets  && !MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true))
+        if(!BuildConfig.Enable_Markets  && !MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme),true)) {
             tvPurchasePowerValue.setTextColor(ContextCompat.getColor(this, R.color.colorValuesInv));
-
+            tvQuantityValue.setTextColor(ContextCompat.getColor(this, R.color.colorValuesInv));
+            tvPurchasePower.setTextColor(ContextCompat.getColor(this, R.color.black));
+        }
         tvStockTitle = findViewById(R.id.tvStockTitle);
 
 
@@ -949,6 +994,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     Log.wtf("quantity", ": " + quantity);
                     updateOverAllViews(price, quantity);
 
+
                     if (etQuantity.getText().length() != Actions.formatNumber(quantity, Actions.NoDecimalThousandsSeparator).length()) {
                         etQuantity.setText(Actions.formatNumber(quantity, Actions.NoDecimalThousandsSeparator));
                         int pos = etQuantity.getText().length();
@@ -1036,8 +1082,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.even_green_color));
             btReview.setBackgroundColor(getResources().getColor(R.color.green_color));
         }else {
-            if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
-                tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));
+    /*        if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
+                tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));*/
             btReview.setBackgroundColor(getResources().getColor(R.color.blue_gig));
         }
 
@@ -1056,10 +1102,12 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
             tradeType = getIntent().getExtras().getInt("action");
 
-            if (tradeType == MyApplication.ORDER_BUY)
+            if (tradeType == MyApplication.ORDER_BUY) {
                 btBuy.performClick();
-            else
+            }
+            else {
                 btSell.performClick();
+            }
         }
 
 
@@ -1070,6 +1118,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
             Log.wtf("trade_price_1",onlineOrder.getPrice()+"");
             etLimitPrice.setText(String.valueOf(onlineOrder.getPrice()));
+
+
             try{
                 etLimitTriggerPrice.setText(onlineOrder.getTriggerPrice()+"");
                 Log.wtf("bobo",onlineOrder.getTriggerPrice()+"aa");
@@ -1103,26 +1153,33 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                     if (!hasFocus) {
 
+
                         if (!MyApplication.marketID.matches(Integer.toString(enums.MarketType.KWOTC.getValue()))) {
 
                             if (trade.getStockQuotation().getInstrumentId().equals(MyApplication.Auction_Instrument_id)) {
 
-                                if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > HiLimit) || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0)) {
 
-                                    if (tradeType == MyApplication.ORDER_SELL) {
-                                        etLimitPrice.setText("" + stockQuotation.getHiLimit());
-                                        Actions.CreateDialog(TradesActivity.this,getString(R.string.check_price_msg),false,false);
+                                if (orderType != MyApplication.MIT && orderType != MyApplication.LIMIT_IF_TOUCHED && orderType != MyApplication.SI_ORDERBOOK) {
+                                    if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > HiLimit) || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0)) {
 
-                                    } else {
-                                        etLimitPrice.setText("" + stockQuotation.getLowlimit());
-                                        Actions.CreateDialog(TradesActivity.this,getString(R.string.check_price_msg),false,false);
+                                        if (tradeType == MyApplication.ORDER_SELL) {
+                                            etLimitPrice.setText("" + stockQuotation.getHiLimit());
+                                            Actions.CreateDialog(TradesActivity.this, getString(R.string.check_price_msg), false, false);
+
+                                        } else {
+                                            etLimitPrice.setText("" + stockQuotation.getLowlimit());
+                                            Actions.CreateDialog(TradesActivity.this, getString(R.string.check_price_msg), false, false);
+
+                                        }
 
                                     }
 
+
                                 }
                             } else {
+                                if (orderType != MyApplication.MIT && orderType != MyApplication.LIMIT_IF_TOUCHED && orderType != MyApplication.SI_ORDERBOOK) {
 
-                                if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > stockQuotation.getHiLimit())
+                                    if ((Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) > stockQuotation.getHiLimit())
                                         || (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit())) {
 
                                     if (tradeType == MyApplication.ORDER_SELL) {
@@ -1136,6 +1193,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                                     }
 
+                                }
                                 }
                             }
 
@@ -1163,7 +1221,6 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                     }
 
-
                 }catch (Exception e){}
             }
         });
@@ -1171,17 +1228,11 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
 
 
-    /*    etLimitPrice.addTextChangedListener(new TextWatcher() {
+        etLimitPrice.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
                 // TODO Auto-generated method stub
-                if (arg0.length() == 0) {
-
-                   // checkPriceLimit();
-                } else {
-
-                }
             }
 
             @Override
@@ -1190,9 +1241,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
             @Override
             public void afterTextChanged(Editable arg0) {
-                checkPriceLimit();
             }
-        });*/
+        });
 
 
         etLimitTriggerPrice.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -1224,36 +1274,43 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
     public void setTick() {
         ticketQtt = 1;
+        boolean found=false;
         for (int i = 0; i < MyApplication.units.size(); i++) {
             if (MyApplication.units.get(i).getFromPrice() <= price && price <= MyApplication.units.get(i).getToPrice()) {
                 ticketPrice = MyApplication.units.get(i).getPriceUnit();
+                found=true;
       /*          if(!BuildConfig.Enable_Markets && ticketPrice==0.001)
                     ticketPrice=0.01;*/
                 Log.wtf("setTick - Price Change", "price = " + price + " / ticketPrice = " + ticketPrice + " / ticketQtt = " + ticketQtt);
             }
         }
+        if(!found)
+            ticketPrice=1.0;
 
-        if (BuildConfig.Enable_Markets && price > 100.9) {
+    /*    if (BuildConfig.Enable_Markets && price > 100.9) {
             etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), Actions.NoDecimalSeparator));
-        }else if(!BuildConfig.Enable_Markets && price > 100.9){
-            etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), limitPriceFormat));
+        }else
+            */if(/*!BuildConfig.Enable_Markets && */price > 100.9){
+           // etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
 
-        }
+              etLimitPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())), limitPriceFormat));
+
+          }
     }
 
 
     private String setEtTriggerPriceValue() {
         Log.wtf("setEtTriggerPriceValue", "setEtTriggerPriceValue");
+        if(!isAutoUpdate || isBuySellClick) {
+            if (!isFromOrderDetails) {
 
-        if (!isFromOrderDetails) {
+                triggerPrice = setPriceWithMarketPrice(true);
 
-            triggerPrice = setPriceWithMarketPrice(true);
+            } else {
 
-        } else {
-
-            triggerPrice = onlineOrder.getTriggerPrice();
+                triggerPrice = onlineOrder.getTriggerPrice();
+            }
         }
-
 
         setTriggerTick();
 
@@ -1284,10 +1341,11 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             }
         }
 
-        if (triggerPrice > 100.9 && BuildConfig.Enable_Markets) {
+   /*     if (triggerPrice > 100.9 && BuildConfig.Enable_Markets) {
             etLimitTriggerPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitTriggerPrice.getText().toString())), Actions.NoDecimalSeparator));
         }
-        else if(triggerPrice > 100.9 && !BuildConfig.Enable_Markets){
+        else */
+            if(triggerPrice > 100.9 /*&& !BuildConfig.Enable_Markets*/){
             etLimitTriggerPrice.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(etLimitTriggerPrice.getText().toString())), limitPriceFormat));
 
         }
@@ -1309,62 +1367,37 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         // int qtyUpdate=
 
-        if (tradeType == MyApplication.ORDER_SELL) {
+        if (tradeType == MyApplication.ORDER_SELL && BuildConfig.Enable_Markets) {
             Log.wtf("tradeType", "ORDER_SELL ");
          /*   if(isFromOrderDetails)
                quantity = trade.getAvailableShareCount()+onlineOrder.getQuantity();
             else*/
             quantity = trade.getAvailableShareCount();
-
-//details =>online order qty-executed qty(remaing)
             etQuantity.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
             updateOverAllViews(price, quantity);
-        } else {
+
+         } else {
+
+           //if(tradeType==MyApplication.ORDER_BUY){
             Double p=0.0;
             if(!tvPurchasePowerValue.getText().toString().isEmpty())
                 p=Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
             if(!tvPurchasePowerValue.getText().toString().matches("0.0")  && (p > 0.0 || orderType == MyApplication.MARKET_PRICE)) {
+                price=p;
                 showFillDataDialog();
             }
+         /*  }else {
+               showFillDataSellDialog();
+           }*/
+           Log.wtf("tradeType", "ORDER_BUY ");
 
-
-
-            Log.wtf("tradeType", "ORDER_BUY ");
-    /*        price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
-
-
-            if (trade.getPurchasePower() != 0 && price != 0) {
-
-                for (int i =z 0; i < MyApplication.allBrokerageFees.size(); i++) {
-                    if (MyApplication.allBrokerageFees.get(i).getInstrumentId().equals(trade.getStockQuotation().getInstrumentId())) {
-                        BrokerageFee data = MyApplication.allBrokerageFees.get(i);
-                        double fr = trade.getPurchasePower() - data.getClearing();
-                        double sr = price * (1 + data.getTotalBrokerageFee());
-                         double rawqty =(BuildConfig.Enable_Markets? ((fr / sr) * 1000):(fr / sr));
-                        quantity = (int) rawqty;
-
-                        if(isFromOrderDetails)
-                            quantity = trade.getAvailableShareCount()+onlineOrder.getQuantity();
-
-                        //quantity=onlineqty+
-
-                        etQuantity.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
-                    }
-                }
-
-
-            }*/
         }
 
     }
 
 
     private void updateQty(){
-        //    if (trade.getPurchasePower() != 0 && price != 0) {
 
-  /*      price=Double.parseDouble(stockQuotation.gethi()+"");
-    }    if(orderType == MyApplication.MARKET_PRICE) {
-    */
 
         for (int i = 0; i < MyApplication.allBrokerageFees.size(); i++) {
 
@@ -1374,35 +1407,150 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                     Double totalBrokerageFee=brokerageFee.getTotalBrokerageFee();
                     Double minimumBrokerageFee=brokerageFee.getMinimumBrokerageFee();
-                    Double commission=0.0;
-                    if(totalBrokerageFee < minimumBrokerageFee) {
-                        commission = minimumBrokerageFee;
-                    }
+                    Double clearing=brokerageFee.getClearing();
+                    quantity=0;
+
 
                     Double purchasePower=0.0;
-                    if(!etPurchasePowerPopup.getText().toString().isEmpty() && Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))<=trade.getPurchasePower() && Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))> 0)
-                        purchasePower=Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""));
+                    if(!etPurchasePowerPopup.getText().toString().isEmpty() && Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()))<=trade.getPurchasePower() && Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()))> 0) {
+
+                        purchasePower = Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()));
+
+                    } else {
+                          purchasePower = trade.getPurchasePower();
+                    }
+
+                    Log.wtf("first_overall",overallFirst+"...");
+                    if(isFromOrderDetails)
+                        purchasePower=purchasePower+overallFirst;
+
+                    if(purchasePower<minimumBrokerageFee)
+                        quantity=0;
                     else
-                        purchasePower=trade.getPurchasePower();
+                        if((purchasePower*totalBrokerageFee)-clearing<minimumBrokerageFee){
+                            Double calulatedQty=((purchasePower - minimumBrokerageFee - clearing)/(price ))*(!BuildConfig.Enable_Markets ? 1 : 1000);
+                            quantity=calulatedQty.intValue();
+                         }
+                    else {
+                            Double calulatedQty=((purchasePower - clearing) / (((1 + totalBrokerageFee) * price)))  * (!BuildConfig.Enable_Markets ? 1 : 1000);
+                            quantity=calulatedQty.intValue();
+                     }
 
-                    //(Double.parseDouble(etPurchasePowerPopup.getText().toString().replaceAll("\\D+","")))
-                    double fr = purchasePower- brokerageFee.getClearing()-commission;
-                    double sr = price * (1 +(commission>0?0: brokerageFee.getTotalBrokerageFee()));
-                    double rawqty = (BuildConfig.Enable_Markets ? ((fr / sr) * 1000) : (fr / sr));
-                    quantity = (int) rawqty;
+                  /*  if (isFromOrderDetails)
+                        quantity = trade.getAvailableShareCount() + onlineOrder.getQuantity();*/
 
-                    if (isFromOrderDetails)
-                        quantity = trade.getAvailableShareCount() + onlineOrder.getQuantity();
-
-                    //quantity=onlineqty+
                     if(quantity>=0)
-                      etQuantityPopup.setText(quantity+"");
+                        etQuantityPopup.setText(quantity+"");
                     else
                         etQuantityPopup.setText("0");
-                    // etQuantityPopup.setText(Actions.formatNumber(quantity, Actions.NoDecimalSeparator));
-                }}catch (Exception e){
+
+                }
+
+
+
+
+            }catch (Exception e){
                     Log.wtf("fill_exception",e.toString());
                }
+
+
+
+        }
+
+
+    }
+
+
+    private void updateQtySell(){
+
+
+
+        for (int i = 0; i < MyApplication.allBrokerageFees.size(); i++) {
+
+            try{
+                if (MyApplication.allBrokerageFees.get(i).getInstrumentId().equals(stockQuotation.getInstrumentId())) {
+                    BrokerageFee brokerageFee = MyApplication.allBrokerageFees.get(i);
+
+            /*        Double totalBrokerageFee=brokerageFee.getTotalBrokerageFee();
+                    Double minimumBrokerageFee=brokerageFee.getMinimumBrokerageFee();
+                    Double clearing=brokerageFee.getClearing();*/
+                    quantity=0;
+
+
+                    Double purchasePower=0.0;
+                    Log.wtf("available_share",trade.getAvailableShareCount()+"...");
+                    Double totalBrokerageFee=brokerageFee.getTotalBrokerageFee();
+                    Double minimumBrokerageFee=brokerageFee.getMinimumBrokerageFee();
+                    Double clearing=brokerageFee.getClearing();
+                    Double total = (price * trade.getAvailableShareCount());
+
+
+                    Log.wtf("max_sell_power_minimum_brok","...."+minimumBrokerageFee);
+                    Log.wtf("max_sell_power_total_brok","...."+totalBrokerageFee);
+
+                    double brokerage = total * brokerageFee.getTotalBrokerageFee();
+
+                    if (brokerage < brokerageFee.getMinimumBrokerageFee())
+                        brokerage = brokerageFee.getMinimumBrokerageFee();
+                    Double maxSellPower= total - brokerage;
+                    Log.wtf("max_sell_power","...."+maxSellPower.toString());
+
+
+                 //   Double maxSellPower= ( trade.getAvailableShareCount() * price) * (1 + totalBrokerageFee);  //+ minimumBrokerageFee;
+
+                //    quantity  ((1 + totalBrokerageFee)  self.price)  + clearing  =  self.purchasePower
+
+
+                    if(!etPurchasePowerPopup.getText().toString().isEmpty()  && Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()))<=maxSellPower  && Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()))> 0) {
+
+                        purchasePower = Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()));
+
+                    } else {
+                        purchasePower = Double.parseDouble(maxSellPower+"");
+                    }
+
+                    Log.wtf("first_overall2",overallFirst+"...");
+                  /*  if(isFromOrderDetails)
+                        purchasePower=purchasePower+overallFirst;*/
+
+                  if(purchasePower<minimumBrokerageFee)
+                        quantity=0;
+                   else
+                    if((purchasePower * totalBrokerageFee) < minimumBrokerageFee){
+                        Double calulatedQty=((purchasePower + minimumBrokerageFee)/(price ));
+                      //  quantity=calulatedQty.intValue();
+                        quantity=(int) Math.round(calulatedQty);
+                        if(quantity>trade.getAvailableShareCount())
+                            quantity=trade.getAvailableShareCount();
+                    }
+                    else {
+                       // Double calulatedQty=purchasePower  / (price * (1-totalBrokerageFee)) ;
+                        Double calulatedQty=(purchasePower + brokerage ) /  price ;
+                        quantity=(int) Math.round(calulatedQty);
+                        if(quantity>trade.getAvailableShareCount())
+                            quantity=trade.getAvailableShareCount();
+                       // quantity=calulatedQty.intValue();
+                    }
+
+
+
+
+
+
+
+                    if(quantity>=0)
+                        etQuantityPopup.setText(quantity+"");
+                    else
+                        etQuantityPopup.setText("0");
+
+                }
+
+
+
+
+            }catch (Exception e){
+                Log.wtf("fill_exception",e.toString());
+            }
 
 
 
@@ -1683,6 +1831,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             } else {
 
                 try {
+                    if(!BuildConfig.Enable_Markets)
+                        price = stockQuotation.getHiLimit();
+                    else {
                     if (orderType == MyApplication.LIMIT) {
 
                         if (tradeType == MyApplication.ORDER_SELL)
@@ -1695,7 +1846,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                             price = stockQuotation.getLowlimit();
                         else
                             price = stockQuotation.getHiLimit();
-                    }
+                    }}
                 } catch (Exception e) {
                     price = 0.0;
                 }
@@ -1735,9 +1886,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                                         etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
                                     }
                                 } else {
-                                    if (price > stockQuotation.getLowlimit()) {
+                                    if (price > stockQuotation.getLowlimit() || orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK) {
                                         double pr = price - ticketPrice;
-                                        if (pr >= stockQuotation.getLowlimit()) {
+                                        if (pr >= stockQuotation.getLowlimit() || orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK) {
                                             price = pr;
                                             etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
                                         }
@@ -1755,6 +1906,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                             quantity = Integer.parseInt(getNumberFromString(quantityText));
                         }
                         updateOverAllViews(price, quantity);
+
                         setTick();
 
 
@@ -1835,22 +1987,26 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                                     if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < 0) {
                                         etLimitPrice.setText(Actions.formatNumber(0, limitPriceFormat));
                                         price = 0;
-                                    } else if (price < HiLimit) {
+                                    } else if (price < HiLimit || orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK) {
                                         double pr = price + ticketPrice;
                                         if (pr <= HiLimit) {
                                             price = pr;
                                             etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
                                         }
-                                    } else {
+                                    }
+
+
+
+                                    else {
                                         etLimitPrice.setText(Actions.formatNumber(price, limitPriceFormat));
                                     }
                                 } else {
-                                    if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit()) {
+                                    if (Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString())) < stockQuotation.getLowlimit() && orderType != MyApplication.MIT && orderType != MyApplication.LIMIT_IF_TOUCHED && orderType != MyApplication.SI_ORDERBOOK) {
                                         etLimitPrice.setText(Actions.formatNumber(stockQuotation.getLowlimit(), limitPriceFormat));
                                         price = stockQuotation.getLowlimit();
-                                    } else if (price < stockQuotation.getHiLimit()) {
+                                    } else if (price < stockQuotation.getHiLimit() || orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK) {
                                         double pr = price + ticketPrice;
-                                        if (pr <= stockQuotation.getHiLimit()) {
+                                        if (pr <= stockQuotation.getHiLimit() || orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK) {
                                             price = pr;
                                             etLimitPrice.setText(Actions.formatNumber(pr, limitPriceFormat));
                                         }
@@ -1883,6 +2039,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
     private Boolean checkPriceLimit(){
         Boolean isCheck=true;
+
+        if(orderType == MyApplication.LIMIT) {
         Double pr=0.0;
                 if(!etLimitPrice.getText().toString().isEmpty()){
                     pr=  Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
@@ -1900,6 +2058,11 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
            }   */
 
         }
+        }else
+            isCheck = false;
+
+
+
           return isCheck;
     }
 
@@ -1915,8 +2078,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         }
         tvPortfolioNumber.setText(String.valueOf(MyApplication.currentUser.getPortfolioNumber()));
         if(stockId!=0) {
-            Log.wtf("trade_price_2",setEtPriceValue());
+
             if(!isAutoUpdate) {
+                Log.wtf("trade_price_2",setEtPriceValue());
                 etLimitPrice.setText(setEtPriceValue());
                 etLimitTriggerPrice.setText(setEtTriggerPriceValue());
             }
@@ -1928,14 +2092,16 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         trade.setPortfolioNumber(MyApplication.currentUser.getPortfolioNumber());
         //trade.setOrderType(LIMIT);
 
-        if (isFromOrderDetails) {
+        if (isFromOrderDetails && !isAutoUpdate) {
 
             int remainingQuantity = onlineOrder.getQuantity() - onlineOrder.getQuantityExecuted();
             etQuantity.setText(String.valueOf(remainingQuantity));
             price = onlineOrder.getPrice();
             triggerPrice=onlineOrder.getTriggerPrice();
             updateOverAllViews(price, remainingQuantity);
-        }
+
+
+    }
     }
 
 
@@ -2068,28 +2234,43 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         switch (v.getId()) {
 
             case R.id.btSell:
+                isBuySellClick=true;
                 sellClick();
+                setUpdates();
+                isBuySellClick=false;
                 break;
 //
             case R.id.btBuy:
+                isBuySellClick=true;
                 buyClick();
+                setUpdates();
+                isBuySellClick=false;
                 break;
         }
 
         setPriceWithMarketPrice(true);
     }
 
-    private void buyClick(){
+    private void setUpdates(){
+        etLimitPrice.setText(setEtPriceValue());
+    }
 
+    private void buyClick(){
         if(stockId!=0){
             tradeType = MyApplication.ORDER_BUY;
             // etQuantity.setText("0");
             firstTime=false;
             setSellChecked(false);
-            if(stockId!=0 && !isAutoUpdate)
+            Log.wtf("trades_buy_click","1");
+            if(stockId!=0 && (!isAutoUpdate)) {
+                Log.wtf("trades_buy_click","setvalue");
                 etLimitPrice.setText(setEtPriceValue());
-            else if(!isAutoUpdate)
+            }
+            else if(!isAutoUpdate) {
+                Log.wtf("trades_buy_click","0");
                 etLimitPrice.setText("0");
+            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                    tvPurchasePowerValue.setLayoutParams(params);
 //                    tvQuantityValue.setLayoutParams(paramsNull);
@@ -2100,13 +2281,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 if(BuildConfig.Enable_Markets) {
                     tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.even_green_color));
                     btReview.setBackgroundColor(getResources().getColor(R.color.green_color));
+                    tvQuantityValue.setBackgroundColor(ContextCompat.getColor(this, MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorMediumInv));
+
                 }else {
              /*   if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
                   tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.blue_gig_light));
              */   btReview.setBackgroundColor(getResources().getColor(R.color.blue_gig));
                 }
 //                    tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.colorLight));
-                tvQuantityValue.setBackgroundColor(ContextCompat.getColor(this, MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorMediumInv));
             }
 
             trade.setTradeTypeID(tradeType);
@@ -2119,6 +2301,19 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         }
         setHeaderColors();
 
+
+        try{
+            if(etLimitPrice.getSelectionEnd()==0)
+               etLimitPrice.setSelection(etLimitPrice.getText().length());
+
+         /*   etLimitPrice.post(new Runnable() {
+                @Override
+                public void run() {
+                    etLimitPrice.setSelection(etLimitPrice.getText().length());
+                }
+            });*/
+        }catch (Exception e){}
+
     }
 
 
@@ -2128,7 +2323,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             // etQuantity.setText("0");
             setSellChecked(true);
             firstTime = false;
-            if (stockId != 0 && !isAutoUpdate)
+            if (stockId != 0 && (!isAutoUpdate))
                 etLimitPrice.setText(setEtPriceValue());
             else if(!isAutoUpdate)
                 etLimitPrice.setText("0");
@@ -2138,13 +2333,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 tvPurchasePowerValue.setElevation(0);
                 if(BuildConfig.Enable_Markets)
                     tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.even_red_color));
-                else {
+      /*          else {
                     if(MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true))
                         tvQuantityValue.setBackgroundColor(getResources().getColor(R.color.even_red_color));
-                }
+                }*/
                 btReview.setBackgroundColor(getResources().getColor(R.color.red_color));
 //                    tvPurchasePowerValue.setBackgroundColor(getResources().getColor(R.color.colorLight));
-                tvPurchasePowerValue.setBackgroundColor(ContextCompat.getColor(this, MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorMediumInv));
+                if(BuildConfig.Enable_Markets)
+                   tvPurchasePowerValue.setBackgroundColor(ContextCompat.getColor(this, MyApplication.mshared.getBoolean(this.getResources().getString(R.string.normal_theme), true) ? R.color.colorMedium : R.color.colorMediumInv));
             }
             trade.setTradeTypeID(tradeType);
             updateOverAllViews(price, quantity);
@@ -2156,49 +2352,23 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         }
         setHeaderColors();
+        try{
+            if(etLimitPrice.getSelectionEnd()==0)
+              etLimitPrice.setSelection(etLimitPrice.getText().length());
+      /*      etLimitPrice.post(new Runnable() {
+                @Override
+                public void run() {
+                    etLimitPrice.setSelection(etLimitPrice.getText().length());
+                }
+            });*/
+        }catch (Exception e){}
     }
-
-/*    public void setOrderType(View v) {
-
-        switch (v.getId()) {
-
-            case R.id.btLimit:
-                orderType = MyApplication.LIMIT;
-                setLimitChecked(true);
-                showLimitPrice(true);
-
-                etLimitPrice.setText(setEtPriceValue());
-
-                trade.setOrderType(orderType);
-                if(getIndexFromId(orderType)!=-1) {
-                    trade.setOrdertypeValueEn(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionEn());
-                    trade.setOrdertypeValueAr(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionAr());
-                }
-                updateOverAllViews(price, quantity);
-                break;
-
-            case R.id.btMarketPrice:
-                orderType = MyApplication.MARKET_PRICE;
-                setLimitChecked(false);
-                showLimitPrice(false);
-
-                etLimitPrice.setText(setEtPriceValue());
-
-                trade.setOrderType(orderType);
-                if(getIndexFromId(orderType)!=-1) {
-                    trade.setOrdertypeValueEn(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionEn());
-                    trade.setOrdertypeValueAr(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionAr());
-                }
-                updateOverAllViews(price, quantity);
-                break;
-        }
-    }*/
 
 
     private String setEtPriceValue() {
-        Log.wtf("setEtPriceValue", "setEtPriceValue");
+        Log.wtf("trade_price_", "setEtPriceValue");
 
-        if(!isAutoUpdate) {
+        if(!isAutoUpdate || isBuySellClick) {
             if (!isFromOrderDetails) {
 
                 price = setPriceWithMarketPrice(true);
@@ -2209,7 +2379,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 Log.wtf("trade_price_4", price + "");
             }
 
-            if (orderType == MyApplication.MARKET_IF_TOUCHED || orderType == MyApplication.MARKET_PRICE) {
+            if (orderType == MyApplication.MIT || orderType == MyApplication.MARKET_PRICE) {
                 if (!isAutoUpdate) {
                     etLimitPrice.setText("");
                     price = 0;
@@ -2232,6 +2402,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 priceValue = Actions.formatNumber(price, Actions.NoDecimalThousandsSeparator);
             else
                 priceValue=price+"";
+
+            Log.wtf("trade_price_return_price","return_price1:::::"+priceValue);
             return priceValue;
 
         } else {
@@ -2241,9 +2413,11 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             else {
 
                 priceValue = Actions.formatNumber(price, priceFormat);
+                Log.wtf("trade_price_return_price","return_price2x:::::"+priceValue);
                 return priceValue;
             }
         }
+
     }
 
 
@@ -2257,7 +2431,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             if(orderType == MyApplication.MARKET_PRICE) {
 
 
-                double total = (!BuildConfig.Enable_Markets ? (tradeType ==MyApplication.ORDER_SELL ? stockQuotation.getLowlimit()*quantity : stockQuotation.getHiLimit() * quantity)  : (price * quantity));
+                double total = (!BuildConfig.Enable_Markets ? (stockQuotation.getHiLimit() * quantity)  : (price * quantity));
                 trade.setOverallTotal(total);
             }
 
@@ -2272,10 +2446,44 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 tvOverallValue.setText(Actions.formatNumber(trade.getOverallTotal() - trade.getCommission(), Actions.ThreeDecimalThousandsSeparator));
 
 
+            try {
+                if (overallFirst==0.0){
+
+                        overallFirst = Double.parseDouble(getNumberFromString(tvOverallValue.getText().toString()));
+
+                }
+                Log.wtf("tvoverall_text_value",tvOverallValue.getText().toString());
+                Log.wtf("tvoverall_text_first",overallFirst.toString());
+            }catch (Exception e){
+                Log.wtf("excepion_purchase",e.toString());
+            }
+
+
             // tvOverallValue.setText(Actions.formatNumber(trade.getCost(), Actions.ThreeDecimalThousandsSeparator));
         }
     }
 
+
+
+    private void getOverallByPriceAndAmount(double price,double amount) {
+       BrokerageFee brokerageFee;
+
+        try {
+            brokerageFee = Actions.getBrokerageFeeByInstrumentID(MyApplication.allBrokerageFees, stockQuotation.getInstrumentId());
+        } catch (Exception e) {
+            e.printStackTrace();
+            brokerageFee = new BrokerageFee();
+            brokerageFee.setTotalBrokerageFee(0.00125);
+            brokerageFee.setClearing(0.5);
+        }
+
+      //  double total =(BuildConfig.Enable_Markets? (price * quantity) /1000: (price * quantity));
+
+        try{
+        double calculatedQty=amount/((1-brokerageFee.getTotalBrokerageFee())*price);
+        etQuantityPopup.setText(calculatedQty+"");}catch (Exception e){}
+
+    }
 
     public void setQuantity(View v) {
 
@@ -2385,6 +2593,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
+        Actions.unregisterMarketReceiver(this);
    /*     try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");
@@ -2445,6 +2655,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         }
 
         price = Double.parseDouble(getNumberFromString(etLimitPrice.getText().toString()));
+        triggerPrice = Double.parseDouble(getNumberFromString(etLimitTriggerPrice.getText().toString()));
         Log.wtf("trade_price_5",price+"");
         setTradeData(quantity, price, tradeType);
         try{maxFloor=Integer.parseInt(getNumberFromString(etMaxFloor.getText().toString()));}catch (Exception e){maxFloor=0;}
@@ -2488,8 +2699,17 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 Actions.CreateDialog(TradesActivity.this, getString(R.string.max_floor_executed), false, false);
 
             else {
+                Log.wtf("order_type_before",orderType+"....");
+                if(orderType==0)
+                    orderType = MyApplication.LIMIT;
 
-
+                if(getIndexFromId(orderType)!=-1) {
+                    trade.setOrdertypeValueEn(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionEn());
+                    trade.setOrdertypeValueAr(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionAr());
+                }else {
+                    Log.wtf("order_type_else",orderType+"...........");
+                }
+                trade.setOrderType(orderType);
                 Log.wtf("trading_before", trade.getStockQuotation().getTradingSession() + "");
                 startActivity(new Intent(TradesActivity.this, TradeConfirmationActivity.class)
                         .putExtra("isUpdate", isFromOrderDetails)
@@ -2539,8 +2759,16 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 Actions.CreateDialog(TradesActivity.this, getString(R.string.max_floor_executed), false, false);
 
             else {
-
-
+                Log.wtf("order_type_before1",orderType+"....");
+                if(orderType==0)
+                    orderType = MyApplication.LIMIT;
+                if(getIndexFromId(orderType)!=-1) {
+                    trade.setOrdertypeValueEn(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionEn());
+                    trade.setOrdertypeValueAr(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionAr());
+                }else {
+                    Log.wtf("order_type_else",orderType+"...........");
+                }
+                trade.setOrderType(orderType);
                 startActivity(new Intent(TradesActivity.this, TradeConfirmationActivity.class)
                         .putExtra("isUpdate", isFromOrderDetails)
                         .putExtra("trading_session", trade.getStockQuotation().getTradingSession())
@@ -2631,6 +2859,17 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 Actions.CreateDialog(TradesActivity.this, getString(R.string.max_floor_executed), false, false);
 
             else {
+                Log.wtf("order_type_before2",orderType+"....");
+                if(orderType==0)
+                    orderType = MyApplication.LIMIT;
+                trade.setOrderType(orderType);
+
+                if(getIndexFromId(orderType)!=-1) {
+                    trade.setOrdertypeValueEn(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionEn());
+                    trade.setOrdertypeValueAr(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getDescriptionAr());
+                }else {
+                    Log.wtf("order_type_else",orderType+"...........");
+                }
                 startActivity(new Intent(TradesActivity.this, TradeConfirmationActivity.class)
                         .putExtra("isUpdate", isFromOrderDetails)
                         .putExtra("trading_session",trade.getStockQuotation().getTradingSession())
@@ -2708,13 +2947,13 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         if (brokerage < brokerageFee.getMinimumBrokerageFee())
             brokerage = brokerageFee.getMinimumBrokerageFee();
 
-        if (total >= 50) {
+      /*  if (total >= 50) {
 
             commission = brokerage + brokerageFee.getClearing();
-        } else {
+        } else {*/
 
             commission = brokerage;
-        }
+      //  }
 
         String orderDuration = "";
         String goodUntilDate = "";
@@ -2755,6 +2994,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 trade.setOperationTypeID(enums.OrderOperationType.MANAGED_ORER.getValue());
             else if(orderTypeAdvanced==MyApplication.ICEBERG)
                 trade.setOperationTypeID(enums.OrderOperationType.ICEBERG_ORDER.getValue());
+            else if(orderTypeAdvanced==MyApplication.SMART_ICEBERG)
+                trade.setOperationTypeID(enums.OrderOperationType.SMART_ICEBERG_ORDER.getValue());
             else
                 trade.setOperationTypeID(enums.OrderOperationType.NEW_ORDER.getValue());
         }
@@ -2808,11 +3049,12 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     private void setPortfolioData(Trade trade) {
 
         //<editor-fold desc="Trade object">
-        tvCloseValue.setText(String.valueOf(stockQuotation.getPreviousClosing()));
-        tvLastValue.setText(String.valueOf(stockQuotation.getLast()));
-        tvBidValue.setText(String.valueOf(stockQuotation.getBid()));
-        tvAskValue.setText(String.valueOf(stockQuotation.getVolumeAsk()));
-        tvHighValue.setText(String.valueOf(stockQuotation.getHiLimit()));
+        try{tvCloseValue.setText(String.valueOf(stockQuotation.getPreviousClosing()));}catch (Exception e){}
+        try{ tvLastValue.setText(String.valueOf(stockQuotation.getLastFormatted()));}catch (Exception e){}
+            try{ tvBidValue.setText(String.valueOf(stockQuotation.getBidFormatted()));}catch (Exception e){}
+       // tvAskValue.setText(String.valueOf(stockQuotation.getVolumeAsk()));
+                try{  tvAskValue.setText(String.valueOf(stockQuotation.getAskFormatted()));}catch (Exception e){}
+                    try{  tvHighValue.setText(String.valueOf(stockQuotation.getHiLimitFormatted()));}catch (Exception e){}
 
 
 
@@ -2887,7 +3129,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         tvStockTitle.setText(stockName);
         //</editor-fold>
 
-        tvPurchasePowerValue.setText(Actions.formatNumber(trade.getPurchasePower(), Actions.NoDecimalThousandsSeparator));
+        tvPurchasePowerValue.setText(Actions.formatNumber(trade.getPurchasePower(), Actions.ThreeDecimalThousandsSeparator));
         tvQuantityValue.setText(Actions.formatNumber(trade.getAvailableShareCount(), Actions.NoDecimalThousandsSeparator));
     }
 
@@ -2954,14 +3196,19 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                         pricee = 0.0;
                     } else if (MyApplication.defaultPriceType == 1) {
 
+                        if(BuildConfig.Enable_Markets){
                         if (tradeType == MyApplication.ORDER_SELL) {
                             pricee = (stockQuotation.getAsk() > 0 ? stockQuotation.getAsk() : stockQuotation.getHiLimit());
                         } else {
                             pricee = (stockQuotation.getBid() > 0 ? stockQuotation.getBid() : stockQuotation.getLowlimit());
-                        }
+                        }}else
+                            pricee=stockQuotation.getHiLimit();
                     } else if (MyApplication.defaultPriceType == 2) {
 
-                        pricee = (tradeType == MyApplication.ORDER_SELL) ? stockQuotation.getHiLimit() : stockQuotation.getLowlimit();
+                        if(!BuildConfig.Enable_Markets)
+                            pricee=stockQuotation.getHiLimit();
+                        else
+                            pricee = (tradeType == MyApplication.ORDER_SELL) ? stockQuotation.getHiLimit() : stockQuotation.getLowlimit();
                     }
 
                     else if (MyApplication.defaultPriceType == 3) {
@@ -3223,7 +3470,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             try {
                 arrayAllOrdertypes.clear();
                 arrayAllOrdertypesAdvanced.clear();
-                int lastSelectedOrderAdvanced=orderTypeAdvanced;
+                 lastSelectedOrderAdvanced=0;
+                if(!isAutoUpdate)
+                    lastSelectedOrderAdvanced=orderTypeAdvanced;
                 ArrayList<Ordertypes> allTypeOrders=new ArrayList<>();
                 allTypeOrders= GlobalFunctions.GetOrderTypes(aVoid);
                 for (int i=0;i< allTypeOrders.size();i++){
@@ -3245,8 +3494,10 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 */
                 //  arrayAllOrdertypes = GlobalFunctions.GetOrderTypes(aVoid);
                 //    try{ MyApplication.progress.hide();}catch (Exception e){}
-                if(!isAutoUpdate)
+                if(!isAutoUpdate) {
                     setOrderTypeSpinner();
+                    etQuantity.setText("0");
+                }
 
                 if(!BuildConfig.Enable_Markets && !isAutoUpdate){
                     maxFloor=onlineOrder.getMaxfloor();
@@ -3256,6 +3507,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                 if((isFromOrderDetails && lastSelectedOrderAdvanced==0) ||  !MyApplication.mshared.getBoolean("EnableAdvancedTypeSection",false)){
                     llAdvanced.setVisibility(View.GONE);
+                    Log.wtf("ll_advanced","gone1");
                     btAdd.setVisibility(View.GONE);
                     // ivShowHideOrders.setVisibility(View.GONE);
                     linearParentOrder.setVisibility(View.GONE);
@@ -3264,6 +3516,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     if(!isAutoUpdate) {
                         if (arrayAllOrdertypesAdvanced.size() > 0) {
                             arrayAllOrdertypesAdvanced.add(0, new Ordertypes(0, 0, 0, 1, getString(R.string.select_order), getString(R.string.select_order)));
+
+                            Log.wtf("ll_advanced","visible1");
                             llAdvanced.setVisibility(View.VISIBLE);
                             setOrderTypeAdvancedSpinner();
                             try {
@@ -3278,7 +3532,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                                 @Override
                                 public void run() {
                                     if (isFromOrderDetails && orderTypeAdvanced == MyApplication.MO) {
-                                        selectedRelatedOrderId = onlineOrder.getRelatedOnlineOrderID();
+                                        selectedRelatedOrderId = onlineOrder.getRelatedOnlineOrderID    ();
                                         try {
                                             tvSelectedSymbol.setText("# " + selectedRelatedOrderId);
                                         } catch (Exception e) {
@@ -3313,6 +3567,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
 
                         } else {
+                            Log.wtf("ll_advanced","gone3");
                             llAdvanced.setVisibility(View.GONE);
                         }
 
@@ -3339,6 +3594,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 }
 
                 setInitialData();
+
                 if(tradeType == MyApplication.ORDER_BUY){
                     buyClick();
                 }else {
@@ -3432,10 +3688,12 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     // setMaxMin=true;
                     updateOverAllViews(price, quantity);
                     if(!isAutoUpdate){
-                        try{  btLimitPlus.performClick();}catch (Exception e){}
-                        try{  btLimitMinus.performClick();}catch (Exception e){}
+                        try{
+                            btLimitPlus.performClick();}catch (Exception e){}
+                        try{
+                            btLimitMinus.performClick();}catch (Exception e){}
                     }
-                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MARKET_IF_TOUCHED){
+                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MIT){
                     // orderType = MyApplication.MARKET_PRICE;
                     // setLimitChecked(false);
                     showLimitPrice(false);
@@ -3457,6 +3715,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                     trade.setOrderType(orderType);
                     updateOverAllViews(price, quantity);
+
+
 
                     if(tradeType == MyApplication.ORDER_BUY){
                         /*btSell.performClick();
@@ -3486,12 +3746,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     trade.setOrderType(orderType);
                     updateOverAllViews(price, quantity);
                     if(!isAutoUpdate){
-                        try{  btLimitPlus.performClick();}catch (Exception e){}
-                        try{  btLimitMinus.performClick();}catch (Exception e){}
+                        try{
+                            btLimitPlus.performClick();}catch (Exception e){}
+                        try{
+                            btLimitMinus.performClick();}catch (Exception e){}
                     }
                 }
 
-                if((orderType == MyApplication.LIMIT || orderType==MyApplication.MARKET_PRICE) && orderTypeAdvanced==0){
+                if((orderType == MyApplication.LIMIT || orderType==MyApplication.MARKET_PRICE) && orderTypeAdvanced==0 && stockId!=0){
                     cbPrivate.setVisibility(View.VISIBLE);
                 }else {
                     cbPrivate.setVisibility(View.GONE);
@@ -3499,12 +3761,25 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                 if (arrayAllOrdertypesAdvanced.size() > 0) {
 
-                    if (orderType == MyApplication.MARKET_IF_TOUCHED || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI)
-                        llAdvanced.setVisibility(View.GONE);
-                    else
-                        llAdvanced.setVisibility(View.VISIBLE);
+                    if (orderType == MyApplication.MIT || orderType == MyApplication.LIMIT_IF_TOUCHED || orderType == MyApplication.SI_ORDERBOOK)
+                    { llAdvanced.setVisibility(View.GONE);
+                      linearMaxFloor.setVisibility(View.GONE);
+                     try{ spOrderTypeAdvanced.setSelection(0);}catch (Exception e){}
+                    }
+                    else {
+
+
+                        if((isFromOrderDetails && lastSelectedOrderAdvanced==0) ){
+                            Log.wtf("ll_advanced","gone3");
+                            llAdvanced.setVisibility(View.GONE);
+                        }else {
+                            Log.wtf("ll_advanced","visible2");
+                            llAdvanced.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
                 setPriceViews();
+
 
 
             }
@@ -3518,8 +3793,22 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         if(isFromOrderDetails) {
             orderType = onlineOrder.getOrderTypeID();
             try { spOrderType.setSelection(getIndexFromId(orderType)); } catch (Exception e) { }
-            if(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getIsEditable()==1)
+
+
+            if(arraySpinnerOrdertypes.get(getIndexFromId(orderType)).getIsEditable()==1) {
                 spOrderType.setEnabled(true);
+
+                arraySpinnerOrdertypes.clear();
+                for (int i=0;i<arrayAllOrdertypes.size();i++){
+                    // if(arrayAllOrdertypes.get(i).getEnabled()==1)
+
+                    if(arrayAllOrdertypes.get(i).getIsEditable()==1)
+                        arraySpinnerOrdertypes.add(arrayAllOrdertypes.get(i));
+
+                }
+                try{orderTypeSpinnerAdapter.notifyDataSetChanged();}catch (Exception e){}
+
+            }
             else
                 spOrderType.setEnabled(false);
         }else {
@@ -3634,7 +3923,22 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     linearParentOrder.setVisibility(View.GONE);
 
                 }
+                else if(orderTypeAdvanced==MyApplication.SMART_ICEBERG){
 
+                    linearSelectAdvanced.setVisibility(View.VISIBLE);
+                    //ivArrowOrder.setVisibility(View.GONE);
+                    linearHeaderOrders.setVisibility(View.GONE);
+                    linearSelectedOrder.setVisibility(View.GONE);
+                    linearSelectOrder.setVisibility(View.GONE);
+                    linearMaxFloor.setVisibility(View.GONE);
+                    allOrders.clear();
+                    rvOrders.setVisibility(View.GONE);
+
+                    btAdd.setVisibility(View.GONE);
+                    //  ivShowHideOrders.setVisibility(View.GONE);
+                    linearParentOrder.setVisibility(View.GONE);
+
+                }
 
 
                 else {
@@ -3643,13 +3947,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     rvOrders.setVisibility(View.GONE);
                     btAdd.setVisibility(View.GONE);
                     linearParentOrder.setVisibility(View.GONE);
+                    linearMaxFloor.setVisibility(View.GONE);
                     // ivShowHideOrders.setVisibility(View.GONE);
                 }
 
                 if(isFromOrderDetails)
                     btAdd.setVisibility(View.GONE);
 
-                if((orderType == MyApplication.LIMIT || orderType==MyApplication.MARKET_PRICE) && orderTypeAdvanced==0){
+                if((orderType == MyApplication.LIMIT || orderType==MyApplication.MARKET_PRICE) && orderTypeAdvanced==0 && stockId!=0){
                     cbPrivate.setVisibility(View.VISIBLE);
                 }else {
                     cbPrivate.setVisibility(View.GONE);
@@ -3682,7 +3987,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
 
     private void setPriceViews(){
-        if(orderType == MyApplication.MARKET_IF_TOUCHED || orderType==MyApplication.LIMIT_IF_TOUCHED || orderType==MyApplication.SI){
+        if(orderType == MyApplication.MIT || orderType==MyApplication.LIMIT_IF_TOUCHED || orderType==MyApplication.SI_ORDERBOOK){
             linearTriggerPrice.setVisibility(View.VISIBLE);
             tvTriggerPricelabel.setVisibility(View.VISIBLE);
             etLimitTriggerPrice.setText("");
@@ -3694,13 +3999,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
     }
 
     private void checkMaxFloor(){
-        if(orderType == MyApplication.MARKET_PRICE) {
-            linearMaxFloor.setVisibility(View.GONE);
-            setMaxFloorEdit(false);
-        }
-        else {
-            linearMaxFloor.setVisibility(View.VISIBLE);
-            setMaxFloorEdit(true);
+        if(!BuildConfig.Enable_Markets) {
+            if (orderType == MyApplication.MARKET_PRICE) {
+                linearMaxFloor.setVisibility(View.GONE);
+                setMaxFloorEdit(false);
+            } else {
+                linearMaxFloor.setVisibility(View.VISIBLE);
+                setMaxFloorEdit(true);
+            }
         }
     }
 
@@ -3833,6 +4139,8 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                         trade.setOperationTypeID(enums.OrderOperationType.MANAGED_ORER.getValue());
                     else if(orderTypeAdvanced==MyApplication.ICEBERG)
                         trade.setOperationTypeID(enums.OrderOperationType.ICEBERG_ORDER.getValue());
+                    else if(orderTypeAdvanced==MyApplication.SMART_ICEBERG)
+                        trade.setOperationTypeID(enums.OrderOperationType.SMART_ICEBERG_ORDER.getValue());
                     else
                         trade.setOperationTypeID(enums.OrderOperationType.NEW_ORDER.getValue());
                 }
@@ -3892,10 +4200,12 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                 setPortfolioData(trade);
                 if (firstOpen && !isFromOrderDetails &&!isAutoUpdate) {
                     double price = 0.0;
+                    double triggerPrice = 0.0;
 
 //                    etLimitPrice.setText("" + price);
 
                     price = setPriceWithMarketPrice(true);
+
                     //getDefaultPrice();
                     Log.wtf("trade_price_8",price+"");
 
@@ -3916,6 +4226,9 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     }
 
                     setParentOrder();
+
+
+
                 }
                 firstOpen = false;
                 setInitialData();
@@ -4180,6 +4493,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             price=Double.parseDouble(stockQuotation.getHiLimit()+"");
             Log.wtf("price_hi",price+"");
         }
+        int availableShares=trade.getAvailableShareCount();
 
         Log.wtf("dialog_stock_size",MyApplication.stockQuotations.size()+"");
         fillDataDialog=new Dialog(this);
@@ -4192,12 +4506,18 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         Button btCloseFillData=fillDataDialog.findViewById(R.id.btCloseFillDialog);
         Button btPurchaseDecrement=fillDataDialog.findViewById(R.id.btPurchaseDecrement);
         Button btpurchaseIncrement=fillDataDialog.findViewById(R.id.btpurchaseIncrement);
-        Button btFillDialog=fillDataDialog.findViewById(R.id.btFillDialog);
+
 
         etPurchasePowerPopup =fillDataDialog.findViewById(R.id.etPurchasePowerPopup);
         etQuantityPopup =fillDataDialog.findViewById(R.id.etQuantityPopup);
         etQuantityPopup.setEnabled(false);
+        Button btFillDialog=fillDataDialog.findViewById(R.id.btFillDialog);
+        TextView tvPurchasePowerTitle=fillDataDialog.findViewById(R.id.tvPurchasePowerTitle);
 
+        if(tradeType==MyApplication.ORDER_SELL && !BuildConfig.Enable_Markets)
+           tvPurchasePowerTitle.setText(getString(R.string.total_value));
+
+        AutofitHelper.create(tvPurchasePowerTitle);
 
 
 
@@ -4210,14 +4530,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         btpurchaseIncrement.setOnClickListener(v->{
             if(!etPurchasePowerPopup.getText().toString().isEmpty())
-                etPurchasePowerPopup.setText((Integer.parseInt(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))+1)+"");
+                etPurchasePowerPopup.setText(Actions.formatNumber((Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()))+1),Actions.ThreeDecimalThousandsSeparator)+"");
             else
                 etPurchasePowerPopup.setText("1");
         });
         btPurchaseDecrement.setOnClickListener(v->{
             if(!etPurchasePowerPopup.getText().toString().isEmpty()) {
-                if(Integer.parseInt(etPurchasePowerPopup.getText().toString().replaceAll("\\D+",""))>=1)
-                    etPurchasePowerPopup.setText((Integer.parseInt(etPurchasePowerPopup.getText().toString().replaceAll("\\D+","")) -1 ) + "");
+                if(Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString()))>=1)
+                    etPurchasePowerPopup.setText(Actions.formatNumber((Double.parseDouble(getNumberFromString(etPurchasePowerPopup.getText().toString())) -1 ),Actions.ThreeDecimalThousandsSeparator) + "");
             }
 
         });
@@ -4235,7 +4555,14 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
                     // btClear.setVisibility(View.VISIBLE);
                     // etQuantityPopup.setText(arg0);
-                    updateQty();
+                    if(BuildConfig.Enable_Markets)
+                        updateQty();
+                    else {
+                    if(tradeType==MyApplication.ORDER_BUY){
+                       updateQty();
+                    }else {
+                        updateQtySell();
+                    }}
                 }
             }
 
@@ -4248,7 +4575,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             public void afterTextChanged(Editable s) {
 
 
-                etPurchasePowerPopup.removeTextChangedListener(this);
+        /*        etPurchasePowerPopup.removeTextChangedListener(this);
 
                 try {
                     int inilen, endlen;
@@ -4257,7 +4584,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     String v = s.toString().replace(String.valueOf(df.getDecimalFormatSymbols().getGroupingSeparator()), "");
                     Number n = df.parse(v);
                     int cp = etPurchasePowerPopup.getSelectionStart();
-                    if (hasFractionalPart) {
+                   if (hasFractionalPartValue) {
                         etPurchasePowerPopup.setText(df.format(n));
                     } else {
                         etPurchasePowerPopup.setText(dfnd.format(n));
@@ -4276,8 +4603,7 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
                     // do nothing?
                 }
 
-                etPurchasePowerPopup.addTextChangedListener(this);
-
+                etPurchasePowerPopup.addTextChangedListener(this);*/
             }
 
         });
@@ -4336,10 +4662,11 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
 
         btFillDialog.setOnClickListener(v->{
             if(!etQuantityPopup.getText().toString().isEmpty()) {
-                quantity = (Integer.parseInt(etQuantityPopup.getText().toString().replaceAll("\\D+", "")));
+                quantity = (Integer.parseInt(getNumberFromString(etQuantityPopup.getText().toString())));
                 fillDataDialog.dismiss();
                 etQuantity.setText(quantity+"");
                 updateOverAllViews(price,quantity);
+
             }
         });
 
@@ -4352,18 +4679,72 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                try{etPurchasePowerPopup.setText(tvPurchasePowerValue.getText().toString().replaceAll("\\D+",""));}catch (Exception e){
+                try{
+                    if(BuildConfig.Enable_Markets || tradeType == MyApplication.ORDER_BUY) {
+                        if (!isFromOrderDetails)
+                            etPurchasePowerPopup.setText(Actions.formatNumber(Double.parseDouble(getNumberFromString(tvPurchasePowerValue.getText().toString())),Actions.ThreeDecimalThousandsSeparator));
+                        else
+                            etPurchasePowerPopup.setText(Actions.formatNumber((Double.parseDouble(getNumberFromString(tvPurchasePowerValue.getText().toString())) + overallFirst),Actions.ThreeDecimalThousandsSeparator) + "");
+                    }else {
+                        try{
+
+                            for (int i = 0; i < MyApplication.allBrokerageFees.size(); i++) {
+
+                                try{
+                                    if (MyApplication.allBrokerageFees.get(i).getInstrumentId().equals(stockQuotation.getInstrumentId())) {
+                                        BrokerageFee brokerageFee = MyApplication.allBrokerageFees.get(i);
+                                       // Double maxSellPower= ( trade.getAvailableShareCount() * price) * (1 + totalBrokerageFee);
+
+                                        Double totalBrokerageFee=brokerageFee.getTotalBrokerageFee();
+                                        Double minimumBrokerageFee=brokerageFee.getMinimumBrokerageFee();
+                                        //Double clearing=brokerageFee.getClearing();
+                                        Double total = (price * trade.getAvailableShareCount());
+
+                                        double brokerage = total * brokerageFee.getTotalBrokerageFee();
+
+                                        if (brokerage < brokerageFee.getMinimumBrokerageFee())
+                                            brokerage = brokerageFee.getMinimumBrokerageFee();
+
+
+                                        Double maxSellPower= total - brokerage;
+
+
+
+                                        Log.wtf("max_sell_power","...."+maxSellPower.toString());
+                                        Log.wtf("max_sell_power_minimum_brok","...."+minimumBrokerageFee);
+                                        Log.wtf("max_sell_power_total_brok","...."+totalBrokerageFee);
+                                        etPurchasePowerPopup.setText(Actions.formatNumber(maxSellPower,Actions.ThreeDecimalThousandsSeparator)+"");
+
+                                    }
+                                }catch (Exception e){}
+                            }
+
+
+
+
+
+
+                        }catch (Exception e){
+                            Log.wtf("aaa_",e.toString());
+
+                        }
+                    }
+                }catch (Exception e){
                     Log.wtf("aaa_",e.toString());
 
                 }
+
                 try{
                     btpurchaseIncrement.performClick();
                     btPurchaseDecrement.performClick();
 
                 }catch (Exception e){}
             }
-        }, 200);
+        }, 300);
     }
+
+
+
 
 
     private ArrayList<StockQuotation> getOrderedStockQuotation(){
@@ -4544,8 +4925,6 @@ public class TradesActivity extends AppCompatActivity implements OrderDurationTy
             }
         }
     }
-
-
 
 
 

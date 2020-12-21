@@ -197,6 +197,22 @@ try{
                  // }
               } catch (Exception e){}
 
+
+
+       /*       try{
+                  if(Double.parseDouble(stock.getLast().replaceAll(",","").trim())>0){
+                      holder.tvColum3Value.setTextColor(ContextCompat.getColor(context, R.color.green_color));
+                  }else  if(Double.parseDouble(stock.getLast().replaceAll(",","").trim())<0){
+                      holder.tvColum3Value.setTextColor(ContextCompat.getColor(context, R.color.red_color));
+                  }else {
+                      holder.tvColum3Value.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                  }
+              }catch (Exception e){
+
+              }*/
+
+
+
               try{
                  // if(MyApplication.STOCK_COLUMN_4==MyApplication.PORTFOLIO_MARKET_VALUE){
                       holder.tvColum4Value.setText(String.valueOf(stock.getTotalMarket()));
@@ -205,6 +221,20 @@ try{
                       holder.tvColum4_2Value.setText(String.valueOf(stock.getTotalCost()));
                 //  }
               } catch (Exception e){}
+
+
+
+     /*         try{
+                  if(Double.parseDouble(stock.getTotalMarket().replaceAll(",","").trim())>0){
+                      holder.tvColum4Value.setTextColor(ContextCompat.getColor(context, R.color.green_color));
+                  }else  if(Double.parseDouble(stock.getTotalMarket().replaceAll(",","").trim())<0){
+                      holder.tvColum4Value.setTextColor(ContextCompat.getColor(context, R.color.red_color));
+                  }else {
+                      holder.tvColum4Value.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                  }
+              }catch (Exception e){
+
+              }*/
 
 
               try{
@@ -225,10 +255,16 @@ try{
               try{
                   if(Double.parseDouble(stock.getUnrealizedPercent().replaceAll("%","").replaceAll(",","").trim())>0){
                       holder.tvColum5Value.setTextColor(ContextCompat.getColor(context, R.color.green_color));
+                      holder.tvColum4Value.setTextColor(ContextCompat.getColor(context, R.color.green_color));
+                      holder.tvColum3Value.setTextColor(ContextCompat.getColor(context, R.color.green_color));
                   }else  if(Double.parseDouble(stock.getUnrealizedPercent().replaceAll("%","").replaceAll(",","").trim())<0){
                       holder.tvColum5Value.setTextColor(ContextCompat.getColor(context, R.color.red_color));
+                      holder.tvColum4Value.setTextColor(ContextCompat.getColor(context, R.color.red_color));
+                      holder.tvColum3Value.setTextColor(ContextCompat.getColor(context, R.color.red_color));
                   }else {
-                      holder.tvColum5Value.setTextColor(ContextCompat.getColor(context, R.color.colorValues));
+                      holder.tvColum5Value.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                      holder.tvColum4Value.setTextColor(ContextCompat.getColor(context, R.color.orange));
+                      holder.tvColum3Value.setTextColor(ContextCompat.getColor(context, R.color.orange));
                   }
               }catch (Exception e){
 

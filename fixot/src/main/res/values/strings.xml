@@ -19,7 +19,7 @@
     <string name="confirm">OK</string>
 
     <string name="loginExpired">Another user has logged in with your same credentials, for security reason you will be logged out</string>
-
+    <string name="sessionExpired">Session is expired, for security reason you will be logged out</string>
     <string name="cancel">Cancel</string>
 
     <string name="password">Password</string>
@@ -249,7 +249,7 @@
     <string name="errorupdate">Please fill All Field</string>
     <string name="errorVerify">The New Password and Verify Password is not identical</string>
     <string name="updatesuccessful">the password is update successful</string>
-
+    <string name="updatesuccessfulPin">the pin is update successful</string>
     <string name="trading_number">Trading number</string>
     <string name="email">Email</string>
     <string name="first_name">First name</string>
@@ -301,6 +301,7 @@
     <string name="market_index">Market Index</string>
     <string name="sectors">Sectors</string>
     <string name="stock">Stocks</string>
+    <string name="stock_btn">Stocks</string>
     <string name="time_sales">Trades</string>
     <string name="top_trades">Trades</string>
     <string name="top_value">Value</string>
@@ -675,12 +676,12 @@
     <string name="check_request">Check Request</string>
     <string name="plz_add_amount">Please add amount</string>
     <string name="plz_add_date">Please add date</string>
-
+    <string name="plz_check_amount">Please check amount</string>
     <string name="index_box">Index Box</string>
-    <string name="total_buy">Total buy:</string>
-    <string name="buy_amount">Buy Amount:</string>
-    <string name="total_sell">Total Sell:</string>
-    <string name="sell_amount">Sell Amount:</string>
+    <string name="total_buy">buy:</string>
+    <string name="buy_amount">Buy Qty:</string>
+    <string name="total_sell">Sell:</string>
+    <string name="sell_amount">Sell Qty:</string>
     <string name="bid_price">Bid Price</string>
     <string name="ask_price">Ask Price</string>
     <string name="volume_perc">Volume %</string>
@@ -717,8 +718,28 @@
     <string name="qty_executed">Qty Executed</string>
     <string name="avg_price">Avg Price</string>
     <string name="balance_details">Balance Details</string>
-    <string name="equilibrium_price">IMP</string>
+    <string name="equilibrium_price">Equilibrium price</string>
     <string name="check_price_msg">Kindly check price range</string>
+    <string name="change_trading_pin">Change trading pin</string>
+    <string name="old_pin">Old Pin</string>
+    <string name="new_pin">New Pin</string>
+    <string name="confirm_pin">Confirm Pin</string>
+    <string name="errorVerifyPin">The New Pin and Verify Pin is not identical</string>
+
+    <string name="normal_font">Normal</string>
+    <string name="large">Large</string>
+    <string name="larger">Larger</string>
+    <string name="liquidity_bar_chart">Liquidity bar chart</string>
+    <string name="buy_per">Buy %</string>
+    <string name="sell_per">Sell %</string>
+    <string name="remaining">Remaining</string>
+    <string name="margin_details">Margin details</string>
+    <string name="margin_payments">Margin Payments</string>
+    <string name="due_amount">Due Amount</string>
+    <string name="settlement_date">Settlement Date</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="days">Days</string>
+
 
     <!--    <string name="stock_quotation_header_2_1">Bid Price</string>
         <string name="stock_quotation_header_2_2">Bid Quantity</string>

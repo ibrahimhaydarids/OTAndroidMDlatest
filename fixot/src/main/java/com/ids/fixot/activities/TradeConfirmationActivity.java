@@ -38,7 +38,6 @@ import com.ids.fixot.MyApplication;
 import com.ids.fixot.R;
 import com.ids.fixot.adapters.OrderInfoRecyclerAdapter;
 import com.ids.fixot.adapters.OrdersPopupTrades;
-import com.ids.fixot.adapters.stockQuotationPopupAdapter;
 import com.ids.fixot.enums.enums;
 import com.ids.fixot.interfaces.spItemListener;
 import com.ids.fixot.model.OnlineOrder;
@@ -134,6 +133,9 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
     try{        trading_session=getIntent().getExtras().getInt("trading_session");}catch (Exception e){}
         trade = getIntent().getExtras().getParcelable("trade");
 
+   try{Log.wtf("order_type_selected",trade.getOrderType()+".........");}catch (Exception e){}
+        if(trade.getOrderType()==MyApplication.MARKET_PRICE && !BuildConfig.Enable_Markets)
+            trade.setMaxFloor(0);
     try{
         Log.wtf("duration_type",trade.getDurationTypeId()+"aaa");
         Log.wtf("duration_type_gtd",trade.getGoodUntilDate());
@@ -243,6 +245,8 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
                 arrayOrderInfo.add(new OrderInfo(getString(R.string.order_type_advanced), "ICEBERG"));
             }else if(trade.getAdvancedOrderType()==MyApplication.OCA){
                 arrayOrderInfo.add(new OrderInfo(getString(R.string.order_type_advanced), "OCA"));
+            }else if(trade.getAdvancedOrderType()==MyApplication.SMART_ICEBERG){
+                arrayOrderInfo.add(new OrderInfo(getString(R.string.order_type_advanced), "SmartIceberg"));
             }
 
 
@@ -272,7 +276,7 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
 
         arrayOrderInfo.add(new OrderInfo(getString(R.string.price),Actions.formatNumber(trade.getPrice(), priceFormat)));
 
-        if(trade.getOrderType()== MyApplication.MARKET_IF_TOUCHED || trade.getOrderType()==MyApplication.LIMIT_IF_TOUCHED || trade.getOrderType()==MyApplication.SI)
+        if(trade.getOrderType()== MyApplication.MIT || trade.getOrderType()==MyApplication.LIMIT_IF_TOUCHED || trade.getOrderType()==MyApplication.SI_ORDERBOOK)
            arrayOrderInfo.add(new OrderInfo(getString(R.string.trigger_price),Actions.formatNumber(trade.getTriggerPrice(), priceFormat)));
 
         String orderType="";
@@ -357,12 +361,8 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
     private void setListeners() {
 
         btConfirm.setOnClickListener(v -> {
+            Log.wtf("button_clicked","clicked");
 
-            try {
-                Actions.closeKeyboard(TradeConfirmationActivity.this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
 
             if (MyApplication.currentUser.isTradingPasswordMandatory()) {
 
@@ -400,6 +400,13 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
                     //new AddOrder().execute();
                 }
             }
+
+            try {
+                Actions.closeKeyboard(TradeConfirmationActivity.this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         });
 
 
@@ -416,7 +423,7 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
         //Actions.InitializeSessionService(this);
         //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
 
@@ -440,6 +447,7 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         try {
             Runtime.getRuntime().gc();
         } catch (Exception e) {
@@ -538,7 +546,6 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
                                 relatedOrder = trade.getId();
                                 isParentOrder=1;
                             }
-
 
 
                                             stringer.object()
@@ -711,13 +718,13 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
             }
 
             String triggerPrice="";
-            if(trade.getOrderType()!=MyApplication.MARKET_PRICE && trade.getOrderType()!=MyApplication.LIMIT && trade.getAdvancedOrderType()==0)
+            if(trade.getOrderType()!=MyApplication.MARKET_PRICE && trade.getOrderType()!=MyApplication.LIMIT && trade.getAdvancedOrderType()==0 && trade.getOperationTypeID()!= enums.OrderOperationType.PRIVATE_ORDER.getValue())
                     triggerPrice=trade.getTriggerPrice()+"";
             else
                 triggerPrice="";
 
             Double price=0.0;
-            if(trade.getAdvancedOrderType()!=MyApplication.MARKET_IF_TOUCHED && trade.getOrderType()!=1){
+            if(trade.getAdvancedOrderType()!=MyApplication.MIT && trade.getOrderType()!=1){
                price=trade.getPrice() ;
             }
 
@@ -872,11 +879,8 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
 
                 tradingPin = Actions.MD5(encrypted);
             } else {
-
                 random = "";
-
                 encrypted = "";
-
                 tradingPin = "";
             }
         }
@@ -892,7 +896,8 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
             Log.wtf("update_order","order type: "+trade.getOrderType());
 
             String triggerPrice="";
-            if(trade.getOrderType()!=MyApplication.MARKET_PRICE && trade.getOrderType()!=MyApplication.LIMIT && trade.getAdvancedOrderType()==0)
+
+            if(trade.getOrderType()!=MyApplication.MARKET_PRICE && trade.getOrderType()!=MyApplication.LIMIT && trade.getAdvancedOrderType()==0 && trade.getOperationTypeID()!= enums.OrderOperationType.PRIVATE_ORDER.getValue())
                 triggerPrice=trade.getTriggerPrice()+"";
             else
                 triggerPrice="";
@@ -900,7 +905,7 @@ public class TradeConfirmationActivity extends AppCompatActivity implements Mark
             Log.wtf("trigger_price","trigger "+triggerPrice);
 
             Double price=0.0;
-            if(trade.getAdvancedOrderType()!=MyApplication.MARKET_IF_TOUCHED && trade.getOrderType()!=1){
+            if(trade.getAdvancedOrderType()!=MyApplication.MIT && trade.getOrderType()!=1){
                 price=trade.getPrice() ;
             }
 

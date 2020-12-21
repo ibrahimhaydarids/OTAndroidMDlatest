@@ -32,7 +32,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+     <me.grantland.widget.AutofitTextView
             android:id="@+id/symbol_title"
             style="@style/textStyle"
             android:layout_width="wrap_content"
@@ -40,16 +40,18 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
             android:padding="2dp"
+            android:maxLines="1"
             android:text="@string/symbol_title"
             android:textColor="?attr/colorValues" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/symbol_code"
             style="@style/textStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
+            android:maxLines="1"
             android:padding="2dp"
             android:text="@string/quantity_cost_title"
             android:textColor="?attr/colorValues"
@@ -65,7 +67,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/quantity_cost_title"
             style="@style/textStyle"
             android:layout_width="wrap_content"
@@ -73,12 +75,13 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
             android:padding="2dp"
+            android:maxLines="1"
             android:text="@string/quantity_cost_title"
             android:textColor="?attr/colorValues"
             android:textDirection="ltr" />
 
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/volume_cost_title"
             style="@style/textStyle"
             android:layout_width="wrap_content"
@@ -86,6 +89,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
             android:padding="2dp"
+            android:maxLines="1"
             android:text="@string/quantity_cost_title"
             android:textColor="?attr/colorValues"
             android:textDirection="ltr" />
@@ -101,7 +105,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/bid_ask_title"
             style="@style/textStyle"
             android:layout_width="wrap_content"
@@ -109,18 +113,20 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
             android:padding="2dp"
+            android:maxLines="1"
             android:text="@string/bid_ask_title"
             android:textColor="?attr/colorValues"
             android:textDirection="ltr" />
 
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvLast"
             style="@style/textStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
+            android:maxLines="1"
             android:padding="2dp"
             android:text="@string/last_price_title"
             android:textColor="?attr/colorValues"
@@ -137,7 +143,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/unrealized_title"
             style="@style/textStyle"
             android:layout_width="wrap_content"
@@ -145,11 +151,12 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
             android:padding="2dp"
+            android:maxLines="1"
             android:text="@string/unrealized_title"
             android:textColor="?attr/colorValues"
             android:textDirection="ltr" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/unrealized_percent"
             style="@style/textStyle"
             android:layout_width="wrap_content"
@@ -157,6 +164,7 @@
             android:layout_gravity="center_vertical|center_horizontal"
             android:gravity="center"
             android:padding="2dp"
+            android:maxLines="1"
             android:text="@string/unrealized_title"
             android:textColor="?attr/colorValues"
             android:textDirection="ltr" />

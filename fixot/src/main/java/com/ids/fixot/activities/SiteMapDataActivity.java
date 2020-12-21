@@ -138,6 +138,7 @@ public class SiteMapDataActivity extends AppCompatActivity implements MarketStat
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void findViews() {

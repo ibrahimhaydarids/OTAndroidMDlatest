@@ -9,7 +9,7 @@ import com.ids.fixot.R;
 public class TimeSale {
 
     private int ChangeIndicator, StockID, orderType,MarketId;
-    private String id, StockSymbolAr, StockSymbolEn, TradeTime, Change, Quantity, Price, orderTypeId, instrumentId;
+    private String id, StockSymbolAr, StockSymbolEn, TradeTime, Change, Quantity, Price, orderTypeId, instrumentId,tradeDate;
     private String securityId;
 
 
@@ -123,6 +123,14 @@ public class TimeSale {
     public int getIntegerQuantity() {
 
         return Integer.parseInt(this.getQuantity().replace(",", ""));
+    }
+
+    public String getTradeDate() {
+        return tradeDate;
+    }
+
+    public void setTradeDate(String tradeDate) {
+        this.tradeDate = tradeDate;
     }
 
     public int getMarketId() {

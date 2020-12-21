@@ -70,6 +70,7 @@ public class ChangePassFromLoginActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void findViews() {

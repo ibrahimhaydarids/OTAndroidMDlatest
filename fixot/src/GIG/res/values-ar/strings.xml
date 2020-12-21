@@ -136,6 +136,7 @@
     <string name="market_index">مؤشر السوق</string>
     <string name="sectors">القطاعات</string>
     <string name="stock">الرمز</string>
+    <string name="stock_btn">الأسعار</string>
     <string name="time_sales">الصفقات</string>
     <string name="top_trades">صفقات</string>
     <string name="top_value">قيمة</string>
@@ -241,7 +242,7 @@
     <string name="instrument_title">الأداة</string>
     <string name="interactive_login">دخول بالبصمة</string>
     <string name="diaz">#</string>
-
+    <string name="equilibrium_price">السعر التطابقي</string>
     <string name="ask_quantity">كمية العرض</string>
 
     <string name="bid_quantity">كمية الطلب</string>

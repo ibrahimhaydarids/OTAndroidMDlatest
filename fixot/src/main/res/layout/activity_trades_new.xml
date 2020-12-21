@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
+
     android:layout_height="match_parent"
     android:background="?attr/colorLight">
 
@@ -104,7 +105,7 @@
                         android:id="@+id/rlUserHeader"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?attr/colorMedium"
+                        android:background="@drawable/border_selected_dark"
                         android:minHeight="@dimen/header_height"
                         android:orientation="horizontal"
                         android:padding="@dimen/mini_padding">
@@ -421,7 +422,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:padding="@dimen/mini_padding"
                                     android:textColor="?attr/colorValues"
-                                    android:textSize="@dimen/normal" />
+                                    android:textSize="@dimen/small" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -451,7 +452,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:padding="@dimen/mini_padding"
                                     android:textColor="?attr/colorValues"
-                                    android:textSize="@dimen/normal" />
+                                    android:textSize="@dimen/small" />
                             </LinearLayout>
 
 
@@ -482,7 +483,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:padding="@dimen/mini_padding"
                                     android:textColor="?attr/colorValues"
-                                    android:textSize="@dimen/normal" />
+                                    android:textSize="@dimen/small" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -512,7 +513,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:padding="@dimen/mini_padding"
                                     android:textColor="?attr/colorValues"
-                                    android:textSize="@dimen/normal" />
+                                    android:textSize="@dimen/small" />
                             </LinearLayout>
 
 
@@ -543,7 +544,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:padding="@dimen/mini_padding"
                                     android:textColor="?attr/colorValues"
-                                    android:textSize="@dimen/normal" />
+                                    android:textSize="@dimen/small" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -573,7 +574,7 @@
                                     android:gravity="center_horizontal|center_vertical"
                                     android:padding="@dimen/mini_padding"
                                     android:textColor="?attr/colorValues"
-                                    android:textSize="@dimen/normal" />
+                                    android:textSize="@dimen/small" />
                             </LinearLayout>
 
                         </LinearLayout>
@@ -1154,11 +1155,13 @@
 
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
+                                    android:layout_gravity="start"
+                                    android:layout_marginTop="10dp"
 
 
 
-                                    android:gravity="start"
+                                    android:gravity="center_vertical"
+                                    android:textDirection="locale"
                                     android:text="@string/trigger_price"
                                     android:visibility="gone" />
                             </LinearLayout>
@@ -1210,6 +1213,7 @@
                                         android:background="@color/colorLight"
                                         android:gravity="center"
                                         android:hint="@string/price_choose_title"
+                                        android:textDirection="ltr"
                                         android:selectAllOnFocus="true"
                                         android:inputType="numberDecimal"
                                         android:paddingTop="@dimen/mini_padding"
@@ -2172,6 +2176,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/linearNormalButtons"
+            android:layout_marginBottom="12dp"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal">
 
@@ -2285,13 +2290,21 @@
 
 
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:id="@+id/linearFooter"
+    >
     <include
         android:id="@+id/footer"
         layout="@layout/menu_footer"
         android:layout_width="match_parent"
+
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" />
+        />
+</LinearLayout>
+
 
     <include layout="@layout/loading_trans"/>
 </RelativeLayout>

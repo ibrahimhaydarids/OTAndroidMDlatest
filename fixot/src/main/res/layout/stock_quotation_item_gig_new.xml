@@ -75,6 +75,7 @@
         android:layout_gravity="start"
         android:gravity="center_vertical"
         android:textDirection="locale"
+        android:maxLines="1"
         android:paddingStart="2dp"
         android:paddingRight="2dp"
         android:textColor="?attr/colorValues"

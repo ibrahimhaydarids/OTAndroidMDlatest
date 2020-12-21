@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llItem"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:background="?attr/colorMedium"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <me.grantland.widget.AutofitTextView
+        android:id="@+id/tvItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/header"
+        android:textStyle="bold" />
+
+</LinearLayout>

@@ -28,9 +28,13 @@ public class SqliteDb_TimeSales {
     public SqliteDb_TimeSales open() throws android.database.SQLException {
 
         try {
+            try{mDb.close();}catch (Exception e){}
             mDbHelper = new DatabaseHelper(mCtx);
             mDb = mDbHelper.getWritableDatabase();
-        }catch (Exception e){}
+            Log.wtf("db_open_exep","open");
+        }catch (Exception e){
+            Log.wtf("db_open_exep",e.toString());
+        }
 
         return this;
     }
@@ -127,6 +131,12 @@ public class SqliteDb_TimeSales {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+            timeSale.setTradeDate(cursor.getString(14));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return timeSale;
     }
 
@@ -208,7 +218,7 @@ public class SqliteDb_TimeSales {
         Log.wtf("Client all_item size", "" + length);
         boolean insertStatus = true;
         String sql = "replace into " + table_TimeSales + "(id , StockSymbolAr , StockSymbolEn , TradeTime, Change, Quantity, Price, orderTypeId, instrumentId, " +
-                "securityId, ChangeIndicator, StockID, orderType,  MarketId) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "securityId, ChangeIndicator, StockID, orderType, MarketId,  tradeDate) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         mDb.beginTransaction();
         SQLiteStatement stmt = mDb.compileStatement(sql);
 
@@ -296,6 +306,11 @@ public class SqliteDb_TimeSales {
                 e.printStackTrace();
             }
 
+            try {
+                stmt.bindString(15, "" + anAll_item.getTradeDate());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             try {
 
                 stmt.execute();

@@ -433,12 +433,13 @@ public class TimeSalesActivity extends AppCompatActivity implements InstrumentsR
                } catch (Exception e) {
                }
 
-               timeSales_DB = new SqliteDb_TimeSales(this);
                timeSales_DB.open();
 
                MyApplication.timeSales = new ArrayList<>();
                MyApplication.timeSales = timeSales_DB.getAllTimeSales();
                timeSales_DB.close();
+               timeSales_DB = new SqliteDb_TimeSales(this);
+
                Log.wtf("trade_TimeSalesActivity", "MyApplication.timeSales = " + MyApplication.timeSales.size());
            }
        }catch (Exception e){
@@ -476,6 +477,7 @@ public class TimeSalesActivity extends AppCompatActivity implements InstrumentsR
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         EventBus.getDefault().unregister(this);
         try {
             getTimeSales.cancel(true);
@@ -568,6 +570,8 @@ public class TimeSalesActivity extends AppCompatActivity implements InstrumentsR
         tvPriceHeader = findViewById(R.id.tvPriceHeader);
         tvQuantityHeader = findViewById(R.id.tvQuantityHeader);
         tvChangeHeader = findViewById(R.id.tvChangeHeader);
+        if(!BuildConfig.Enable_Markets)
+            tvTypeHeader.setVisibility(View.GONE);
 
         rvInstruments = findViewById(R.id.RV_instrument);
         spMarkets = findViewById(R.id.spMarket);
@@ -656,7 +660,6 @@ public class TimeSalesActivity extends AppCompatActivity implements InstrumentsR
                 parameters.put("instrumentId", "");
                 parameters.put("MarketID", MyApplication.marketID);
                 parameters.put("key", getResources().getString(R.string.beforekey)/*MyApplication.mshared.getString(getString(R.string.afterkey), "")*/);
-
                 parameters.put("FromTS", MyApplication.timeSalesTimesTampMap.get(MyApplication.marketID));
                 lastTimesTamp = MyApplication.timeSalesTimesTampMap.get(MyApplication.marketID);
 
@@ -703,7 +706,7 @@ public class TimeSalesActivity extends AppCompatActivity implements InstrumentsR
 
             isRetrieved=true;
             try {
-                ArrayList<TimeSale> retrievedTimeSales = GlobalFunctions.GetTimeSales(values[0],true);
+                ArrayList<TimeSale> retrievedTimeSales = GlobalFunctions.GetTimeSales(getApplicationContext(),values[0],true);
 
                 /*if(allTrades.size() == 0 && MyApplication.timeSales.size() != 0){
                     allTrades = (MyApplication.timeSales);

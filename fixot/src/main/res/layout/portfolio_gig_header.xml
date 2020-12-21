@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorMedium"
+    android:background="@color/portfolio_header"
     android:minHeight="60dp"
     android:elevation="10dp"
     android:clipToPadding="false"
@@ -23,20 +23,22 @@
     android:orientation="vertical"
     android:padding="@dimen/xsmall_margin"
     android:layout_weight="1.5">
-    <TextView
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvColumn1Title"
         android:textSize="@dimen/xSmall"
+        android:maxLines="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textColor="?attr/colorValues" />
-    <TextView
+        android:textColor="?attr/colorLight" />
+    <me.grantland.widget.AutofitTextView
         android:id="@+id/tvColumn1_2Title"
         android:textSize="@dimen/xSmall"
+        android:maxLines="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textColor="?attr/colorValues" />
+        android:textColor="?attr/colorLight" />
 </LinearLayout>
 
 
@@ -46,21 +48,23 @@
         android:orientation="vertical"
         android:padding="@dimen/xsmall_margin"
         android:layout_weight="1.2">
-    <TextView
+        <me.grantland.widget.AutofitTextView
         android:id="@+id/tvColumn2Title"
         android:textSize="@dimen/xSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+            android:maxLines="1"
         android:gravity="center_horizontal"
-        android:textColor="?attr/colorValues" />
+        android:textColor="?attr/colorLight" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvColumn2_2Title"
             android:textSize="@dimen/xSmall"
+            android:maxLines="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textColor="?attr/colorValues" />
+            android:textColor="?attr/colorLight" />
     </LinearLayout>
     <LinearLayout
         android:layout_width="0dp"
@@ -68,22 +72,24 @@
         android:orientation="vertical"
         android:padding="@dimen/xsmall_margin"
         android:layout_weight="1.6">
-    <TextView
+        <me.grantland.widget.AutofitTextView
         android:id="@+id/tvColumn3Title"
         android:textSize="@dimen/xSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+            android:maxLines="1"
         android:gravity="center_horizontal"
         android:text="@string/price_title"
-        android:textColor="?attr/colorValues" />
-        <TextView
+        android:textColor="?attr/colorLight" />
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvColumn3_2Title"
             android:textSize="@dimen/xSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+            android:maxLines="1"
             android:text="@string/price_title"
-            android:textColor="?attr/colorValues" />
+            android:textColor="?attr/colorLight" />
     </LinearLayout>
 
     <LinearLayout
@@ -93,20 +99,22 @@
         android:padding="@dimen/xsmall_margin"
         android:layout_weight="1.6">
 
-    <TextView
+        <me.grantland.widget.AutofitTextView
         android:id="@+id/tvColumn4Title"
         android:textSize="@dimen/xSmall"
+            android:maxLines="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textColor="?attr/colorValues" />
-        <TextView
+        android:textColor="?attr/colorLight" />
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvColumn4_2Title"
             android:textSize="@dimen/xSmall"
+            android:maxLines="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textColor="?attr/colorValues" />
+            android:textColor="?attr/colorLight" />
     </LinearLayout>
 
 
@@ -117,21 +125,23 @@
         android:padding="@dimen/xsmall_margin"
         android:layout_weight="1.6">
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvColumn5_2Title"
             android:textSize="@dimen/xSmall"
             android:layout_width="wrap_content"
+            android:maxLines="1"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:textColor="?attr/colorValues" />
+            android:textColor="?attr/colorLight" />
 
-    <TextView
+        <me.grantland.widget.AutofitTextView
         android:id="@+id/tvColumn5Title"
         android:textSize="@dimen/xSmall"
+            android:maxLines="1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:textColor="?attr/colorValues" />
+        android:textColor="?attr/colorLight" />
 
     </LinearLayout>
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/evenColor"
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingTop="1dp"
+    android:paddingRight="4dp"
+    android:paddingBottom="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tvTradeDate"
+            style="@style/textListHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_weight="1"
+            android:textSize="@dimen/small"
+            android:maxLines="1"
+            android:textAlignment="viewStart"
+            android:padding="@dimen/mini_padding"
+            android:textColor="?attr/colorValues" />
+
+        <TextView
+            android:id="@+id/tvDueAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:padding="@dimen/mini_padding"
+            android:textSize="@dimen/small"
+
+            android:textColor="?attr/colorValues" />
+
+
+
+        <TextView
+            android:id="@+id/tvSettelementDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:maxLines="1"
+            android:gravity="center"
+            android:padding="@dimen/mini_padding"
+            android:textSize="@dimen/small"
+            android:textColor="?attr/colorValues"
+            />
+
+
+        <TextView
+            android:id="@+id/tvDays"
+            style="@style/textListHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:textDirection="ltr"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textSize="@dimen/small"
+            android:padding="@dimen/mini_padding"
+            android:textColor="?attr/colorValues"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="?attr/gray"
+        tools:ignore="Suspicious0dp" />
+
+
+
+</LinearLayout>

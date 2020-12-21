@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lllayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:gravity="center"
+    android:minHeight="@dimen/item_height"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/mini_padding"
+    android:paddingTop="1sp"
+    android:paddingRight="@dimen/mini_padding"
+    android:paddingBottom="1sp">
+    <!--android:weightSum="6"-->
+
+
+    <Button
+        android:id="@+id/btCancelRequest"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/item_height"
+        android:layout_gravity="center_vertical"
+
+        android:layout_marginEnd="@dimen/small_margin"
+        android:background="?attr/gray"
+        android:clipToPadding="false"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="?attr/colorValues"
+        android:padding="4sp"
+        android:scaleType="centerInside"
+        android:src="@drawable/stock"
+        android:tint="?attr/colorDark" />
+
+    <TextView
+        android:id="@+id/tvTypeValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:padding="@dimen/mini_padding"
+        android:maxLines="1"
+
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:id="@+id/tvAmountValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:padding="@dimen/mini_padding"
+        android:maxLines="1"
+
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:id="@+id/tvDateValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1"
+        android:padding="@dimen/mini_padding"
+        android:maxLines="1"
+
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+    <TextView
+        android:id="@+id/tvStatusValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_weight="1.2"
+        android:padding="@dimen/mini_padding"
+        android:maxLines="1"
+
+
+        android:textColor="?attr/colorValues"
+        android:textSize="@dimen/small" />
+
+</LinearLayout>

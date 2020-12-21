@@ -121,6 +121,7 @@ public class QuickLinksActivity extends AppCompatActivity implements SiteRecycle
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         try {
             Runtime.getRuntime().gc();
         } catch (Exception e) {

@@ -24,12 +24,13 @@
             android:padding="@dimen/padding"
             android:src="@drawable/back" />
 
-        <TextView
+        <me.grantland.widget.AutofitTextView
             android:id="@+id/tvLogout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:gravity="center"
+            android:maxLines="1"
             android:paddingStart="@dimen/padding"
             android:paddingEnd="@dimen/padding"
             android:text="@string/logout"
@@ -95,7 +96,7 @@
                     android:id="@+id/rlUserHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?attr/colorMedium"
+                    android:background="@drawable/border_selected_dark"
                     android:minHeight="@dimen/header_height"
                     android:orientation="horizontal"
                     android:padding="@dimen/mini_padding">
@@ -148,31 +149,38 @@
                     <Button
                         android:id="@+id/btBalanceSummary"
                         android:layout_width="0dp"
-                        android:layout_height="35dp"
+                        android:layout_height="@dimen/balance_bottons"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/mini_margin"
                         android:layout_marginTop="@dimen/mini_margin"
+                        android:paddingBottom="-4dp"
                         android:layout_marginEnd="@dimen/small_margin"
                         android:layout_marginBottom="@dimen/mini_margin"
                         android:layout_weight="2"
+                        android:textAlignment="center"
                         android:background="@drawable/order_book_border_active"
                         android:padding="@dimen/mini_padding"
                         android:textStyle="bold"
+                        android:gravity="center"
                         android:text="@string/balance_summary"
                         android:textColor="?attr/colorValues"
                         android:textSize="@dimen/small" />
 
+
+
                     <Button
                         android:id="@+id/btExecutedOrdersGrouped"
                         android:layout_width="0dp"
-                        android:layout_height="35dp"
+                        android:layout_height="@dimen/balance_bottons"
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/small_margin"
                         android:layout_marginTop="@dimen/mini_margin"
                         android:layout_marginEnd="@dimen/small_margin"
+                        android:gravity="center"
                         android:layout_marginBottom="@dimen/mini_margin"
                         android:layout_weight="2"
                         android:textStyle="bold"
+                        android:textAlignment="center"
                         android:background="@drawable/order_book_border_disable"
                         android:padding="@dimen/mini_padding"
                         android:text="@string/executed_orders_grouped"
@@ -180,8 +188,48 @@
                         android:textSize="@dimen/small" />
 
 
+                    <Button
+                        android:id="@+id/btMarginDetails"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/balance_bottons"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:layout_marginTop="@dimen/mini_margin"
+                        android:layout_marginEnd="@dimen/small_margin"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="@dimen/mini_margin"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        android:background="@drawable/order_book_border_disable"
+                        android:padding="@dimen/mini_padding"
+                        android:text="@string/margin_details"
+                        android:textColor="?attr/colorValues"
+                        android:textSize="@dimen/small" />
+
+
+                    <Button
+                        android:id="@+id/btMarginPayments"
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/balance_bottons"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/small_margin"
+                        android:layout_marginTop="@dimen/mini_margin"
+                        android:layout_marginEnd="@dimen/small_margin"
+                        android:layout_marginBottom="@dimen/mini_margin"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:layout_weight="2"
+                        android:textStyle="bold"
+                        android:background="@drawable/order_book_border_disable"
+                        android:padding="@dimen/mini_padding"
+                        android:text="@string/margin_payments"
+                        android:textColor="?attr/colorValues"
+                        android:textSize="@dimen/small" />
                 </LinearLayout>
                 <include layout="@layout/loading"/>
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -211,6 +259,85 @@
 
                 </LinearLayout>
 
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearMarginDetails"
+                    android:orientation="vertical"
+                    >
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvMarginDetails"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginStart="@dimen/mini_margin"
+                        android:layout_marginEnd="@dimen/mini_margin"
+                        />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/linearMarginPayments"
+                    android:orientation="vertical"
+                    >
+
+                    <include layout="@layout/header_margin_payments"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rvMarginPayments"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginStart="@dimen/mini_margin"
+                        android:layout_marginEnd="@dimen/mini_margin"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/small_margin"
+                        android:paddingBottom="@dimen/small_margin"
+                        android:background="?attr/colorMedium"
+                        android:paddingRight="@dimen/small_margin"
+                        android:paddingLeft="@dimen/small_margin"
+                        android:layout_marginBottom="@dimen/margin_top_bottom"
+                        android:layout_marginLeft="@dimen/mini_margin"
+                        android:layout_marginRight="@dimen/mini_margin"
+                        android:layout_marginTop="@dimen/margin_top_bottom"
+                        >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:textColor="?attr/colorValues"
+                            android:textSize="@dimen/normal"
+                            android:id="@+id/tvTotalAmountTitle"
+                            android:text="@string/total_amount"/>
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_vertical"
+                            android:id="@+id/tvTotalAmount"
+                            android:textSize="@dimen/normal"
+                            android:textColor="?attr/colorValues"
+                            android:layout_marginStart="@dimen/margin_start_end"
+                            />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
 
             </LinearLayout>

@@ -243,6 +243,7 @@ public class NotificationActivity extends AppCompatActivity implements MarketSta
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
         MyApplication.isNotification=false;
     }
 

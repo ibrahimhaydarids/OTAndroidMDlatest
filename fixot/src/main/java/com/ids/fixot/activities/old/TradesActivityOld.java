@@ -1743,6 +1743,7 @@ public class TradesActivityOld extends AppCompatActivity implements OrderDuratio
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
    /*     try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");
@@ -2503,7 +2504,7 @@ public class TradesActivityOld extends AppCompatActivity implements OrderDuratio
                     updateOverAllViews(price, quantity);
                     try{  btLimitPlus.performClick();}catch (Exception e){}
                     try{  btLimitMinus.performClick();}catch (Exception e){}
-                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MARKET_IF_TOUCHED){
+                }else if(orderType == MyApplication.MARKET_PRICE || orderType==MyApplication.MIT){
                     // orderType = MyApplication.MARKET_PRICE;
                     setLimitChecked(false);
                     showLimitPrice(false);
@@ -2693,7 +2694,7 @@ public class TradesActivityOld extends AppCompatActivity implements OrderDuratio
 
 
     private void setPriceViews(){
-        if(orderType == MyApplication.MARKET_IF_TOUCHED || orderType==MyApplication.LIMIT_IF_TOUCHED){
+        if(orderType == MyApplication.MIT || orderType==MyApplication.LIMIT_IF_TOUCHED){
             linearTriggerPrice.setVisibility(View.VISIBLE);
             tvTriggerPricelabel.setVisibility(View.VISIBLE);
         }else {

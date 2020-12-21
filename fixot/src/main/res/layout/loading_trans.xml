@@ -3,6 +3,7 @@
     android:layout_height="match_parent"
     android:id="@+id/loading"
     android:layout_gravity="center"
+    android:isScrollContainer="false"
     android:gravity="center"
     android:visibility="gone"
     android:background="@color/colorMediumTransparent"

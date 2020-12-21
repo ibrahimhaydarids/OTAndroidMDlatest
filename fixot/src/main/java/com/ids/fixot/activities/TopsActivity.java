@@ -201,6 +201,7 @@ public class TopsActivity extends AppCompatActivity implements InstrumentsRecycl
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
 
@@ -469,7 +470,7 @@ public class TopsActivity extends AppCompatActivity implements InstrumentsRecycl
         //Actions.InitializeSessionService(this);
         //Actions.InitializeMarketService(this);
         Actions.InitializeSessionServiceV2(this);
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
 
         Actions.checkLanguage(this, started);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}

@@ -182,6 +182,7 @@ public class NewsDetailsActivity extends AppCompatActivity implements MarketStat
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     public void back(View v) {
@@ -275,7 +276,7 @@ public class NewsDetailsActivity extends AppCompatActivity implements MarketStat
         Actions.InitializeSessionServiceV2(this);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
-        //Actions.InitializeMarketServiceV2(this);
+        Actions.InitializeMarketServiceV2(this);
     }
 
 

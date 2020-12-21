@@ -7,7 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.ids.fixot.MyApplication;
 import com.ids.fixot.activities.SplashActivity;
 
@@ -28,9 +28,9 @@ public class MyExceptionHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable ex) {
 
         //FirebaseCrash.log(ex.getMessage());
-        Crashlytics.logException(ex);
-        Log.wtf("MyExceptionHandler", "crash !!");
-        Crashlytics.log(Log.ERROR, "Exception: ", ex.getMessage());
+       // Crashlytics.logException(ex);
+       // Log.wtf("MyExceptionHandler", "crash !!");
+        //Crashlytics.log(Log.ERROR, "Exception: ", ex.getMessage());
 
         Intent intent = new Intent(activity, SplashActivity.class);
         intent.putExtra("crash", true);

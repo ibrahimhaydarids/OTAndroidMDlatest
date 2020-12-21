@@ -7,6 +7,8 @@ import android.os.SystemClock;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -91,6 +93,7 @@ public class FullChartActivity extends AppCompatActivity implements OnChartGestu
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     @Override
@@ -224,6 +227,12 @@ public class FullChartActivity extends AppCompatActivity implements OnChartGestu
             HashMap<String, String> parameters = new HashMap<String, String>();
             parameters.put("sectorId", sectorId);
             parameters.put("key", getResources().getString(R.string.beforekey));
+            parameters.put("MarketID", MyApplication.marketID);
+            Log.wtf("MarketIndex", "Call Request GetSectorChartData");
+            Log.wtf("chart_url",url);
+            Log.wtf("chart_param",parameters.toString());
+
+
 
             while (running) {
                 try {

@@ -155,7 +155,7 @@ public class RequestActivity extends AppCompatActivity implements PortoflioStock
 
         Actions.setActivityTheme(this);
         Actions.setLocal(MyApplication.lang, this);
-        setContentView(R.layout.activity_requests);
+        setContentView(R.layout.activity_requests_old);
         Actions.initializeBugsTracking(this);
 
         findViews();
@@ -351,7 +351,7 @@ public class RequestActivity extends AppCompatActivity implements PortoflioStock
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
 
         Actions.InitializeSessionServiceV2(this);
-        // Actions.InitializeMarketServiceV2(this);
+         Actions.InitializeMarketServiceV2(this);
     }
 
     @Override
@@ -371,7 +371,7 @@ public class RequestActivity extends AppCompatActivity implements PortoflioStock
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        Actions.unregisterSessionReceiver(this);
         try {
             System.gc();
             Runtime.getRuntime().gc();

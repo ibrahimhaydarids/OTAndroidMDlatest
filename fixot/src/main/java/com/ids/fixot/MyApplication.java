@@ -18,6 +18,7 @@ import android.view.WindowManager;
 
 import com.google.gson.Gson;
 import com.ids.fixot.classes.ReportPageSetup;
+import com.ids.fixot.classes.RequestTicketTypes;
 import com.ids.fixot.enums.enums;
 import com.ids.fixot.model.ApplicationList;
 import com.ids.fixot.model.BrokerageFee;
@@ -70,7 +71,7 @@ public class MyApplication extends Application {
     public final static int Enquiry = -1;
     public static int UNIQUE_REQUEST_CODE = 0;
     public final static int MARKET_CLOSED = -1;
-    public final static int VALUES_SPAN_COUNT = 1;
+    public static int VALUES_SPAN_COUNT = 1;
     public static   int VALUES_SPAN_COUNT_SECTOR = 1;
     public final static int GRID_VALUES_SPAN_COUNT = 2;
     public final static int ORDER_BUY = 1, ORDER_SELL = 2;
@@ -86,16 +87,22 @@ public class MyApplication extends Application {
     public static ArrayList<StockAlerts> userStockAlerts = new ArrayList<>();
     public static ArrayList<Lookups> allAlertTypes = new ArrayList<>();
     public static ArrayList<Lookups> allAlertOperators = new ArrayList<>();
-
+    public static ArrayList<RequestTicketTypes> arrayTicketTypes = new ArrayList<>();
     public static ArrayList<Integer> expandedStock = new ArrayList<>();
 
-    public static final int MARKET_IF_TOUCHED = 8;
+    public static final int TAB_BALANCE_SUMMARY = 1;
+    public static final int TAB_EXECUTED_ORDERS = 2;
+    public static final int TAB_MARGIN_DETAILS = 3;
+    public static final int TAB_MARGIN_PAYMENTS = 4;
+
+
+    public static final int MIT = 8;
     public static final int LIMIT_IF_TOUCHED = 9;
-    public static final int SI = 10;
+    public static final int SI_ORDERBOOK = 10;
     public static final int MO = 11;
     public static final int OCA = 12;
     public static final int ICEBERG = 13;
-
+    public static final int SMART_ICEBERG = 14;
     public static final int TYPE_NORMAL_REVIEW = 1;
     public static final int TYPE_OCA_ADD = 2;
     public static final int TYPE_OCA_REVIEW = 3;
@@ -213,7 +220,7 @@ public class MyApplication extends Application {
     public static String sectorsTimesTamp = "0";
     public static String timeSalesTimesTamp = "0";
     //public static String marketID = (isOTC ? Integer.toString(enums.MarketType.KWOTC.getValue()) : Integer.toString(enums.MarketType.XKUW.getValue()));
-    public static String marketID = Integer.toString(enums.MarketType.XKUW.getValue());
+    public static String marketID = BuildConfig.Enable_Markets? Integer.toString(enums.MarketType.XKUW.getValue()) : Integer.toString(enums.MarketType.DSMD.getValue());
     public static SubscriberUser userSubscriber;
     public static Boolean isSubscriber = false;
     public static Boolean isAutoLogin = false;
@@ -311,10 +318,15 @@ public class MyApplication extends Application {
 
     public static item GetAvailableForWithdrawal= new item();
     public static item SaveChequeRequest= new item();
+    public static item GetCashTransactionRequests= new item();
+
+
 
     public static item GetBalanceDetails= new item();
+    public static item GetClientTypes= new item();
 
-
+    public static item GetMarginDetails= new item();
+    public static item GetMarginPayments= new item();
     public static Double lastId;
 
     public static String AlternativeWebserviceLink = "http://www.ids-support.com/iphone/fixbrokers.json";
@@ -709,9 +721,13 @@ public class MyApplication extends Application {
 
         GetAvailableForWithdrawal = new item("157", "/api/oms/ChequeRequest/GetAvailableForWithdrawal?");
         SaveChequeRequest = new item("158", "/api/oms/ChequeRequest/SaveChequeRequest?");
+        GetCashTransactionRequests = new item("165", "/api/oms/ChequeRequest/GetCashTransactionRequests?");
 
         GetMobileReportPageSetup=new item("162", "/api/oms/Report/GetMobileReportPageSetup?");
         GetBalanceDetails=new item("163", "/api/oms/BalanceDetails/GetBalanceDetails?");
 
+        GetClientTypes = new item("164", "/api/oms/ChequeRequest/GetClientTypes?");
+        GetMarginDetails = new item("166", "/api/oms/Portfolio/GetMarginDetails?");
+        GetMarginPayments = new item("167", "/api/oms/Portfolio/GetMarginPayments?");
     }
 }

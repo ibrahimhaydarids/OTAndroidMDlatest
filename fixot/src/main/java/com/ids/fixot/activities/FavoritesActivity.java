@@ -607,7 +607,7 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesRec
 //Actions.InitializeMarketService(this);
 
         Actions.InitializeSessionServiceV2(this);
-        //Actions.InitializeMarketServiceV2(this);
+        Actions.InitializeMarketServiceV2(this);
 
         //InitializeMarketServiceLocal();
 
@@ -636,7 +636,7 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesRec
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        Actions.unregisterSessionReceiver(this);
         try {
             unregisterReceiver(favMarketReceiver);
         } catch (Exception e) {
@@ -681,14 +681,17 @@ public class FavoritesActivity extends AppCompatActivity implements FavoritesRec
     public void back(View v) {
         finish();
     }
-
+/*
     @Override
     public void onBackPressed() {
         if (BuildConfig.GoToMenu) {
             super.onBackPressed();
         }
-    }
-
+    }*/
+@Override
+public void onBackPressed() {
+    Actions.exitApp(this);
+}
     @Override
     public void onItemClicked(View v, int position) {
 

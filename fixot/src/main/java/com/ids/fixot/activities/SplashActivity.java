@@ -87,17 +87,17 @@ public class SplashActivity extends AppCompatActivity {
         MyApplication.isAutoLogin=false;
 
         try{
-        if(MyApplication.mshared.getBoolean("newToMerge", true)) {
+        if(MyApplication.mshared.getBoolean("newToMerge1", true)) {
 
             SqliteDb_TimeSales timeSales_DB = new SqliteDb_TimeSales(this);
             timeSales_DB.open();
             timeSales_DB.deleteTimeSales();
             timeSales_DB.close();
 
-            MyApplication.editor.putBoolean("saveusernamepassword", false).apply();
-            MyApplication.editor.putString("etUsername", "").apply();
-            MyApplication.editor.putString("etPassword", "").apply();
-            MyApplication.editor.putBoolean("firstLogin", true).apply();
+            //MyApplication.editor.putBoolean("saveusernamepassword", false).apply();
+           // MyApplication.editor.putString("etUsername", "").apply();
+           // MyApplication.editor.putString("etPassword", "").apply();
+          //  MyApplication.editor.putBoolean("firstLogin", true).apply();
             MyApplication.editor.putInt("lang", 0).apply();
             MyApplication.timeSales=new ArrayList<>();
             MyApplication.IsTimeSaleLoginRetreived=false;
@@ -111,7 +111,7 @@ public class SplashActivity extends AppCompatActivity {
                     MyApplication.keepAliveTime, TimeUnit.SECONDS, MyApplication.workQueue);
 
             Actions.deleteCache(this);
-            MyApplication.editor.putBoolean("newToMerge", false).apply();
+            MyApplication.editor.putBoolean("newToMerge1", false).apply();
 
 
         }}catch (Exception e){}
@@ -172,6 +172,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
 
         /*try {
             getBrokerageFrees.cancel(true);

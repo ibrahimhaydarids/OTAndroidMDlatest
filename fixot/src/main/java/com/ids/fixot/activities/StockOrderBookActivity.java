@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import me.grantland.widget.AutofitHelper;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -124,9 +126,13 @@ public class StockOrderBookActivity extends AppCompatActivity implements OrderBo
             Log.wtf("getIntent().getExtras().getString(\"isFavorite\")", "is " + getIntent().getExtras().getString("isFavorite"));
             ivFavorite.setImageResource(isFavorite ? R.drawable.added_to_favorites : R.drawable.add_to_favorites);
 
-            if(BuildConfig.Enable_Markets)
-                setStockName(getIntent().getExtras().getString("securityId") + " - " + getIntent().getExtras().getString("stockName")); //getInt("stockId")
-             else {
+            if(BuildConfig.Enable_Markets) {
+              //  setStockName(getIntent().getExtras().getString("securityId") + " - " + getIntent().getExtras().getString("stockName")); //getInt("stockId")
+                StockQuotation stockQuotation = Actions.getStockQuotationById(MyApplication.stockQuotations, stockId);
+                setStockName(getIntent().getExtras().getString("securityId") + " - " +  (MyApplication.lang == MyApplication.ARABIC ? stockQuotation.getSymbolAr() : stockQuotation.getSymbolEn())); //getInt("stockId")
+
+
+            }else {
                StockQuotation stockQuotation = Actions.getStockQuotationById(MyApplication.stockQuotations, stockId);
                 setStockName(getIntent().getExtras().getString("securityId") + " - " +  (MyApplication.lang == MyApplication.ARABIC ? stockQuotation.getNameAr() : stockQuotation.getNameEn())); //getInt("stockId")
 
@@ -281,15 +287,33 @@ public class StockOrderBookActivity extends AppCompatActivity implements OrderBo
 
     private void setlastPrice(){
         try {
-            if(getIntent().getExtras().getDouble("last") ==0) {
+         //   if(getIntent().getExtras().getDouble("last") ==0) {
+
                 tvlast.setText(getLastFromId());
 
                 tvLastValue.setText(getLastFromId());
-            }
+           // if(!BuildConfig.Enable_Markets){
+                if(Double.parseDouble(getLastFromId()) >0 ){
+                    tvlast.setTextColor(getResources().getColor(R.color.green_color));
+                    tvLastValue.setTextColor(getResources().getColor(R.color.green_color));
+                }else  if(Double.parseDouble(getLastFromId()) <0){
+                    tvlast.setTextColor(getResources().getColor(R.color.red_color));
+                    tvLastValue.setTextColor(getResources().getColor(R.color.red_color));
+                }else {
+                    tvlast.setTextColor(getResources().getColor(R.color.orange));
+                    tvLastValue.setTextColor(getResources().getColor(R.color.orange));
+                }
+
+                tvHighValue.setTextColor(getResources().getColor(R.color.green_color));
+                tvLowValue.setTextColor(getResources().getColor(R.color.red_color));
+         //   }
+
+
+           /* }
             else {
                 tvlast.setText(getIntent().getExtras().getDouble("last") + "");
                 tvLastValue.setText(getIntent().getExtras().getDouble("last") + "");
-            }
+            }*/
         }catch (Exception e){ }
         setTopDataFromId();
 
@@ -347,7 +371,7 @@ public class StockOrderBookActivity extends AppCompatActivity implements OrderBo
         linearValues = findViewById(R.id.linearValues);
         llVolume = findViewById(R.id.llVolume);
         llEquilibrium=findViewById(R.id.llEquilibrium);
-        if(!BuildConfig.Enable_Markets)
+        //if(!BuildConfig.Enable_Markets)
             llEquilibrium.setVisibility(View.VISIBLE);
         llLast = findViewById(R.id.llLast);
         llHigh = findViewById(R.id.llHigh);
@@ -408,17 +432,28 @@ public class StockOrderBookActivity extends AppCompatActivity implements OrderBo
                 if(MyApplication.stockQuotations.get(i).getStockID()==stockId) {
                     last = MyApplication.stockQuotations.get(i).getLast() + "";
 
+                    AutofitHelper.create(tvLowValue);
+                    AutofitHelper.create(tvLastValue);
+                    AutofitHelper.create(tvHighValue);
+                    AutofitHelper.create(tvEquilibriumValue);
+                    AutofitHelper.create(tvVolumeValue);
+                    AutofitHelper.create(tvTradesCountValue);
 
-                    try { tvLowValue.setText(MyApplication.stockQuotations.get(i).getLowlimit()+""); }catch (Exception e){ }
 
-                    try {tvHighValue.setText(MyApplication.stockQuotations.get(i).getHiLimit()+""); }catch (Exception e){ }
+
+
+
+                    try { tvLowValue.setText(MyApplication.stockQuotations.get(i).getLow()+""); }catch (Exception e){ }
+
+                    try {tvHighValue.setText(MyApplication.stockQuotations.get(i).getHigh()+""); }catch (Exception e){ }
                     try {tvEquilibriumValue.setText(MyApplication.stockQuotations.get(i).getEquilibriumPriceFormatted()+""); }catch (Exception e){ }
 
                     try {
-                        if(!BuildConfig.Enable_Markets)
+                       // if(!BuildConfig.Enable_Markets)
                            tvVolumeValue.setText(MyApplication.stockQuotations.get(i).getVolumeFormatted()+"");
-                    else
-                        tvVolumeValue.setText(MyApplication.stockQuotations.get(i).getVolume()+""); }catch (Exception e){ }
+                 /*   else
+                        tvVolumeValue.setText(MyApplication.stockQuotations.get(i).getVolume()+"");*/
+                    }catch (Exception e){ }
 
 
 
@@ -636,6 +671,7 @@ public class StockOrderBookActivity extends AppCompatActivity implements OrderBo
 
     @Override
     protected void onDestroy() {
+        Actions.unregisterSessionReceiver(this);
         try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");

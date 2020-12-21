@@ -33,30 +33,32 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/symbol_title"
                 style="@style/textStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_weight="0.8"
+                android:maxLines="1"
                 android:gravity="center"
                 android:padding="0sp"
                 android:text="@string/sector_name"
                 android:textColor="?attr/colorValues" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/quantity_cost_title"
                 style="@style/textStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:maxLines="1"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/Shares"
                 android:textColor="?attr/colorValues" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/bid_ask_title"
                 style="@style/textStyle"
                 android:layout_width="0dp"
@@ -64,10 +66,11 @@
                 android:layout_gravity="top"
                 android:layout_weight="1.1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="@string/bid_ask_title"
                 android:textColor="?attr/colorValues" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/unrealized_title"
                 style="@style/textStyle"
                 android:layout_width="0dp"
@@ -75,6 +78,7 @@
                 android:layout_gravity="top"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="@string/unrealized_title"
                 android:textColor="?attr/colorValues" />
 
@@ -86,17 +90,18 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 style="@style/textStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0.8"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text=""
                 android:textColor="?attr/colorValues" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/cost_titles"
                 style="@style/textStyle"
                 android:layout_width="0dp"
@@ -104,10 +109,11 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:gravity="center"
+                android:maxLines="1"
                 android:text="@string/Value"
                 android:textColor="?attr/colorValues" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/tvLast"
                 style="@style/textStyle"
                 android:layout_width="0dp"
@@ -116,9 +122,10 @@
                 android:layout_weight="1.1"
                 android:gravity="center"
                 android:text="@string/last_price_title"
+                android:maxLines="1"
                 android:textColor="?attr/colorValues" />
 
-            <TextView
+            <me.grantland.widget.AutofitTextView
                 android:id="@+id/unrealized_title_prcnt"
                 style="@style/textStyle"
                 android:layout_width="0dp"
@@ -127,6 +134,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="%"
+                android:maxLines="1"
                 android:textColor="?attr/colorValues" />
 
         </LinearLayout>

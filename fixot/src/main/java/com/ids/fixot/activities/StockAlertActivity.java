@@ -146,6 +146,7 @@ public class StockAlertActivity extends AppCompatActivity implements MarketStatu
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void setListeners() {

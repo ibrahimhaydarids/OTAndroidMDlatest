@@ -132,6 +132,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements MarketS
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void findViews() {
@@ -376,6 +377,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements MarketS
                         .key("Password").value(Actions.MD5(newPass) + "")
                         .key("UserID").value(MyApplication.currentUser.getId() + "")
                         .key("random").value(random + "")
+                        .key("OldTradingPIN").value("")
+                        .key("NewTradingPin").value("")
                         .key("key").value(MyApplication.afterKey)
                         .endObject();
                 //MyApplication.currentUser.getKey())

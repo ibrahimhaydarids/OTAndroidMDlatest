@@ -138,13 +138,15 @@
                             android:src="@drawable/tops_down"
                             android:tint="@color/red_color" />
 
-                        <TextView
+                        <me.grantland.widget.AutofitTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:padding="@dimen/mini_padding"
                             android:text="@string/top_looser"
+                            android:maxLines="1"
+
                             android:textColor="@color/red_color"
                             android:textSize="@dimen/normal" />
                     </LinearLayout>
@@ -184,12 +186,13 @@
                             android:src="@drawable/tops_volume"
                             android:tint="?attr/colorValues" />
 
-                        <TextView
+                        <me.grantland.widget.AutofitTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:padding="@dimen/mini_padding"
+                            android:maxLines="1"
                             android:text="@string/top_traded"
                             android:textColor="?attr/colorValues"
                             android:textSize="@dimen/normal" />
@@ -230,13 +233,14 @@
                             android:src="@drawable/tops_trades"
                             android:tint="?attr/colorValues" />
 
-                        <TextView
+                        <me.grantland.widget.AutofitTextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_weight="1"
                             android:padding="@dimen/mini_padding"
                             android:text="@string/top_trades"
+                            android:maxLines="1"
                             android:textColor="?attr/colorValues"
                             android:textSize="@dimen/normal" />
                     </LinearLayout>

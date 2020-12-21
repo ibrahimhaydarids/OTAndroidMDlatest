@@ -37,7 +37,7 @@
 
     <string name="hi_limit">سقف عالي</string>
 
-    <string name="high">عالي</string>
+    <string name="high">أعلى</string>
 
     <string name="is_islamic">اسلامية</string>
 
@@ -157,7 +157,7 @@
     <string name="menu_portfolio">المحفظة</string>
     <string name="menu_orders">أوامري</string>
     <string name="menu_stocks">الأسهم</string>
-    <string name="menu_islamic_stocks">الأسواق الإسلامية</string>
+    <string name="menu_islamic_stocks">الأسهم المطابقة للشريعة</string>
     <string name="Dark_Theme">لون التطبيق (أسود)</string>
     <string name="menu_sectors">القطاعات</string>
     <string name="menu_favorites">المفضلة</string>

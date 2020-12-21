@@ -24,7 +24,7 @@
     <string name="password">كلمة المرور</string>
 
     <string name="loginExpired">لقد تم تسجيل الدخول بمستخدم استخدم اسم المرور الخاص بك. لاسباب امنية سوف يتم اخراجك من النظام.</string>
-
+    <string name="sessionExpired"> لاسباب امنية سوف يتم اخراجك من النظام.</string>
     <string name="no_data">لا يوجد معلومات</string>
 
     <string name="tops">الأكثر</string>
@@ -71,7 +71,7 @@
 
     <string name="is_islamic">اسلامية</string>
     <string name="last">آخر سعر</string>
-    <string name="trigger_price">تحديد السعر</string>
+    <string name="trigger_price">سعر التنبيه</string>
     <string name="notifications">الاشعارات</string>
     <string name="low">أدنى</string>
 
@@ -171,9 +171,9 @@
     <string name="change_percent">التغيير%</string>
     <string name="activate_order">تفعيل</string>
 
-    <string name="ask_quantity">كمية الطلب</string>
+    <string name="ask_quantity">كمية العرض</string>
 
-    <string name="bid_quantity">كمية العرض</string>
+    <string name="bid_quantity">كمية الطلب</string>
 
     <string name="buy">شراء</string>
 
@@ -222,8 +222,10 @@
     <string name="errorlogin">الرجاء ادخال اسم المستخدم وكلمة المرور</string>
     <string name="errorupdate">الرجاء ملأ كل الخانات</string>
     <string name="errorVerify">كلمة المرور الجديدة و تأكيد كلمة المرور غير متطابقتين</string>
+    <string name="errorVerifyPin">كلمة المرور الجديدة و تأكيد كلمة المرور غير متطابقتين</string>
     <string name="updatesuccessful">تم تحديث كلمة المرور بنجاح</string>
 
+    <string name="updatesuccessfulPin">تم تحديث رقم التداول بنجاح</string>
     <string name="almowazi">موازي</string>
 
     <string name="more">المزيد</string>
@@ -266,6 +268,7 @@
     <string name="market_index">مؤشر السوق</string>
     <string name="sectors">القطاعات</string>
     <string name="stock">الأسهم</string>
+    <string name="stock_btn">الأسهم</string>
     <string name="time_sales">الصفقات</string>
     <string name="top_trades">صفقات</string>
     <string name="top_value">قيمة</string>
@@ -326,7 +329,7 @@
     <string name="menu_portfolio">المحفظة</string>
     <string name="menu_orders">أوامري</string>
     <string name="menu_stocks">الأسهم</string>
-    <string name="menu_islamic_stocks">الأسواق الإسلامية</string>
+    <string name="menu_islamic_stocks">الأسهم المطابقة للشريعة</string>
     <string name="menu_OffMarketQuotes">الصفقات الخاصة</string>
     <string name="Dark_Theme">لون التطبيق (أسود)</string>
     <string name="menu_sectors">القطاعات</string>
@@ -609,14 +612,15 @@
     <string name="order_success">تم وضع الأمر بنجاح</string>
     <string name="check_request">طلب شيك مصرفي</string>
     <string name="plz_add_amount">الرجاء إضافة القيمة</string>
+    <string name="plz_check_amount">الرجاء التحقق من القيمة</string>
     <string name="plz_add_date">الرجاء إضافة التاريخ</string>
 
     <string name="index_box">صندوق المؤشر</string>
 
 
-    <string name="total_buy">إجمالي الشراء:</string>
-    <string name="buy_amount">مبلغ الشراء:</string>
-    <string name="total_sell">إجمالي البيع:</string>
+    <string name="total_buy"> الشراء:</string>
+    <string name="buy_amount">كمية الشراء:</string>
+    <string name="total_sell"> البيع:</string>
     <string name="sell_amount">كمية البيع:</string>
 
     <string name="bid_price">سعر الطلب</string>
@@ -658,8 +662,27 @@
     <string name="qty_executed">الكمية المنفذة</string>
     <string name="avg_price">متوسط ​​السعر</string>
     <string name="balance_details">تفاصيل الرصيد</string>
-    <string name="equilibrium_price">السعر التطابقي</string>
+    <string name="equilibrium_price">سعر التوازن</string>
 
     <string name="shares">أسهم مالية</string>
     <string name="check_price_msg">يرجى التحقق من السعر المدخل</string>
+    <string name="change_trading_pin">تغيير رقم التأكيد</string>
+    <string name="old_pin">الرقم القديم</string>
+    <string name="new_pin">الرقم الجديد</string>
+    <string name="confirm_pin">تأكيد</string>
+
+
+    <string name="normal_font">عادي</string>
+    <string name="large">كبير</string>
+    <string name="larger">أكبر</string>
+    <string name="liquidity_bar_chart">مؤشر السيولة</string>
+    <string name="buy_per">شراء %</string>
+    <string name="sell_per">بيع %</string>
+    <string name="remaining">المتبقية</string>
+    <string name="margin_details">تفاصيل الهامش</string>
+    <string name="margin_payments">معلومات السداد</string>
+    <string name="due_amount">المبلغ المستحق</string>
+    <string name="settlement_date">تاريخ الإستحقاق</string>
+    <string name="total_amount">المجموع الإجمالي</string>
+    <string name="days">الأيام</string>
 </resources>

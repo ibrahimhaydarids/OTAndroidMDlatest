@@ -279,6 +279,128 @@
                 </LinearLayout>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?attr/oddColor"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/grayTransparent"
+                    android:orientation="horizontal"
+                    android:id="@+id/linearPercentages"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tvBuyPerTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/mini_padding"
+                            android:text="@string/buy_per"
+                            android:textColor="@color/green_color"
+                            android:textSize="@dimen/small" />
+
+                        <TextView
+                            android:id="@+id/tvBuyPerValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/mini_padding"
+                            android:textColor="@color/green_color"
+                            android:textSize="@dimen/small" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_marginLeft="@dimen/small"
+                        android:layout_marginRight="@dimen/small"
+                        android:layout_weight="2">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/mini_padding"
+                            android:text="@string/liquidity_bar_chart"
+                            android:textColor="?attr/colorValues"
+                            android:textDirection="ltr"
+                            android:textSize="@dimen/small" />
+
+                       <LinearLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="8dp"
+                           android:layout_marginTop="10dp"
+                           android:orientation="horizontal"
+                           >
+                           <LinearLayout
+                               android:layout_width="wrap_content"
+                               android:layout_height="match_parent"
+                               android:orientation="horizontal"
+                               android:background="@color/green_color"
+                               android:id="@+id/progressBuy"/>
+
+                           <LinearLayout
+                               android:layout_width="wrap_content"
+                               android:layout_height="match_parent"
+                               android:orientation="horizontal"
+                               android:background="@color/red_color"
+                               android:id="@+id/progressCell"/>
+
+                       </LinearLayout>
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tvSellPerTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/mini_padding"
+                            android:text="@string/sell_per"
+                            android:textColor="@color/red_color"
+                            android:textSize="@dimen/small" />
+
+                        <TextView
+                            android:id="@+id/tvSellPerValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:padding="@dimen/mini_padding"
+                            android:textColor="@color/red_color"
+                            android:textSize="@dimen/small" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/valueList"
                     android:layout_width="match_parent"

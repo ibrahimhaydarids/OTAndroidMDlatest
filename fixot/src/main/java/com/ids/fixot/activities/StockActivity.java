@@ -484,7 +484,8 @@ public class StockActivity extends AppCompatActivity implements InstrumentsRecyc
     @Override
     protected void onResume() {
         super.onResume();
-        Actions.startStockQuotationService(this);
+        Actions.InitializeMarketServiceV2(this);
+        Actions.startStockQuotationService(StockActivity.this);
         running = true;
 
         Actions.checkSession(this);
@@ -501,12 +502,13 @@ public class StockActivity extends AppCompatActivity implements InstrumentsRecyc
     protected void onStop() {
         super.onStop();
 
-        // Actions.unregisterMarketReceiver(this);
+        Actions.unregisterMarketReceiver(this);
         Actions.unregisterSessionReceiver(this);
     }
 
     @Override
     protected void onPause() {
+        Actions.unregisterSessionReceiver(this);
         try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");
@@ -522,6 +524,8 @@ public class StockActivity extends AppCompatActivity implements InstrumentsRecyc
     protected void onDestroy() {
         super.onDestroy();
         running = false;
+        Actions.unregisterSessionReceiver(this);
+        Actions.unregisterMarketReceiver(this);
         try{
             Actions.stopStockQuotationService(this);
             Log.wtf("quotation_service","destroy_stop ");

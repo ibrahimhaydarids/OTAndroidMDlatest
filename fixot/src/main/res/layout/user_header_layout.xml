@@ -3,7 +3,7 @@
     android:id="@+id/rlUserHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?attr/colorMedium"
+    android:background="@drawable/border_selected_dark"
     android:orientation="vertical"
     android:padding="@dimen/padding">
 

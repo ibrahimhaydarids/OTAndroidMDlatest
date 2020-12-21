@@ -5,16 +5,22 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -22,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ids.fixot.Actions;
 import com.ids.fixot.AppService;
@@ -40,19 +47,22 @@ import java.util.Locale;
  * Created by Amal on 4/6/2017.
  */
 
-public class SettingsActivity extends AppCompatActivity implements MarketStatusListener  , spItemListener {
+public class SettingsActivity extends AppCompatActivity implements MarketStatusListener, spItemListener {
 
-    RelativeLayout rlLayout, changePassword, layoutFingerPrint, layoutVersionNumber, layoutPushNotification;
+    RelativeLayout rlLayout, changePassword, changePin, layoutFingerPrint, layoutVersionNumber, layoutPushNotification;
     Switch switchNot, switchFingerprint, switchDarckTheme;
-    ImageView ivArrow;
+    ImageView ivArrow, ivArrowPin;
     RadioButton rbArabic, rbEnglish;
-    TextView tvVersionNumber,tvChangeFont;
+    TextView tvVersionNumber, tvChangeFont;
     String versionNumber = "";
     FingerprintManager fingerprintManager;
     KeyguardManager keyguardManager;
     RelativeLayout layoutThemes;
     private BroadcastReceiver receiver;
     Spinner spInstrumentsTop;
+    LinearLayout linearSettings;
+
+    Button btNormalFont,btLargeFont,btLargerFont;
 
     public SettingsActivity() {
         LocalUtils.updateConfig(this);
@@ -90,7 +100,7 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
         Actions.initializeBugsTracking(this);
 
         findViews();
-
+        setAppFonts();
         setListeners();
 
         Actions.initializeToolBar(getString(R.string.settings), SettingsActivity.this);
@@ -101,27 +111,48 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
 
         try {
             spInstrumentsTop = (Spinner) findViewById(R.id.spInstrumentTop);
-            if(BuildConfig.Enable_Markets)
+            if (BuildConfig.Enable_Markets)
                 spInstrumentsTop.setVisibility(View.VISIBLE);
             else
                 spInstrumentsTop.setVisibility(View.GONE);
             spInstrumentsTop.setVisibility(View.GONE);
-          //  Actions.setSpinnerTop(this, spInstrumentsTop, this);
+            //  Actions.setSpinnerTop(this, spInstrumentsTop, this);
         } catch (Exception e) {
             Log.wtf("exception", e.toString());
         }
+
+        setBackgrounds();
     }
 
     private void findViews() {
+        btNormalFont= findViewById(R.id.btNormalFont);
+        btLargeFont= findViewById(R.id.btLargeFont);
+        btLargerFont= findViewById(R.id.btLargerFont);
 
         ivArrow = findViewById(R.id.ivArrow);
+        linearSettings=findViewById(R.id.linearSettings);
+        ivArrowPin = findViewById(R.id.ivArrowPin);
         tvVersionNumber = findViewById(R.id.tvVersionNumber);
         layoutVersionNumber = findViewById(R.id.layoutVersionNumber);
         layoutFingerPrint = findViewById(R.id.layoutFingerPrint);
         layoutPushNotification = findViewById(R.id.layoutPushNotification);
         changePassword = findViewById(R.id.changePassword);
-        if(BuildConfig.Enable_Markets)
-            layoutPushNotification.setVisibility(View.VISIBLE);
+        changePin = findViewById(R.id.changePin);
+        changePin.setOnClickListener(v -> {
+            startActivity(new Intent(this, ChangePinActivity.class));
+        });
+
+        changePassword.setOnClickListener(v -> {
+            startActivity(new Intent(this, ChangePasswordActivity.class));
+        });
+        //changePin.setVisibility(View.VISIBLE);
+        changePin.setVisibility(MyApplication.mshared.getBoolean("ShowChangePIN", false) ? View.VISIBLE : View.GONE);
+
+
+        if (BuildConfig.Enable_Markets) {
+           // layoutPushNotification.setVisibility(View.VISIBLE);
+            layoutPushNotification.setVisibility(MyApplication.mshared.getBoolean("EnableNotification", false) ? View.VISIBLE : View.GONE);
+        }
         else
             layoutPushNotification.setVisibility(View.GONE);
         rlLayout = findViewById(R.id.rlLayout);
@@ -131,11 +162,11 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
         rbArabic = findViewById(R.id.rbArabic);
         rbEnglish = findViewById(R.id.rbEnglish);
         layoutThemes = findViewById(R.id.layoutThemes);
-        tvChangeFont=findViewById(R.id.tvChangeFont);
+        tvChangeFont = findViewById(R.id.tvChangeFont);
 
-        /*changePassword.setVisibility(View.VISIBLE);
-        ivArrow.setRotation(MyApplication.lang == MyApplication.ENGLISH ? 180f : 0f);*/
-
+        changePassword.setVisibility(View.VISIBLE);
+        ivArrow.setRotation(MyApplication.lang == MyApplication.ENGLISH ? 180f : 0f);
+        ivArrowPin.setRotation(MyApplication.lang == MyApplication.ENGLISH ? 180f : 0f);
         try {
 
             versionNumber = getPackageManager().getPackageInfo(getPackageName(), 0).versionName + " (" + getPackageManager().getPackageInfo(getPackageName(), 0).versionCode + ")";
@@ -196,7 +227,30 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-     //   Toast.makeText(getApplicationContext(),"asdasdas",Toast.LENGTH_LONG).show();
+        //   Toast.makeText(getApplicationContext(),"asdasdas",Toast.LENGTH_LONG).show();
+    }
+
+
+
+    private void setBackgrounds(){
+
+        final int childCount = linearSettings.getChildCount();
+        int count=0;
+        for (int i = 0; i < childCount; i++) {
+            View v = linearSettings.getChildAt(i);
+            if(v.getVisibility()==View.VISIBLE){
+
+                TypedValue outValue = new TypedValue();
+                getTheme().resolveAttribute(R.attr.colorLight, outValue, true);
+                if(count % 2==1)
+                    v.setBackgroundResource(outValue.resourceId);
+                else
+                    v.setBackgroundResource(0);
+
+
+                count++;
+            }
+        }
     }
 
     @Override
@@ -207,6 +261,7 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
         } catch (Exception e) {
             e.printStackTrace();
         }
+        Actions.unregisterSessionReceiver(this);
     }
 
     private void setListeners() {
@@ -281,7 +336,7 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
     }
 
     public void back(View v) {
-
+        startActivity(new Intent(this,MoreActivity.class));
         finish();
     }
 
@@ -292,7 +347,10 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
         //Actions.setActivityTheme(this);
         //finish();
         //startActivity(getIntent());
-        try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
+        try {
+            Actions.setSpinnerTop(this, spInstrumentsTop, this);
+        } catch (Exception e) {
+        }
 
         Actions.checkSession(this);
         //Actions.InitializeSessionService(this);
@@ -319,5 +377,84 @@ public class SettingsActivity extends AppCompatActivity implements MarketStatusL
     public void loadFooter(View v) {
 
         Actions.loadFooter(this, v);
+    }
+
+
+
+    private void setAppFonts(){
+        btNormalFont.setOnClickListener(v->{
+               setTabs(1);
+               MyApplication.editor.putInt("font_size", 1).apply();
+               finish();
+               startActivity(getIntent());
+        });
+
+        btLargeFont.setOnClickListener(v->{
+               setTabs(2);
+               MyApplication.editor.putInt("font_size", 2).apply();
+               finish();
+               startActivity(getIntent());
+
+        });
+
+        btLargerFont.setOnClickListener(v->{
+               setTabs(3);
+               MyApplication.editor.putInt("font_size", 3).apply();
+               finish();
+               startActivity(getIntent());
+        });
+
+
+       setTabs(MyApplication.mshared.getInt("font_size", 1));
+
+
+
+        int screenSize = getResources().getConfiguration().screenLayout &
+                Configuration.SCREENLAYOUT_SIZE_MASK;
+
+        String toastMsg;
+        switch(screenSize) {
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                toastMsg = "Large screen";
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                toastMsg = "Normal screen";
+
+                break;
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                btLargerFont.setVisibility(View.GONE);
+                toastMsg = "Small screen";
+
+                break;
+            default:
+                toastMsg = "Screen size is neither large, normal or small";
+        }
+        //Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+
+
+    }
+
+    private void setTabs(int size){
+        if(size==1){
+            btNormalFont.setBackgroundResource(R.drawable.rounded_light);
+            btLargeFont.setBackgroundResource(0);
+            btLargerFont.setBackgroundResource(0);
+        }else if(size == 2){
+            btLargeFont.setBackgroundResource(R.drawable.rounded_light);
+            btNormalFont.setBackgroundResource(0);
+            btLargerFont.setBackgroundResource(0);
+        }else if(size == 3){
+            btLargerFont.setBackgroundResource(R.drawable.rounded_light);
+            btLargeFont.setBackgroundResource(0);
+            btNormalFont.setBackgroundResource(0);
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(this,MoreActivity.class));
+        finishAffinity();
+       // super.onBackPressed();
     }
 }

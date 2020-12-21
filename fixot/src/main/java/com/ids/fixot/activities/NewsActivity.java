@@ -212,6 +212,7 @@ public class NewsActivity extends AppCompatActivity implements MarketStatusListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         try {
             mGetNews.cancel(true);
             MyApplication.threadPoolExecutor.getQueue().remove(mGetNews);

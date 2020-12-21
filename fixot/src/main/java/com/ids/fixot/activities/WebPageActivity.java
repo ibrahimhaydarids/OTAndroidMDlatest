@@ -160,6 +160,7 @@ public class WebPageActivity extends AppCompatActivity implements MarketStatusLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         try {
             Runtime.getRuntime().gc();
         } catch (Exception e) {

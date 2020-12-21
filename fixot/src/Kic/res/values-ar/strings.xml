@@ -35,7 +35,7 @@
 
     <string name="hi_limit">سقف عالي</string>
 
-    <string name="high">عالي</string>
+    <string name="high">أعلى</string>
 
     <string name="is_islamic">اسلامية</string>
 
@@ -65,9 +65,9 @@
 
     <string name="activate_order">تفعيل الأمر</string>
 
-    <string name="ask_quantity">كمية الطلب</string>
+    <string name="ask_quantity">كمية العرض</string>
 
-    <string name="bid_quantity">كمية العرض</string>
+    <string name="bid_quantity">كمية الطلب</string>
 
     <string name="buy">شراء</string>
 

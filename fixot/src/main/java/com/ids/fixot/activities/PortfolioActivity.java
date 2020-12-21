@@ -244,10 +244,10 @@ try{
             rlCheckRequest.setLayoutParams(params);
             rlBalanceDetails.setLayoutParams(params);
         }else {
-            rlAccountStatement.setBackgroundResource(R.drawable.edittext_border);
-            rlKcc.setBackgroundResource(R.drawable.edittext_border);
-            rlCheckRequest.setBackgroundResource(R.drawable.edittext_border);
-            rlBalanceDetails.setBackgroundResource(R.drawable.edittext_border);
+            rlAccountStatement.setBackgroundResource(R.drawable.portfolio_buttons);
+            rlKcc.setBackgroundResource(R.drawable.portfolio_buttons);
+            rlCheckRequest.setBackgroundResource(R.drawable.portfolio_buttons);
+            rlBalanceDetails.setBackgroundResource(R.drawable.portfolio_buttons);
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT,1.0f);
             params.setMargins(15,15,15,15);
@@ -311,7 +311,10 @@ try{
 
 
         rlCheckRequest.setOnClickListener(v->{
-            startActivity(new Intent(PortfolioActivity.this,RequestActivity.class));
+            if(BuildConfig.APPLICATION_ID.matches("com.ids.fixot.kicPro"))
+                startActivity(new Intent(PortfolioActivity.this,RequestActivityNew.class));
+            else
+                startActivity(new Intent(PortfolioActivity.this,RequestActivity.class));
         });
 
         rlBalanceDetails.setOnClickListener(v->{
@@ -404,7 +407,7 @@ try{
         Actions.checkLanguage(this, started);
         try{Actions.setSpinnerTop(this, spInstrumentsTop, this);}catch (Exception e){}
         try{spSubAccounts.setSelection(returnAccountIndex(),false);}catch (Exception e){}
-        Actions.InitializeSessionServiceV2(this);
+         Actions.InitializeSessionServiceV2(this);
         // Actions.InitializeMarketServiceV2(this);
     }
     @Override
@@ -422,6 +425,7 @@ try{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Actions.unregisterSessionReceiver(this);
         running = false;
         try {
             getPortfolio.cancel(true);

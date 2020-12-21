@@ -179,6 +179,18 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             holder.tvVolumePercTitle.setTypeface(MyApplication.giloryBold);
             holder.tvAsKQtyTitle.setTypeface(MyApplication.giloryBold);
 
+            Actions.autofitText(
+                    holder.tvChange,
+                    holder.tvPrice,
+                    holder.tvHigh,
+                    holder.tvLow,
+                    holder.tvSession,
+                    holder.tvStockId,
+                    holder.tvVolumeTitle,
+                    holder.tvBidQtyTitle,
+                    holder.tvVolumePercTitle,
+                    holder.tvAsKQtyTitle
+            );
 
 
             holder.rllayout.setOnClickListener(v -> {
@@ -313,7 +325,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             Actions.setTypeface(new TextView[]{holder.tvColum1Value, holder.tvColum2Value,holder.tvColum3Value,holder.tvColum4Value,holder.tvColum5Value,holder.tvColum6Value},
                     MyApplication.lang == MyApplication.ENGLISH ? MyApplication.giloryBold : MyApplication.droidbold);
 
-
+Actions.autofitText(holder.tvColum1Value, holder.tvColum2Value,holder.tvColum3Value,holder.tvColum4Value,holder.tvColum5Value,holder.tvColum6Value);
 
 
 
@@ -459,7 +471,7 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
         protected TextView tvStockId, tvStockSymbol, tvStockName, tvLow, tvPrice, tvHigh, tvChange, tvSession,tvVolumeValue,tvVolumePercentage,tvBidValue,tvAskQuantityValue;
         protected View v;
         Button btTrades;
-        ImageView ivExpand;
+        Button ivExpand;
         LinearLayout rllayout; // RelativeLayout // LinearLayout
         TextView tvIndexBoxValue,tvIndexBoxPercentage,tvSupplyQty,tvOrderQty;
         TextView tvColum1Value,tvColum2Value,tvColum3Value,tvColum4Value,tvColum5Value,tvColum6Value;
@@ -543,31 +555,36 @@ public class FavoritesRecyclerAdapter extends RecyclerView.Adapter<FavoritesRecy
             final ArrayList<StockQuotation> nlist = new ArrayList<>(count);
 
             String filterableString;
+            String filterableStringStockid="";
+            String filterableStringNameAr="";
+            String filterableStringNameEn="";
+            String filterableStringSymbolAr="";
+            String filterableStringSymbolEn="";
+try {
+    for (int i = 0; i < count; i++) {
+        try{filterableStringStockid=list.get(i).getStockID()+"";}catch (Exception e){filterableStringStockid="";}
+        try{filterableStringNameAr=list.get(i).getNameAr();}catch (Exception e){filterableStringNameAr="";}
+        try{filterableStringNameEn=list.get(i).getNameEn();}catch (Exception e){filterableStringNameEn="";}
+        try{filterableStringSymbolAr=list.get(i).getSymbolAr();}catch (Exception e){filterableStringSymbolAr="";}
+        try{filterableStringSymbolEn=list.get(i).getSymbolEn();}catch (Exception e){filterableStringSymbolEn="";}
+        filterableString = filterableStringStockid + filterableStringNameAr + filterableStringNameEn
+                + filterableStringSymbolAr + filterableStringSymbolEn;
 
-            for (int i = 0; i < count; i++) {
+        if (FavoritesActivity.instrumentId.length() > 0 && BuildConfig.Enable_Markets) {
 
-                if (FavoritesActivity.instrumentId.length() > 0) {
-
-                    if (list.get(i).getInstrumentId().equals(FavoritesActivity.instrumentId)) {
-
-                        filterableString = list.get(i).getStockID() + list.get(i).getNameAr() + list.get(i).getNameEn()
-                                + list.get(i).getSymbolAr() + list.get(i).getSymbolEn();
-
-                        if (filterableString.toLowerCase().contains(filterString)) {
-                            nlist.add(list.get(i));
-                        }
-                    }
-                } else {
-
-                    filterableString = list.get(i).getStockID() + list.get(i).getNameAr() + list.get(i).getNameEn()
-                            + list.get(i).getSymbolAr() + list.get(i).getSymbolEn();
-
-                    if (filterableString.toLowerCase().contains(filterString)) {
-                        nlist.add(list.get(i));
-                    }
+            if (list.get(i).getInstrumentId().equals(FavoritesActivity.instrumentId)) {
+                if (filterableString.toLowerCase().contains(filterString)) {
+                    nlist.add(list.get(i));
                 }
             }
+        } else {
 
+            if (filterableString.toLowerCase().contains(filterString)) {
+                nlist.add(list.get(i));
+            }
+        }
+    }
+}catch (Exception e){}
             results.values = nlist;
             results.count = nlist.size();
 
